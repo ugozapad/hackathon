@@ -10,14 +10,19 @@ namespace engine
 {
 	GLuint createShader(GLenum shaderType, const std::string& filename)
 	{
-		std::ifstream ifs(filename);
+		File* file = FileDevice::getInstance()->openFile(filename.c_str(), FileAccess::Read);
 
-		if (!ifs.is_open()) {
+		if (!file->isValid()) {
 			spdlog::error("createShader: failed to open file {}", filename.c_str());
 			std::terminate();
 		}
-			
-		std::string content((std::istreambuf_iterator<char>(ifs)), (std::istreambuf_iterator<char>()));
+	
+
+		eastl::string content;
+		content.resize(1024);
+
+		file->readStringBuffer(&content[0], 1024);
+	
 		const char* contentCStr = content.c_str();
 
 		GLuint shader = glCreateShader(shaderType);

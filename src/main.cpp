@@ -25,6 +25,11 @@ namespace engine
 		// Initialize file system
 		FileDevice::getInstance()->setDefaultPath(".");
 
+		char buffer[256];
+		GetCurrentDirectoryA(256, buffer);
+		if (strstr(buffer, "bin"))
+			FileDevice::getInstance()->setDefaultPath("../");
+		
 		// Load command-line
 		eastl::string commandLine;
 

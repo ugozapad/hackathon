@@ -34,9 +34,12 @@ namespace engine
 
 			spdlog::info("spawned task thread #{}", m_taskData.m_threadId);
 
+			TaskManager* taskManager = m_taskData.m_taskManager;
+			assert(taskManager);
+
 			while (g_needToHarakiriThreads.load() == 0)
 			{
-
+				
 
 				std::this_thread::sleep_for(std::chrono::milliseconds(1));
 			}
