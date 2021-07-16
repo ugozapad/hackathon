@@ -7,11 +7,11 @@ namespace engine
 	{
 		enum
 		{
-			VD_FLOAT,
-			VD_INTEGER
+			Float,
+			Integer
 		};
 
-		std::string name;
+		eastl::string name;
 		uint32_t type;
 		uint32_t size;
 		uint32_t offset;
@@ -21,32 +21,32 @@ namespace engine
 	{
 	public:
 		Shader();
-		Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath);
-		Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath, const std::vector<VertexDeclaration>& vertexDecls);
+		Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath);
+		Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath, const eastl::vector<VertexDeclaration>& vertexDecls);
 		~Shader();
-		bool Create(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath);
-		void Destroy();
-		void Bind();
+		bool create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath);
+		void destroy();
+		void bind();
 
-		void SetInteger(const char* name, int value);
-		void SetBoolean(const char* name, bool value);
-		void SetFloat(const char* name, float value);
-		void SetVec2(const char* name, const glm::vec2& vec);
-		void SetVec3(const char* name, const glm::vec3& vec);
-		void SetVec4(const char* name, const glm::vec4& vec);
-		void SetMatrix(const char* name, const glm::mat4& matrix);
+		void setInteger(const char* name, int value);
+		void setBoolean(const char* name, bool value);
+		void setFloat(const char* name, float value);
+		void setVec2(const char* name, const glm::vec2& vec);
+		void setVec3(const char* name, const glm::vec3& vec);
+		void setVec4(const char* name, const glm::vec4& vec);
+		void setMatrix(const char* name, const glm::mat4& matrix);
 
-		std::string& GetName() { return m_Name; }
+		eastl::string& getName() { return m_name; }
 
-		void HotReload();
+		void hotReload();
 
 	private:
-		std::vector<VertexDeclaration> m_vertexDeclarations;
+		eastl::vector<VertexDeclaration> m_vertexDeclarations;
 
-		std::string m_Name;
-		std::string m_VSName;
-		std::string m_FSName;
-		uint32_t m_Program;
+		eastl::string m_name;
+		eastl::string m_vsName;
+		eastl::string m_fsName;
+		uint32_t m_program;
 
 		size_t m_allVxDeclsSize;
 	};

@@ -10,6 +10,13 @@
 
 namespace engine
 {
+	enum ClearFlags
+	{
+		ClearRenderTarget = 1 << 0,
+		ClearDepth = 1 << 0,
+		ClearStencil = 1 << 0,
+	};
+
 	class GraphicsDevice : public Singleton<GraphicsDevice>
 	{
 	private:
@@ -24,6 +31,9 @@ namespace engine
 
 		// clear color
 		void clearColor(float r, float g, float b, float a);
+
+		// clear
+		void clear(uint32_t flags);
 
 		// swap buffers
 		void swapBuffers();

@@ -12,7 +12,7 @@ namespace engine
 	{
 	private:
 		static GrVertexBuffer* ms_vertexBuffer;
-		//static Shader* ms_screenQuadShader;
+		static Shader* ms_screenQuadShader;
 
 	public:
 		static void init();

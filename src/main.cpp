@@ -79,6 +79,9 @@ namespace engine
 
 			glfwPollEvents();
 			
+			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
+			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
+
 			graphicsDevice->swapBuffers();
 		}
 

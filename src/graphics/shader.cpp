@@ -8,12 +8,12 @@
 
 namespace engine
 {
-	GLuint CreateShader(GLenum shaderType, const std::string& filename)
+	GLuint createShader(GLenum shaderType, const std::string& filename)
 	{
 		std::ifstream ifs(filename);
 
 		if (!ifs.is_open()) {
-			spdlog::error("CreateShader: failed to open file {}", filename.c_str());
+			spdlog::error("createShader: failed to open file {}", filename.c_str());
 			std::terminate();
 		}
 			
@@ -38,9 +38,9 @@ namespace engine
 		return shader;
 	}
 
-	Shader::Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
+	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
 	{
-		Create(name, vertexPath, fragmentPath);
+		create(name, vertexPath, fragmentPath);
 	}
 
 	Shader::Shader()
@@ -48,7 +48,7 @@ namespace engine
 
 	}
 
-	Shader::Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath, const std::vector<VertexDeclaration>& vertexDecls)
+	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath, const eastl::vector<VertexDeclaration>& vertexDecls)
 	{
 		assert(!vertexDecls.empty());
 		m_vertexDeclarations = vertexDecls;
@@ -57,7 +57,7 @@ namespace engine
 		for (int i = 0, size = m_vertexDeclarations.size(); i < size; i++)
 			m_allVxDeclsSize += m_vertexDeclarations[i].size;
 
-		Create(name, vertexPath, fragmentPath);
+		create(name, vertexPath, fragmentPath);
 	}
 
 	Shader::~Shader()
@@ -65,34 +65,34 @@ namespace engine
 		//glDeleteProgram(m_Program);
 	}
 
-	bool Shader::Create(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
+	bool Shader::create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
 	{
-		m_Name = name;
-		m_VSName = vertexPath;
-		m_FSName = fragmentPath;
+		m_name = name;
+		m_vsName = vertexPath;
+		m_fsName = fragmentPath;
 
-		GLuint vertexShader = CreateShader(GL_VERTEX_SHADER, vertexPath);
-		GLuint fragmentShader = CreateShader(GL_FRAGMENT_SHADER, fragmentPath);
+		GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexPath.c_str());
+		GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath.c_str());
 
 		if (vertexShader == 0 || fragmentShader == 0)
 			return false;
 
-		m_Program = glCreateProgram();
-		glAttachShader(m_Program, vertexShader);
-		glAttachShader(m_Program, fragmentShader);
+		m_program = glCreateProgram();
+		glAttachShader(m_program, vertexShader);
+		glAttachShader(m_program, fragmentShader);
 
-		glLinkProgram(m_Program);
+		glLinkProgram(m_program);
 
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
 		int  success;
 		char infoLog[512];
-		glGetProgramiv(m_Program, GL_LINK_STATUS, &success);
+		glGetProgramiv(m_program, GL_LINK_STATUS, &success);
 
 		if (!success)
 		{
-			glGetProgramInfoLog(m_Program, 512, NULL, infoLog);
+			glGetProgramInfoLog(m_program, 512, NULL, infoLog);
 			spdlog::error("Failed to link program {}", infoLog);
 			return false;
 		}
@@ -100,14 +100,14 @@ namespace engine
 		return true;
 	}
 
-	void Shader::Destroy()
+	void Shader::destroy()
 	{
-		glDeleteProgram(m_Program);
+		glDeleteProgram(m_program);
 	}
 
-	void Shader::Bind()
+	void Shader::bind()
 	{
-		glUseProgram(m_Program);
+		glUseProgram(m_program);
 
 		size_t appliedOffset = 0;
 		for (int i = 0, size = m_vertexDeclarations.size(); i < size; i++)
@@ -124,53 +124,53 @@ namespace engine
 		}
 	}
 
-	void Shader::SetInteger(const char* name, int value)
+	void Shader::setInteger(const char* name, int value)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform1i(uniformPosition, value);
 	}
 
-	void Shader::SetBoolean(const char* name, bool value)
+	void Shader::setBoolean(const char* name, bool value)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform1i(uniformPosition, value);
 	}
 
-	void Shader::SetFloat(const char* name, float value)
+	void Shader::setFloat(const char* name, float value)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform1f(uniformPosition, value);
 	}
 
-	void Shader::SetVec2(const char* name, const glm::vec2& vec)
+	void Shader::setVec2(const char* name, const glm::vec2& vec)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform2fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
-	void Shader::SetVec3(const char* name, const glm::vec3& vec)
+	void Shader::setVec3(const char* name, const glm::vec3& vec)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform3fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
-	void Shader::SetVec4(const char* name, const glm::vec4& vec)
+	void Shader::setVec4(const char* name, const glm::vec4& vec)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform4fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
-	void Shader::SetMatrix(const char* name, const glm::mat4& matrix)
+	void Shader::setMatrix(const char* name, const glm::mat4& matrix)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniformMatrix4fv(uniformPosition, 1, GL_FALSE, &matrix[0][0]);
 	}
 
-	void Shader::HotReload()
+	void Shader::hotReload()
 	{
-		spdlog::info("--- HOT RELOAD %s ---", m_Name.c_str());
-		Destroy();
-		Create(m_Name, m_VSName, m_FSName);
+		spdlog::info("--- HOT RELOAD %s ---", m_name.c_str());
+		destroy();
+		create(m_name, m_vsName, m_fsName);
 	}
 
 }
