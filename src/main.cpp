@@ -57,10 +57,10 @@ namespace engine
 		// create window
 		int width = 800, height = 600;
 		bool fullscreen = false;
-		eastl::string title = "Engine";
+		eastl::string title = "Hackathon";
 		GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
-		spdlog::info("Created window {0} [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
+		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
 
 		// initialize graphics device
 		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
