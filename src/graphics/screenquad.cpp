@@ -92,6 +92,4 @@ namespace engine
 		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 	}
-
 }
-
