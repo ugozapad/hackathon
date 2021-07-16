@@ -16,12 +16,12 @@ namespace engine
 		g_sysAllocator = &g_allocator;
 	
 		// Initialize file system
-		FileDevice::instance()->setDefaultPath(".");
+		FileDevice::getInstance()->setDefaultPath(".");
 
 		// Load command-line
 		eastl::string commandLine;
 
-		File* file = FileDevice::instance()->openFile("commandline.txt", FileAccess::Read);
+		File* file = FileDevice::getInstance()->openFile("commandline.txt", FileAccess::Read);
 		if (file->isValid())
 		{
 			file->seek(FileSeek::End, 0);
@@ -34,7 +34,7 @@ namespace engine
 			commandLine.push_back('\0');
 		}
 
-		FileDevice::instance()->closeFile(file);
+		FileDevice::getInstance()->closeFile(file);
 
 		// initializing logger
 		Logger::init();

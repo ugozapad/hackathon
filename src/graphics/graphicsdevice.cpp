@@ -8,10 +8,11 @@
 namespace engine
 {
 
+	GraphicsDevice GraphicsDevice::ms_instance;
+
 	GraphicsDevice* GraphicsDevice::instance()
 	{
-		static GraphicsDevice s_graphicsDevice;
-		return &s_graphicsDevice;
+		return Singleton<GraphicsDevice>::getInstance();
 	}
 
 	void GraphicsDevice::init(GLFWwindow* window)

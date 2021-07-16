@@ -16,5 +16,6 @@
 #endif
 
 #include "common/sys_allocator.h"
+#include "common/singleton.h"
 
 #endif // !COMMON_H

@@ -8,10 +8,14 @@
 
 namespace engine
 {
-	class GraphicsDevice
+	class GraphicsDevice : public Singleton<GraphicsDevice>
 	{
+	private:
+		static GraphicsDevice ms_instance;
+
 	public:
 		static GraphicsDevice* instance();
+
 	public:
 		void init(GLFWwindow* window);
 		void shutdown();

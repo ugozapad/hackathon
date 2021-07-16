@@ -8,10 +8,11 @@ namespace engine { typedef FileWin32 File; }
 
 namespace engine
 {
-	class FileDevice
+	class FileDevice : public Singleton<FileDevice>
 	{
-	public:
-		static FileDevice* instance();
+	private:
+		static FileDevice ms_instance;
+
 	public:
 		void setDefaultPath(const eastl::string& path);
 

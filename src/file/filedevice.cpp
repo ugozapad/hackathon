@@ -3,12 +3,7 @@
 
 namespace engine
 {
-
-	FileDevice* FileDevice::instance()
-	{
-		static FileDevice s_fileDevice;
-		return &s_fileDevice;
-	}
+	FileDevice FileDevice::ms_instance;
 
 	void FileDevice::setDefaultPath(const eastl::string& path)
 	{

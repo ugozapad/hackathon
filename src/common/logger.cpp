@@ -2,7 +2,7 @@
 #include "common/logger.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/sinks/stdout_sinks.h"
-#include "spdlog/sinks/rotating_file_sink.h"
+#include "spdlog/sinks/msvc_sink.h"
 
 namespace engine
 {
@@ -18,5 +18,8 @@ namespace engine
 
 		// add console sink
 		logger->sinks().push_back(std::make_shared<spdlog::sinks::stdout_sink_mt>());
+
+		// add msvc debuf sink
+		logger->sinks().push_back(std::make_shared<spdlog::sinks::msvc_sink_mt>());
 	}
 }
