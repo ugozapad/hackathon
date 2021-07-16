@@ -11,4 +11,7 @@
 #include <EASTL/vector.h>
 #include <EASTL/fixed_vector.h>
 
+#include <EASTL/list.h>
+#include <EASTL/fixed_list.h>
+
 #endif // !PCH_H

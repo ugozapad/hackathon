@@ -22,6 +22,9 @@ namespace engine
 		void init(GLFWwindow* window);
 		void shutdown();
 
+		// clear color
+		void clearColor(float r, float g, float b, float a);
+
 		// swap buffers
 		void swapBuffers();
 

@@ -38,6 +38,11 @@ namespace engine
 		m_window = nullptr;
 	}
 
+	void GraphicsDevice::clearColor(float r, float g, float b, float a)
+	{
+		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	}
+
 	void GraphicsDevice::swapBuffers()
 	{
 		glfwSwapBuffers(m_window);

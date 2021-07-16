@@ -2,6 +2,9 @@
 #include "common/common.h"
 #include "common/mallocallocator.h"
 #include "file/filedevice.h"
+
+#include "engine/engine.h"
+
 #include "graphics/graphicsdevice.h"
 #include "graphics/renderer.h"
 
@@ -62,6 +65,9 @@ namespace engine
 
 		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
 
+		// initialize engine
+		Engine::init();
+
 		// initialize graphics device
 		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
 		graphicsDevice->init(window);
@@ -77,6 +83,8 @@ namespace engine
 		}
 
 		spdlog::info("Exiting engine ...");
+
+		Engine::shutdown();
 
 		graphicsDevice->shutdown();
 
