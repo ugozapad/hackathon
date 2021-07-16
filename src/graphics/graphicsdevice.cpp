@@ -21,6 +21,16 @@ namespace engine
 		m_window = window;
 
 		glfwMakeContextCurrent(window);
+
+		if (!gladLoadGL())
+		{
+			spdlog::error("!!! Failed to initialize OpenGL");
+			std::terminate();
+		}
+		
+		spdlog::info("OpenGL successful initialized");
+		spdlog::info("OpenGL ver. {}", glGetString(GL_VERSION));
+		spdlog::info("[Device:{}] [Vendor:{}]", glGetString(GL_RENDERER), glGetString(GL_VENDOR));
 	}
 
 	void GraphicsDevice::shutdown()

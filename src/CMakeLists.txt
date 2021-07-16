@@ -16,6 +16,12 @@ file(GLOB FILE_SRC
 )
 source_group("src\\file" FILES ${FILE_SRC})
 
+file(GLOB ENGINE_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/engine/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/engine/*.cpp"
+)
+source_group("src\\engine" FILES ${ENGINE_SRC})
+
 file(GLOB GRAPHICS_SRC
 	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/*.cpp"
@@ -33,6 +39,7 @@ add_executable(engine
 	${ROOTDIR_SRC}
 	${COMMON_SRC}
 	${FILE_SRC}
+	${ENGINE_SRC}
 	${GRAPHICS_SRC}
 	${GRAPHICS_GL_SRC}
 )

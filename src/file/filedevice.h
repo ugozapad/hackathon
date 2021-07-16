@@ -15,6 +15,7 @@ namespace engine
 
 	public:
 		void setDefaultPath(const eastl::string& path);
+		eastl::string getDefaultPath() { return m_defaultPath; }
 
 		File* openFile(const eastl::string& path, FileAccess access);
 		void closeFile(File*& file);

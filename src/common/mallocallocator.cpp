@@ -5,7 +5,6 @@
 
 namespace engine
 {
-
 	void* MallocAllocator::allocate(size_t size, size_t align)
 	{
 		return _aligned_malloc(size, align);
