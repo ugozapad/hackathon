@@ -9,7 +9,8 @@ namespace engine
 
 	void Engine::init()
 	{
-		EngineTaskManager::getInstance()->createTaskWorkers();
+		//EngineTask worldUpdateTask(eastl::bind1st(&World::updateGraphicWorld, ms_world));
+		//EngineTaskManager::getInstance()->createTaskWorkers();
 	}
 
 	void Engine::shutdown()
