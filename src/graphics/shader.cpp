@@ -8,12 +8,12 @@
 
 namespace engine
 {
-	GLuint CreateShader(GLenum shaderType, const std::string& filename)
+	GLuint createShader(GLenum shaderType, const std::string& filename)
 	{
 		std::ifstream ifs(filename);
 
 		if (!ifs.is_open()) {
-			spdlog::error("CreateShader: failed to open file {}", filename.c_str());
+			spdlog::error("createShader: failed to open file {}", filename.c_str());
 			std::terminate();
 		}
 			
@@ -67,32 +67,32 @@ namespace engine
 
 	bool Shader::create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
 	{
-		m_Name = name;
-		m_VSName = vertexPath;
-		m_FSName = fragmentPath;
+		m_name = name;
+		m_vsName = vertexPath;
+		m_fsName = fragmentPath;
 
-		GLuint vertexShader = CreateShader(GL_VERTEX_SHADER, vertexPath.c_str());
-		GLuint fragmentShader = CreateShader(GL_FRAGMENT_SHADER, fragmentPath.c_str());
+		GLuint vertexShader = createShader(GL_VERTEX_SHADER, vertexPath.c_str());
+		GLuint fragmentShader = createShader(GL_FRAGMENT_SHADER, fragmentPath.c_str());
 
 		if (vertexShader == 0 || fragmentShader == 0)
 			return false;
 
-		m_Program = glCreateProgram();
-		glAttachShader(m_Program, vertexShader);
-		glAttachShader(m_Program, fragmentShader);
+		m_program = glCreateProgram();
+		glAttachShader(m_program, vertexShader);
+		glAttachShader(m_program, fragmentShader);
 
-		glLinkProgram(m_Program);
+		glLinkProgram(m_program);
 
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
 
 		int  success;
 		char infoLog[512];
-		glGetProgramiv(m_Program, GL_LINK_STATUS, &success);
+		glGetProgramiv(m_program, GL_LINK_STATUS, &success);
 
 		if (!success)
 		{
-			glGetProgramInfoLog(m_Program, 512, NULL, infoLog);
+			glGetProgramInfoLog(m_program, 512, NULL, infoLog);
 			spdlog::error("Failed to link program {}", infoLog);
 			return false;
 		}
@@ -102,12 +102,12 @@ namespace engine
 
 	void Shader::destroy()
 	{
-		glDeleteProgram(m_Program);
+		glDeleteProgram(m_program);
 	}
 
 	void Shader::bind()
 	{
-		glUseProgram(m_Program);
+		glUseProgram(m_program);
 
 		size_t appliedOffset = 0;
 		for (int i = 0, size = m_vertexDeclarations.size(); i < size; i++)
@@ -126,51 +126,51 @@ namespace engine
 
 	void Shader::setInteger(const char* name, int value)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform1i(uniformPosition, value);
 	}
 
 	void Shader::setBoolean(const char* name, bool value)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform1i(uniformPosition, value);
 	}
 
 	void Shader::setFloat(const char* name, float value)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform1f(uniformPosition, value);
 	}
 
 	void Shader::setVec2(const char* name, const glm::vec2& vec)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform2fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
 	void Shader::setVec3(const char* name, const glm::vec3& vec)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform3fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
 	void Shader::setVec4(const char* name, const glm::vec4& vec)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniform4fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
 	void Shader::setMatrix(const char* name, const glm::mat4& matrix)
 	{
-		GLint uniformPosition = glGetUniformLocation(m_Program, name);
+		GLint uniformPosition = glGetUniformLocation(m_program, name);
 		glUniformMatrix4fv(uniformPosition, 1, GL_FALSE, &matrix[0][0]);
 	}
 
 	void Shader::hotReload()
 	{
-		spdlog::info("--- HOT RELOAD %s ---", m_Name.c_str());
+		spdlog::info("--- HOT RELOAD %s ---", m_name.c_str());
 		destroy();
-		create(m_Name, m_VSName, m_FSName);
+		create(m_name, m_vsName, m_fsName);
 	}
 
 }

@@ -36,17 +36,17 @@ namespace engine
 		void setVec4(const char* name, const glm::vec4& vec);
 		void setMatrix(const char* name, const glm::mat4& matrix);
 
-		eastl::string& getName() { return m_Name; }
+		eastl::string& getName() { return m_name; }
 
 		void hotReload();
 
 	private:
 		eastl::vector<VertexDeclaration> m_vertexDeclarations;
 
-		eastl::string m_Name;
-		eastl::string m_VSName;
-		eastl::string m_FSName;
-		uint32_t m_Program;
+		eastl::string m_name;
+		eastl::string m_vsName;
+		eastl::string m_fsName;
+		uint32_t m_program;
 
 		size_t m_allVxDeclsSize;
 	};

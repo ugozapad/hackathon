@@ -2,11 +2,12 @@
 #include "graphics/screenquad.h"
 
 #include "graphics/graphicsdevice.h"
+#include "graphics/shader.h"
 
 namespace engine
 {
 	GrVertexBuffer* ScreenQuad::ms_vertexBuffer;
-	//Shader* ScreenQuad::ms_screenQuadShader;
+	Shader* ScreenQuad::ms_screenQuadShader;
 
 	void ScreenQuad::init()
 	{
@@ -27,11 +28,12 @@ namespace engine
 		desc.m_access = BufferAccess::Static;
 
 		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(desc);
-		//ms_screenQuadShader = g_shaderSystem.CreateShader("quad");
+		ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.psh");
 	}
 
 	void ScreenQuad::shutdown()
 	{
+		mem_delete(*g_sysAllocator, ms_screenQuadShader);
 		mem_delete(*g_sysAllocator, ms_vertexBuffer);
 	}
 
@@ -44,7 +46,7 @@ namespace engine
 		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
 		//g_renderDevice->SetTexture2D(0, texture);
 
-		//ms_screenQuadShader->Bind();
+		ms_screenQuadShader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 	}
 
@@ -58,7 +60,7 @@ namespace engine
 		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
 		//g_renderDevice->SetTexture2D(0, texture);
 
-		//shader->Bind();
+		shader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 	}
 
@@ -82,7 +84,7 @@ namespace engine
 
 		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
 
-		//shader->Bind();
+		shader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 	}
 
