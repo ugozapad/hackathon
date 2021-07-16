@@ -52,8 +52,6 @@ else()
 	target_precompile_headers(engine PRIVATE "pch.h")
 endif()
 
-
-
 target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/spdlog/include")
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND WIN32)

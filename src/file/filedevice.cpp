@@ -12,9 +12,10 @@ namespace engine
 
 	File* FileDevice::openFile(const eastl::string& path, FileAccess access)
 	{
+		spdlog::info("opening file {}", path.c_str());
+
 		eastl::string pathBuffer = m_defaultPath;
 		pathBuffer += path;
-
 		return mem_new<File>(*g_sysAllocator, pathBuffer, access);
 	}
 

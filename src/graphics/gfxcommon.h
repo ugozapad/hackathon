@@ -32,9 +32,9 @@ namespace engine
 		ReadAndWrite
 	};
 
-	struct IBufferBase
+	struct GrBufferBase
 	{
-		virtual ~IBufferBase() {}
+		virtual ~GrBufferBase() {}
 
 		virtual void* Map(BufferMapping mapping) = 0;
 		virtual void  Unmap() = 0;

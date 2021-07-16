@@ -13,6 +13,10 @@ namespace engine
 
 	int main(int argc, char* argv[])
 	{
+		// initializing logger
+		Logger::init();
+
+		// set system allocator
 		g_sysAllocator = &g_allocator;
 	
 		// Initialize file system
@@ -36,9 +40,6 @@ namespace engine
 
 		FileDevice::getInstance()->closeFile(file);
 
-		// initializing logger
-		Logger::init();
-
 		// init glfw
 		glfwInit();
 
@@ -50,7 +51,7 @@ namespace engine
 		eastl::string title = "Engine";
 		GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
-		spdlog::info("Created window [{0}x{1}:{2}] fullscreen:{3}", width, height, title.c_str(), fullscreen);
+		spdlog::info("Created window {0} [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
 
 		// initialize graphics device
 		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
