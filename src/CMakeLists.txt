@@ -60,6 +60,7 @@ else()
 endif()
 
 target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/spdlog/include")
+target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/glm")
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND WIN32)
 	target_include_directories(engine PRIVATE "${CMAKE_SOURCE_DIR}/vendor/glfw-3.3.4.bin.WIN64/include")

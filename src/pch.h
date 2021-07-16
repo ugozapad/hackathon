@@ -14,4 +14,6 @@
 #include <EASTL/list.h>
 #include <EASTL/fixed_list.h>
 
+#include <glm/glm.hpp>
+
 #endif // !PCH_H
