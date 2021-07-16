@@ -9,6 +9,8 @@ namespace engine
 
 	void Engine::init()
 	{
+		spdlog::info("Initializing engine");
+
 		//EngineTask worldUpdateTask(eastl::bind1st(&World::updateGraphicWorld, ms_world));
 		TaskManager::getInstance()->createTaskWorkers();
 	}

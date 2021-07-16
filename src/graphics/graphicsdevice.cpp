@@ -66,6 +66,16 @@ namespace engine
 		glfwSwapBuffers(m_window);
 	}
 
+	void GraphicsDevice::depthTest(bool value)
+	{
+		value ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+	}
+
+	void GraphicsDevice::depthMask(bool value)
+	{
+		glDepthMask(value);
+	}
+
 	GrVertexBuffer* GraphicsDevice::createVertexBuffer(const BufferCreationDesc& desc)
 	{
 		return (GrVertexBuffer*)mem_new<GLVertexBuffer>(*g_sysAllocator, desc.m_data, desc.m_dataSize, desc.m_access);
@@ -104,6 +114,42 @@ namespace engine
 	void GraphicsDevice::deleteFramebuffer(GrFramebuffer* framebuffer)
 	{
 		mem_delete(*g_sysAllocator, framebuffer);
+	}
+
+	void GraphicsDevice::setVertexBuffer(GrVertexBuffer* buffer)
+	{
+		if (buffer)
+			buffer->bind();
+		else
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	void GraphicsDevice::setIndexBuffer(GrIndexBuffer* buffer)
+	{
+		if (buffer)
+			buffer->bind();
+		else
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
+	void GraphicsDevice::setTexture2D(int slot, GrTexture2D* texture)
+	{
+		if (!texture) {
+			spdlog::error("GraphicsDevice::setTexture2D: Texture is null pointer.");
+			std::terminate();
+		}
+
+		if (slot > GL_TEXTURE31) {
+			spdlog::error("GraphicsDevice::setTexture2D: Reach maxmimum value of slot position. {} (max {})", slot, 31);
+			std::terminate();
+		}
+
+		glActiveTexture(GL_TEXTURE0 + slot);
+
+		if (texture)
+			glBindTexture(GL_TEXTURE_2D, texture->getHandle());
+		else
+			glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 }

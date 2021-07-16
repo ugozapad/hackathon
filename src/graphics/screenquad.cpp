@@ -41,10 +41,10 @@ namespace engine
 	{
 		assert(texture);
 
-		//g_renderDevice->DepthTest(false);
+		GraphicsDevice::getInstance()->depthTest(false);
 
-		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
-		//g_renderDevice->SetTexture2D(0, texture);
+		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
+		GraphicsDevice::getInstance()->setTexture2D(0, texture);
 
 		ms_screenQuadShader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
@@ -55,10 +55,10 @@ namespace engine
 		assert(texture);
 		assert(shader);
 
-		//g_renderDevice->DepthTest(false);
+		GraphicsDevice::getInstance()->depthTest(false);
 
-		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
-		//g_renderDevice->SetTexture2D(0, texture);
+		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
+		GraphicsDevice::getInstance()->setTexture2D(0, texture);
 
 		shader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
@@ -68,10 +68,10 @@ namespace engine
 	{
 		assert(texture);
 
-		//g_renderDevice->DepthTest(false);
+		GraphicsDevice::getInstance()->depthTest(false);
 
-		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
-		//g_renderDevice->SetTexture2D(0, texture);
+		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
+		GraphicsDevice::getInstance()->setTexture2D(0, texture);
 
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 	}
@@ -80,9 +80,9 @@ namespace engine
 	{
 		assert(shader);
 
-		//g_renderDevice->DepthTest(false);
+		GraphicsDevice::getInstance()->depthTest(false);
 
-		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
+		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
 
 		shader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
@@ -90,8 +90,10 @@ namespace engine
 
 	void ScreenQuad::renderWithoutShaderAndTextureBinding()
 	{
-		//g_renderDevice->DepthTest(false);
-		//g_renderDevice->SetVertexBuffer(ms_vertexBuffer);
+		GraphicsDevice::getInstance()->depthTest(false);
+
+		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
+
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 	}
 }

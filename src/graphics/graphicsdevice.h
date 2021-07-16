@@ -38,6 +38,12 @@ namespace engine
 		// swap buffers
 		void swapBuffers();
 
+		// drawing
+
+		// state
+		void depthTest(bool value);
+		void depthMask(bool value);
+
 		// device creation
 		GrVertexBuffer* createVertexBuffer(const BufferCreationDesc& desc);
 		void deleteVertexBuffer(GrVertexBuffer* buffer);
@@ -50,6 +56,11 @@ namespace engine
 
 		GrFramebuffer* createFramebuffer(int width, int height);
 		void deleteFramebuffer(GrFramebuffer* framebuffer);
+
+		// setters
+		void setVertexBuffer(GrVertexBuffer* buffer);
+		void setIndexBuffer(GrIndexBuffer* buffer);
+		void setTexture2D(int slot, GrTexture2D* texture);
 
 	private:
 		GLFWwindow* m_window;
