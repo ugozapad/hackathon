@@ -3,6 +3,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "graphics/texture.h"
+
 namespace engine
 {
 	class GraphicsDevice
@@ -11,10 +13,13 @@ namespace engine
 		static GraphicsDevice* instance();
 	public:
 		void init(GLFWwindow* window);
-
 		void shutdown();
 
-		void flushFrame();
+		// swap buffers
+		void swapBuffers();
+
+		// device creation
+		GrTexture2D* createTexture2D(TextureCreationDesc& desc);
 
 	private:
 		GLFWwindow* m_window;

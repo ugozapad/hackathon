@@ -53,7 +53,7 @@ namespace engine
 		{
 			glfwPollEvents();
 			
-			graphicsDevice->flushFrame();
+			graphicsDevice->swapBuffers();
 		}
 
 		graphicsDevice->shutdown();
