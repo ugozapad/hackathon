@@ -38,9 +38,9 @@ namespace engine
 		return shader;
 	}
 
-	Shader::Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
+	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
 	{
-		Create(name, vertexPath, fragmentPath);
+		create(name, vertexPath, fragmentPath);
 	}
 
 	Shader::Shader()
@@ -48,7 +48,7 @@ namespace engine
 
 	}
 
-	Shader::Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath, const std::vector<VertexDeclaration>& vertexDecls)
+	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath, const eastl::vector<VertexDeclaration>& vertexDecls)
 	{
 		assert(!vertexDecls.empty());
 		m_vertexDeclarations = vertexDecls;
@@ -57,7 +57,7 @@ namespace engine
 		for (int i = 0, size = m_vertexDeclarations.size(); i < size; i++)
 			m_allVxDeclsSize += m_vertexDeclarations[i].size;
 
-		Create(name, vertexPath, fragmentPath);
+		create(name, vertexPath, fragmentPath);
 	}
 
 	Shader::~Shader()
@@ -65,14 +65,14 @@ namespace engine
 		//glDeleteProgram(m_Program);
 	}
 
-	bool Shader::Create(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
+	bool Shader::create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
 	{
 		m_Name = name;
 		m_VSName = vertexPath;
 		m_FSName = fragmentPath;
 
-		GLuint vertexShader = CreateShader(GL_VERTEX_SHADER, vertexPath);
-		GLuint fragmentShader = CreateShader(GL_FRAGMENT_SHADER, fragmentPath);
+		GLuint vertexShader = CreateShader(GL_VERTEX_SHADER, vertexPath.c_str());
+		GLuint fragmentShader = CreateShader(GL_FRAGMENT_SHADER, fragmentPath.c_str());
 
 		if (vertexShader == 0 || fragmentShader == 0)
 			return false;
@@ -100,12 +100,12 @@ namespace engine
 		return true;
 	}
 
-	void Shader::Destroy()
+	void Shader::destroy()
 	{
 		glDeleteProgram(m_Program);
 	}
 
-	void Shader::Bind()
+	void Shader::bind()
 	{
 		glUseProgram(m_Program);
 
@@ -124,53 +124,53 @@ namespace engine
 		}
 	}
 
-	void Shader::SetInteger(const char* name, int value)
+	void Shader::setInteger(const char* name, int value)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniform1i(uniformPosition, value);
 	}
 
-	void Shader::SetBoolean(const char* name, bool value)
+	void Shader::setBoolean(const char* name, bool value)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniform1i(uniformPosition, value);
 	}
 
-	void Shader::SetFloat(const char* name, float value)
+	void Shader::setFloat(const char* name, float value)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniform1f(uniformPosition, value);
 	}
 
-	void Shader::SetVec2(const char* name, const glm::vec2& vec)
+	void Shader::setVec2(const char* name, const glm::vec2& vec)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniform2fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
-	void Shader::SetVec3(const char* name, const glm::vec3& vec)
+	void Shader::setVec3(const char* name, const glm::vec3& vec)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniform3fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
-	void Shader::SetVec4(const char* name, const glm::vec4& vec)
+	void Shader::setVec4(const char* name, const glm::vec4& vec)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniform4fv(uniformPosition, 1, glm::value_ptr(vec));
 	}
 
-	void Shader::SetMatrix(const char* name, const glm::mat4& matrix)
+	void Shader::setMatrix(const char* name, const glm::mat4& matrix)
 	{
 		GLint uniformPosition = glGetUniformLocation(m_Program, name);
 		glUniformMatrix4fv(uniformPosition, 1, GL_FALSE, &matrix[0][0]);
 	}
 
-	void Shader::HotReload()
+	void Shader::hotReload()
 	{
 		spdlog::info("--- HOT RELOAD %s ---", m_Name.c_str());
-		Destroy();
-		Create(m_Name, m_VSName, m_FSName);
+		destroy();
+		create(m_Name, m_VSName, m_FSName);
 	}
 
 }
