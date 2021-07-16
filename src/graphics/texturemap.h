@@ -16,7 +16,7 @@ namespace engine
 		void loadTexture(const eastl::string& filename, const TextureCreationDesc& desc);
 
 		void release();
-		GrTexture2D* GetHWTexture() { return m_texture2D; }
+		GrTexture2D* getHWTexture() { return m_texture2D; }
 
 		void bind();
 		uint32_t getHandle();
