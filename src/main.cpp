@@ -72,6 +72,10 @@ namespace engine
 		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
 		graphicsDevice->init(window);
 
+		// intiialize renderer
+		Renderer::createInstance();
+		Renderer::getInstance()->init();
+
 		while (!glfwWindowShouldClose(window))
 		{
 			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
@@ -86,6 +90,9 @@ namespace engine
 		}
 
 		spdlog::info("Exiting engine ...");
+
+		Renderer::getInstance()->shutdown();
+		Renderer::destroyInstance();
 
 		Engine::shutdown();
 

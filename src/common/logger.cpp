@@ -21,5 +21,7 @@ namespace engine
 
 		// add msvc debuf sink
 		logger->sinks().push_back(std::make_shared<spdlog::sinks::msvc_sink_mt>());
+
+		logger->flush_on(spdlog::level::info);
 	}
 }

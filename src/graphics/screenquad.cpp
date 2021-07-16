@@ -28,7 +28,7 @@ namespace engine
 		desc.m_access = BufferAccess::Static;
 
 		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(desc);
-		ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.psh");
+		ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.fsh");
 	}
 
 	void ScreenQuad::shutdown()
