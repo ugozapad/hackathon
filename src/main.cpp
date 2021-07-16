@@ -7,12 +7,42 @@
 
 #include "graphics/graphicsdevice.h"
 #include "graphics/renderer.h"
+#include "graphics/view.h"
+#include "graphics/graphicsoptions.h"
 
 #include <GLFW/glfw3.h>
 
 namespace engine
 {
 	static MallocAllocator g_allocator;
+	static GLFWwindow* g_engineWindow;
+	static View* g_engineView;
+
+	void createEngineView()
+	{
+		eastl::string optionsFilename = "hackathon.ini";
+
+		char buffer[256];
+		GetCurrentDirectoryA(256, buffer);
+		if (strstr(buffer, "bin"))
+			optionsFilename = "hackathon.ini";
+		if (strstr(buffer, "build/src"))
+			optionsFilename = "../../bin/hackathon.ini";
+
+		if (!g_graphicsOptions.loadSettings(optionsFilename))
+		{
+			g_graphicsOptions.applyDefaultOptions();
+			g_graphicsOptions.saveSettings(optionsFilename);
+		}
+
+		// create window
+		int width = g_graphicsOptions.m_width, height = g_graphicsOptions.m_height;
+		bool fullscreen = g_graphicsOptions.m_fullscreen;
+		eastl::string title = "Hackathon";
+		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+
+		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
+	}
 
 	int main(int argc, char* argv[])
 	{
@@ -62,28 +92,23 @@ namespace engine
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
 
-		// create window
-		int width = 800, height = 600;
-		bool fullscreen = false;
-		eastl::string title = "Hackathon";
-		GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
-
-		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
+		// create engine view
+		createEngineView();
 
 		// initialize engine
 		Engine::init();
 
 		// initialize graphics device
 		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
-		graphicsDevice->init(window);
+		graphicsDevice->init(g_engineWindow);
 
-		// intiialize renderer
+		// initialize renderer
 		Renderer::createInstance();
 		Renderer::getInstance()->init();
 
-		while (!glfwWindowShouldClose(window))
+		while (!glfwWindowShouldClose(g_engineWindow))
 		{
-			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+			if (glfwGetKey(g_engineWindow, GLFW_KEY_ESCAPE))
 				break;
 
 			glfwPollEvents();

@@ -44,15 +44,22 @@ CIniFile::CIniFile(string const iniPath)
 
 bool CIniFile::ReadFile()
 {
+	FILE* fp = fopen(path.c_str(), "r");
+	if (!fp)
+		return false;
+	
+	fclose(fp);
+
 	// Normally you would use ifstream, but the SGI CC compiler has
 	// a few bugs with ifstream. So ... fstream used.
-	fstream f;
+	//fstream f;
+	ifstream f;
 	string line;
 	string keyname, valuename, value;
 	string::size_type pLeft, pRight;
 
-	f.open(path.c_str(), ios::in);
-	if (f.fail())
+	f.open(path.c_str());
+	if (!f.is_open())
 		return false;
 
 	while (getline(f, line))
@@ -62,6 +69,9 @@ bool CIniFile::ReadFile()
 		// Note that the '\r' will be written to INI files from
 		// Unix so that the created INI file can be read under Win32
 		// without change.
+		if (line.empty())
+			continue;
+
 		if (line[line.length() - 1] == '\r')
 			line = line.substr(0, line.length() - 1);
 
