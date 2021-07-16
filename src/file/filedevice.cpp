@@ -10,17 +10,17 @@ namespace engine
 		return &s_fileDevice;
 	}
 
-	void FileDevice::setDefaultPath(const char* path)
+	void FileDevice::setDefaultPath(const eastl::string& path)
 	{
-		m_defaultPath = Strdup(path);
+		m_defaultPath = path;
 	}
 
-	File* FileDevice::openFile(const char* path, FileAccess access)
+	File* FileDevice::openFile(const eastl::string& path, FileAccess access)
 	{
-		char pathBuffer[kMaxPathLength];
-		sprintf(pathBuffer, "%s%s", m_defaultPath, path);
+		eastl::string pathBuffer = m_defaultPath;
+		pathBuffer += path;
 
-		return mem_new<File>(*g_sysAllocator, Strdup(pathBuffer), access);
+		return mem_new<File>(*g_sysAllocator, pathBuffer, access);
 	}
 
 	void FileDevice::closeFile(File*& file)

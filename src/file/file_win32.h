@@ -8,8 +8,10 @@ namespace engine
 	class FileWin32
 	{
 	public:
-		FileWin32(const char* path, FileAccess access);
+		FileWin32(const eastl::string& path, FileAccess access);
 		~FileWin32();
+
+		bool isValid() { return !!m_filehandle; }
 
 		FILE* getHandle() { return m_filehandle; }
 

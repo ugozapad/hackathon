@@ -1,3 +1,20 @@
+function(set_target_name_ex TARGET NAME)
+	if (CMAKE_SIZEOF_VOID_P EQUAL 4 AND WIN32)
+		set(PLATFORM_STR "Win32")
+	elseif (WIN32)
+		set(PLATFORM_STR "Win64")
+	endif()
+	
+	set_target_properties(${TARGET} PROPERTIES
+		OUTPUT_NAME "${NAME}_${PLATFORM_STR}"
+	
+		DEBUG_POSTFIX "_Debug"
+		RELEASE_POSTFIX "_Release"
+		RELWITHDEBINFO_POSTFIX "_RelWithDebInfo"
+		MINSIZEREL_POSTFIX "_MinSizeRel"
+	)
+endfunction()
+
 function(set_target_name TARGET)
 	if (CMAKE_SIZEOF_VOID_P EQUAL 4 AND WIN32)
 		set(PLATFORM_STR "Win32")

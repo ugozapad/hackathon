@@ -29,7 +29,7 @@ add_executable(engine
 	${GRAPHICS_SRC}
 )
 
-set_target_name(engine)
+set_target_name_ex(engine Hackathon)
 set_target_out_dir(engine "${CMAKE_SOURCE_DIR}/bin")
 
 target_include_directories(engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -50,3 +50,5 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND WIN32)
 	target_link_directories(engine PRIVATE "${CMAKE_SOURCE_DIR}/vendor/glfw-3.3.4.bin.WIN64/lib-vc2019")
 	target_link_libraries(engine glfw3)
 endif()
+
+target_link_libraries(engine EASTL)

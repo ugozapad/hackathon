@@ -12,12 +12,17 @@ namespace engine
 
 	void GraphicsDevice::init(GLFWwindow* window)
 	{
-
+		m_window = window;
 	}
 
 	void GraphicsDevice::shutdown()
 	{
 
+	}
+
+	void GraphicsDevice::flushFrame()
+	{
+		glfwSwapBuffers(m_window);
 	}
 
 }

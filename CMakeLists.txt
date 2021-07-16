@@ -4,5 +4,8 @@ project(engine)
 
 include(cmake/common.cmake)
 
+# add vendor dir
+add_subdirectory(vendor)
+
 # add engine dir
 add_subdirectory(src)

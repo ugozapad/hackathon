@@ -13,6 +13,11 @@ namespace engine
 		void init(GLFWwindow* window);
 
 		void shutdown();
+
+		void flushFrame();
+
+	private:
+		GLFWwindow* m_window;
 	};
 }
 

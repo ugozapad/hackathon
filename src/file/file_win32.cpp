@@ -7,9 +7,9 @@ namespace engine
 	static const char* s_stdioOpeningMode[] = { "rb", "wb" };
 	static int s_stdioSeekDir[] = { SEEK_SET, SEEK_CUR, SEEK_END };
 
-	FileWin32::FileWin32(const char* path, FileAccess access)
+	FileWin32::FileWin32(const eastl::string& path, FileAccess access)
 	{
-		m_filehandle = fopen(path, s_stdioOpeningMode[(int)access]);
+		m_filehandle = fopen(path.c_str(), s_stdioOpeningMode[(int)access]);
 	}
 
 	FileWin32::~FileWin32()

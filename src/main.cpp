@@ -14,8 +14,27 @@ namespace engine
 	int main(int argc, char* argv[])
 	{
 		g_sysAllocator = &g_allocator;
-
+	
+		// Initialize file system
 		FileDevice::instance()->setDefaultPath(".");
+
+		// Load command-line
+		eastl::string commandLine;
+
+		File* file = FileDevice::instance()->openFile("commandline.txt", FileAccess::Read);
+		if (file->isValid())
+		{
+			file->seek(FileSeek::End, 0);
+			size_t fileLength = file->tell();
+			file->seek(FileSeek::Begin, 0);
+
+			commandLine.resize(fileLength);
+			file->read(&commandLine[0], fileLength);
+
+			commandLine.push_back('\0');
+		}
+
+		FileDevice::instance()->closeFile(file);
 
 		// init glfw
 		glfwInit();
@@ -23,12 +42,21 @@ namespace engine
 		// create window
 		int width = 800, height = 600;
 		bool fullscreen = false;
-		GLFWwindow* window = glfwCreateWindow(width, height, "Engine", fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+		eastl::string title = "Engine";
+		GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 	
 		// initialize graphics device
-		GraphicsDevice::instance()->init(window);
+		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
+		graphicsDevice->init(window);
 
+		while (!glfwWindowShouldClose(window))
+		{
+			glfwPollEvents();
+			
+			graphicsDevice->flushFrame();
+		}
 
+		graphicsDevice->shutdown();
 
 		return 0;
 	}

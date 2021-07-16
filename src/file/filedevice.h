@@ -13,13 +13,13 @@ namespace engine
 	public:
 		static FileDevice* instance();
 	public:
-		void setDefaultPath(const char* path);
+		void setDefaultPath(const eastl::string& path);
 
-		File* openFile(const char* path, FileAccess access);
+		File* openFile(const eastl::string& path, FileAccess access);
 		void closeFile(File*& file);
 
 	private:
-		const char* m_defaultPath;
+		eastl::string m_defaultPath;
 	};
 }
 
