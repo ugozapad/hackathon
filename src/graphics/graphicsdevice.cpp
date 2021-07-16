@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "graphics/gl/glbuffers.h"
 #include "graphics/gl/gltextures.h"
 #include "graphics/gl/glframebuffer.h"
 
@@ -7,7 +8,6 @@
 
 namespace engine
 {
-
 	GraphicsDevice GraphicsDevice::ms_instance;
 
 	GraphicsDevice* GraphicsDevice::instance()
@@ -41,6 +41,26 @@ namespace engine
 	void GraphicsDevice::swapBuffers()
 	{
 		glfwSwapBuffers(m_window);
+	}
+
+	GrVertexBuffer* GraphicsDevice::createVertexBuffer(const BufferCreationDesc& desc)
+	{
+		return (GrVertexBuffer*)mem_new<GLVertexBuffer>(*g_sysAllocator, desc.m_data, desc.m_dataSize, desc.m_access);
+	}
+
+	void GraphicsDevice::deleteVertexBuffer(GrVertexBuffer* buffer)
+	{
+		mem_delete(*g_sysAllocator, buffer);
+	}
+
+	GrIndexBuffer* GraphicsDevice::createIndexBuffer(const BufferCreationDesc& desc)
+	{
+		return (GrIndexBuffer*)mem_new<GLIndexBuffer>(*g_sysAllocator, (unsigned int*)desc.m_data, desc.m_dataSize, desc.m_access);
+	}
+
+	void GraphicsDevice::deleteIndexBuffer(GrIndexBuffer* buffer)
+	{
+		mem_delete(*g_sysAllocator, buffer);
 	}
 
 	GrTexture2D* GraphicsDevice::createTexture2D(TextureCreationDesc& desc)

@@ -6,7 +6,7 @@ namespace engine
 	class Shader;
 	class GrFramebuffer;
 	class GrTexture2D;
-	class IVertexBuffer;
+	class GrVertexBuffer;
 	class Camera;
 	class Entity;
 	class Light;

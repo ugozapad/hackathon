@@ -1,6 +1,8 @@
 #ifndef GRAPHICS_DEVICE_H
 #define GRAPHICS_DEVICE_H
 
+#include "graphics/vertexbuffer.h"
+#include "graphics/indexbuffer.h"
 #include "graphics/texture.h"
 #include "graphics/framebuffer.h"
 
@@ -24,6 +26,12 @@ namespace engine
 		void swapBuffers();
 
 		// device creation
+		GrVertexBuffer* createVertexBuffer(const BufferCreationDesc& desc);
+		void deleteVertexBuffer(GrVertexBuffer* buffer);
+
+		GrIndexBuffer* createIndexBuffer(const BufferCreationDesc& desc);
+		void deleteIndexBuffer(GrIndexBuffer* buffer);
+
 		GrTexture2D* createTexture2D(TextureCreationDesc& desc);
 		void deleteTexture2D(GrTexture2D* texture);
 

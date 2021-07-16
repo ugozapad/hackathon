@@ -32,12 +32,24 @@ namespace engine
 		ReadAndWrite
 	};
 
+	enum class BufferDataType
+	{
+		UnsignedInt,
+	};
+
+	struct BufferCreationDesc
+	{
+		void* m_data;
+		size_t m_dataSize;
+		BufferAccess m_access;
+	};
+
 	struct GrBufferBase
 	{
 		virtual ~GrBufferBase() {}
 
-		virtual void* Map(BufferMapping mapping) = 0;
-		virtual void  Unmap() = 0;
+		virtual void* map(BufferMapping mapping) = 0;
+		virtual void  unmap() = 0;
 	};
 }
 
