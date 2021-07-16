@@ -1,9 +1,10 @@
 #ifndef GRAPHICS_DEVICE_H
 #define GRAPHICS_DEVICE_H
 
-#include <GLFW/glfw3.h>
-
 #include "graphics/texture.h"
+#include "graphics/framebuffer.h"
+
+#include <GLFW/glfw3.h>
 
 namespace engine
 {
@@ -20,6 +21,10 @@ namespace engine
 
 		// device creation
 		GrTexture2D* createTexture2D(TextureCreationDesc& desc);
+		void deleteTexture2D(GrTexture2D* texture);
+
+		GrFramebuffer* createFramebuffer(int width, int height);
+		void deleteFramebuffer(GrFramebuffer* framebuffer);
 
 	private:
 		GLFWwindow* m_window;

@@ -22,11 +22,19 @@ file(GLOB GRAPHICS_SRC
 )
 source_group("src\\graphics" FILES ${GRAPHICS_SRC})
 
+file(GLOB GRAPHICS_GL_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/gl/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/gl/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/gl/*.c"
+)
+source_group("src\\graphics\\gl" FILES ${GRAPHICS_GL_SRC})
+
 add_executable(engine
 	${ROOTDIR_SRC}
 	${COMMON_SRC}
 	${FILE_SRC}
 	${GRAPHICS_SRC}
+	${GRAPHICS_GL_SRC}
 )
 
 set_target_name_ex(engine Hackathon)
@@ -38,9 +46,12 @@ target_include_directories(engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 if (MSVC)
    set_target_properties(engine PROPERTIES COMPILE_FLAGS "/Yupch.h")
    set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Ycpch.h")
+
+   set_source_files_properties(graphics/gl/glad.c PROPERTIES COMPILE_FLAGS /Y-)
 else()
 	target_precompile_headers(engine PRIVATE "pch.h")
 endif()
+
 
 
 target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/spdlog/include")

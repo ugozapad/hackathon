@@ -21,8 +21,8 @@ namespace engine
 	public:
 		virtual ~GrTextureBase() {}
 
-		virtual void Release() = 0;
-		virtual unsigned int GetHandle() = 0;
+		virtual void release() = 0;
+		virtual unsigned int getHandle() = 0;
 	};
 
 	class GrTexture2D : public GrTextureBase

@@ -36,21 +36,31 @@ namespace engine
 
 		FileDevice::instance()->closeFile(file);
 
+		// initializing logger
+		Logger::init();
+
 		// init glfw
 		glfwInit();
+
+		spdlog::info("GLFW is initialized!");
 
 		// create window
 		int width = 800, height = 600;
 		bool fullscreen = false;
 		eastl::string title = "Engine";
 		GLFWwindow* window = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
-	
+
+		spdlog::info("Created window [{0}x{1}:{2}] fullscreen:{3}", width, height, title.c_str(), fullscreen);
+
 		// initialize graphics device
 		GraphicsDevice* graphicsDevice = GraphicsDevice::instance();
 		graphicsDevice->init(window);
 
 		while (!glfwWindowShouldClose(window))
 		{
+			if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+				break;
+
 			glfwPollEvents();
 			
 			graphicsDevice->swapBuffers();
