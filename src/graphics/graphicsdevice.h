@@ -61,6 +61,7 @@ namespace engine
 		void setVertexBuffer(GrVertexBuffer* buffer);
 		void setIndexBuffer(GrIndexBuffer* buffer);
 		void setTexture2D(int slot, GrTexture2D* texture);
+		void setFramebuffer(GrFramebuffer* framebuffer);
 
 	private:
 		GLFWwindow* m_window;

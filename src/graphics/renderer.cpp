@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "graphics/renderer.h"
 #include "graphics/screenquad.h"
+#include "graphics/deferredrenderer.h"
 
 namespace engine
 {
@@ -31,10 +32,14 @@ namespace engine
 	void Renderer::init()
 	{
 		ScreenQuad::init();
+
+		g_deferredRenderer.init();
 	}
 
 	void Renderer::shutdown()
 	{
+		g_deferredRenderer.shutdown();
+
 		ScreenQuad::shutdown();
 	}
 }

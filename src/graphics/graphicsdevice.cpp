@@ -152,4 +152,11 @@ namespace engine
 			glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	void GraphicsDevice::setFramebuffer(GrFramebuffer* framebuffer)
+	{
+		if (framebuffer)
+			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->getHandle());
+		else
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
 }

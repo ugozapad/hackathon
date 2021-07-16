@@ -1,5 +1,5 @@
 #include "pch.h"
-
+#include "graphics/gl/glad/glad.h"
 #include "graphics/deferredrenderer.h"
 #include "graphics/graphicsdevice.h"
 
@@ -9,7 +9,7 @@ namespace engine
 
 	void DeferredRenderer::init()
 	{
-		int width, height;
+		int width = 800, height = 600;
 		//glfwGetWindowSize(g_engine.m_app->GetWindow(), &width, &height);
 
 		// create position texture
@@ -43,15 +43,17 @@ namespace engine
 
 		//////////////////////////////////////////////////////////////////////////
 		// ugly piece of shit
-		//g_renderDevice->SetFramebuffer(m_framebuffer);
+		GraphicsDevice::instance()->setFramebuffer(m_framebuffer);
 
-		//GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-		//glDrawBuffers(3, DrawBuffers);
+		GLenum DrawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+		glDrawBuffers(3, DrawBuffers);
 
-		//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		//	Error("DeferredRenderer::init: Framebuffer is not complete.");
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			spdlog::error("DeferredRenderer::init: Framebuffer is not complete.");
+			std::terminate();
+		}
 
-		//g_renderDevice->SetFramebuffer(0);
+		GraphicsDevice::instance()->setFramebuffer(0);
 		//////////////////////////////////////////////////////////////////////////
 
 		// create light pass shader.
@@ -61,6 +63,7 @@ namespace engine
 	void DeferredRenderer::shutdown()
 	{
 		GraphicsDevice::instance()->deleteFramebuffer(m_framebuffer);
+		GraphicsDevice::instance()->deleteTexture2D(m_textures[2]);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[1]);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[0]);
 	}
