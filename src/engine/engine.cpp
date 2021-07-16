@@ -17,7 +17,7 @@ namespace engine
 
 	void Engine::shutdown()
 	{
-
+		TaskManager::getInstance()->destroyTaskWorkers();
 	}
 
 }

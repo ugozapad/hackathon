@@ -18,6 +18,7 @@ namespace engine
 		void addTask(EngineTask& task);
 
 		void createTaskWorkers();
+		void destroyTaskWorkers();
 
 	private:
 		eastl::fixed_vector<EngineTask, 256> m_tasks;
