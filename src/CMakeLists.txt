@@ -69,4 +69,20 @@ if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND WIN32)
 	target_link_libraries(engine glfw3)
 endif()
 
+if (CMAKE_SIZEOF_VOID_P EQUAL 4)
+	target_link_directories(engine PRIVATE "${CMAKE_SOURCE_DIR}/vendor/libs/x32")
+else()
+	target_link_directories(engine PRIVATE "${CMAKE_SOURCE_DIR}/vendor/libs/x64")
+endif()
+
+target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/include")
+
+if (MSVC)
+#	target_link_libraries(engine debug "assimp-vc142-mtd.lib")
+#	target_link_libraries(engine optimized "assimp-vc142-mt.lib")
+else()
+	target_link_libraries(engine "libassimp.dll.a")
+endif()
+
+
 target_link_libraries(engine EASTL)
