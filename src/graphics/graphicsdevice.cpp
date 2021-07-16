@@ -43,6 +43,24 @@ namespace engine
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 	}
 
+	void GraphicsDevice::clear(uint32_t flags)
+	{
+		if (flags > ClearStencil) {
+			spdlog::error("GraphicsDevice::clear: Unknown flag passed");
+			std::terminate();
+		}
+
+		GLenum clearFlags = 0;
+		if (flags & ClearRenderTarget)
+			clearFlags |= GL_COLOR_BUFFER_BIT;
+		if (flags & ClearDepth)
+			clearFlags |= GL_DEPTH_BUFFER_BIT;
+		if (flags & ClearStencil)
+			clearFlags |= GL_STENCIL_BUFFER_BIT;
+
+		glClear(clearFlags);
+	}
+
 	void GraphicsDevice::swapBuffers()
 	{
 		glfwSwapBuffers(m_window);

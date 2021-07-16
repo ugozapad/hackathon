@@ -7,8 +7,8 @@ namespace engine
 	{
 		enum
 		{
-			VD_FLOAT,
-			VD_INTEGER
+			Float,
+			Integer
 		};
 
 		eastl::string name;
