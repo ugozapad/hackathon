@@ -44,7 +44,7 @@ add_executable(engine
 	${GRAPHICS_GL_SRC}
 )
 
-set_target_name_ex(engine Hackathon)
+set_target_name_ex(engine hackathon)
 set_target_out_dir(engine "${CMAKE_SOURCE_DIR}/bin")
 
 target_include_directories(engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
