@@ -9,18 +9,15 @@ namespace engine
 		EngineTask(eastl::function<void()>& function);
 	};
 
-	class EngineTaskManager : public Singleton<EngineTaskManager>
+	class TaskManager : public Singleton<TaskManager>
 	{
 	private:
-		static EngineTaskManager ms_instance;
+		static TaskManager ms_instance;
 
 	public:
 		void addTask(EngineTask& task);
 
 		void createTaskWorkers();
-
-	private:
-		static void TaskThreadProc(EngineTaskManager* taskManager);
 
 	private:
 		eastl::fixed_vector<EngineTask, 256> m_tasks;
