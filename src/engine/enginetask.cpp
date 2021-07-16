@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "engine/enginetask.h"
+
 #include "common/mallocallocator.h"
+#include "common/thread.h"
 
 #include <thread>
 #include <EASTL/atomic.h>
@@ -8,7 +10,6 @@
 namespace engine
 {
 	static eastl::atomic<int> g_needToHarakiriThreads = 0;
-	static eastl::fixed_vector<std::thread::id, 256> g_threadIds;
 	static MallocAllocator g_threadAllocator;
 
 	struct TaskThreadData
@@ -17,20 +18,39 @@ namespace engine
 		int m_threadId;
 	};
 
-	static void TaskThreadProc(TaskThreadData* data)
+	class TaskThread : public Thread
 	{
-		spdlog::info("spawned task thread #{}", data->m_threadId);
-
-		while (g_needToHarakiriThreads.load() == 0)
+	public:
+		TaskThread(TaskThreadData& data)
 		{
-			
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			m_taskData = data;
 		}
 
-		spdlog::info("exiting task thread #{}", data->m_threadId);
-		mem_delete(*g_sysAllocator, data);
-	}
+		void Execute() override
+		{
+			char buffer[256];
+			sprintf(buffer, "Task thread #%i", m_taskData.m_threadId);
+			setThreadName(buffer);
+
+			spdlog::info("spawned task thread #{}", m_taskData.m_threadId);
+
+			while (g_needToHarakiriThreads.load() == 0)
+			{
+
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			}
+
+			spdlog::info("exiting task thread #{}", m_taskData.m_threadId);
+		}
+
+	private:
+		TaskThreadData m_taskData;
+
+	};
+
+	static eastl::fixed_vector<TaskThread, 256> g_threads;
+
 
 	EngineTask::EngineTask(eastl::function<void()>& function)
 	{
@@ -51,20 +71,25 @@ namespace engine
 
 		for (int i = 0; i < threadCount; i++)
 		{
-// 			TaskThreadData* threadData = mem_new<TaskThreadData>(*g_sysAllocator);
-// 			threadData->m_taskManager = this;
-// 			threadData->m_threadId = i;
-// 
-// 			std::thread thread(&TaskThreadProc, threadData);
-// 			thread.detach();
-// 
-// 			g_threadIds.push_back(thread.get_id());
+			TaskThreadData threadData;
+			threadData.m_threadId = i;
+			threadData.m_taskManager = this;
+
+			g_threads.push_back(TaskThread(threadData));
+			g_threads.back().startThread();
 		}
 	}
 
 	void TaskManager::destroyTaskWorkers()
 	{
-		//g_needToHarakiriThreads.store(1);
+		g_needToHarakiriThreads.store(1);
+
+		for (int i = 0; i < g_threads.size(); i++)
+		{
+			TaskThread& taskThread = g_threads[i];
+			if (taskThread.IsRunning())
+				taskThread.stopThread();
+		}
 	}
 
 }

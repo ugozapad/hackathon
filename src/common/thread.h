@@ -23,10 +23,7 @@ public:
 
 	virtual void Execute() = 0;
 
-	bool IsRunning()
-	{
-		return m_isRunning;
-	}
+	bool IsRunning() { return m_isRunning; }
 
 private:
 	void* m_threadHandle;
