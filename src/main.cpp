@@ -154,7 +154,15 @@ namespace engine
 	}
 }
 
+#ifdef WIN32
+HANDLE g_semaphore;
+
 int main(int argc, char* argv[])
 {
+	g_semaphore = CreateSemaphoreA(NULL, 1, 1, "hackathon_semaphore");
+	if (GetLastError() == ERROR_ALREADY_EXISTS)
+		return 1;
+
 	return engine::main(argc, argv);
 }
+#endif // WIN32
