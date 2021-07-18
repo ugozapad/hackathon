@@ -54,7 +54,6 @@ namespace engine
 		GraphicsDevice::getInstance()->setTexture2D(0, texture);
 
 		ms_screenQuadShader->bind();
-		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
 		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, 6);
 	}
 
@@ -69,7 +68,7 @@ namespace engine
 		GraphicsDevice::getInstance()->setTexture2D(0, texture);
 
 		shader->bind();
-		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
+		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, 6);
 	}
 
 	void ScreenQuad::renderWithoutShaderBinding(GrTexture2D* texture)
@@ -81,7 +80,7 @@ namespace engine
 		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
 		GraphicsDevice::getInstance()->setTexture2D(0, texture);
 
-		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
+		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, 6);
 	}
 
 	void ScreenQuad::renderWithoutTextureBinding(Shader* shader)
@@ -93,15 +92,11 @@ namespace engine
 		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
 
 		shader->bind();
-		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
+		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, 6);
 	}
 
 	void ScreenQuad::renderWithoutShaderAndTextureBinding()
 	{
-		GraphicsDevice::getInstance()->depthTest(false);
-
-		GraphicsDevice::getInstance()->setVertexBuffer(ms_vertexBuffer);
-
-		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
+		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, 6);
 	}
 }
