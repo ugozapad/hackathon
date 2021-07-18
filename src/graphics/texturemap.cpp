@@ -132,6 +132,8 @@ namespace engine
 
 	void TextureMap::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
+		memset(&m_texdesc, 0, sizeof(m_texdesc));
+
 		size_t extensionLocation = m_filename.find('.');
 		eastl::string extension = m_filename.substr(extensionLocation + 1);
 
