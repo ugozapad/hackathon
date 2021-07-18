@@ -21,6 +21,22 @@ namespace engine
 	static GLFWwindow* g_engineWindow;
 	static View* g_engineView;
 
+	eastl::string createCommandLine(int argc, char* argv[])
+	{
+		eastl::string commandline;
+
+		for (int i = 1; i < argc; i++)
+		{
+			if (argv[i])
+			{
+				commandline.append(argv[i]);
+				//commandline.append(" ");
+			}
+		}
+
+		return commandline;
+	}
+
 	void createEngineView()
 	{
 		eastl::string optionsFilename = "hackathon.ini";
@@ -63,23 +79,19 @@ namespace engine
 		if (strstr(buffer, "bin"))
 			FileDevice::getInstance()->setDefaultPath("../");
 		
-		// Load command-line
-		eastl::string commandLine;
+		eastl::string commandLine = createCommandLine(argc, argv);
+		spdlog::info("command lile: {}", commandLine.c_str());
 
-		File* file = FileDevice::getInstance()->openFile("commandline.txt", FileAccess::Read);
-		if (file->isValid())
+		if (commandLine.empty())
 		{
-			file->seek(FileSeek::End, 0);
-			size_t fileLength = file->tell();
-			file->seek(FileSeek::Begin, 0);
+			File* file = FileDevice::getInstance()->openFile("commandline.txt", FileAccess::Read);
+			if (file->isValid())
+			{
+				file->readString(commandLine);
+			}
 
-			commandLine.resize(fileLength);
-			file->read(&commandLine[0], fileLength);
-
-			commandLine.push_back('\0');
+			FileDevice::getInstance()->closeFile(file);
 		}
-
-		FileDevice::getInstance()->closeFile(file);
 
 		// init glfw
 		glfwInit();
@@ -114,6 +126,9 @@ namespace engine
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
 			if (glfwGetKey(g_engineWindow, GLFW_KEY_ESCAPE))
+				break;
+
+			if (commandLine == "-quit")
 				break;
 
 			glfwPollEvents();
