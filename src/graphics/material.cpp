@@ -29,17 +29,17 @@ namespace engine
 		len = sprintf(buffer, "{\n");
 		file->write(buffer, len);
 
-		len = sprintf(buffer, "\tshader diffuse\n");
+		len = sprintf(buffer, "\ttechnique diffuse\n");
 		file->write(buffer, len);
 
-		const char* newDiffuseName;
+		const char* newAlbedoName;
 
 		if (diffuseName && diffuseName[0] == '\0')
-			newDiffuseName = "notexture.png";
+			newAlbedoName = "notexture.png";
 		else
-			newDiffuseName = diffuseName;
+			newAlbedoName = diffuseName;
 
-		len = sprintf(buffer, "\talbedo \"%s\"\n", newDiffuseName);
+		len = sprintf(buffer, "\talbedo \"%s\"\n", newAlbedoName);
 		file->write(buffer, len);
 
 		if (normalName && normalName[0] != '\0')

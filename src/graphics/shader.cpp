@@ -16,12 +16,9 @@ namespace engine
 			spdlog::error("createShader: failed to open file {}", filename.c_str());
 			std::terminate();
 		}
-	
 
 		eastl::string content;
-		content.resize(1024);
-
-		file->readStringBuffer(&content[0], 1024);
+		file->readString(content);
 	
 		const char* contentCStr = content.c_str();
 

@@ -27,6 +27,7 @@ namespace engine
 
 		// helpers
 		void readStringBuffer(char* buffer, size_t bufferSize);
+		void readString(eastl::string& buffer);
 
 	private:
 		FILE* m_filehandle;

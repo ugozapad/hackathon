@@ -63,4 +63,16 @@ namespace engine
 		buffer[length] = '\0';
 	}
 
+	void FileWin32::readString(eastl::string& buffer)
+	{
+		seek(FileSeek::End, 0);
+		size_t length = tell();
+		seek(FileSeek::Begin, 0);
+
+		buffer.resize(length);
+
+		read(&buffer[0], length);
+		buffer[length] = '\0';
+	}
+
 }
