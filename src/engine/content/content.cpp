@@ -8,6 +8,11 @@ namespace engine
 
 	}
 
+	Content::Content(const eastl::string& filename)
+	{
+		m_filename = filename;
+	}
+
 	Content::~Content()
 	{
 

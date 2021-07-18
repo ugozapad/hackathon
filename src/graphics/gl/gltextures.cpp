@@ -106,20 +106,39 @@ namespace engine
 		glBindTexture(GL_TEXTURE_2D, m_handle);
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glTexImage2D(GL_TEXTURE_2D,
-			0,
-			GetGLFormat(m_desc.m_format),
-			m_desc.m_width, m_desc.m_height,
-			0,
-			GetGLInternalFormat(m_desc.m_format),
-			//GL_UNSIGNED_BYTE, 
-			GetGLTextureDataType(m_desc.m_format),
-			m_desc.m_data);
+		
+		if (m_desc.m_isCompressed)
+		{
+			unsigned int pixelDataSize = (m_desc.m_width * m_desc.m_height * GetComponentsFromFormat(m_desc.m_format)) >> 3;
+			pixelDataSize = (pixelDataSize < 32) ? 32 : pixelDataSize;
+
+			glCompressedTexImage2D(GL_TEXTURE_2D,
+				0,
+				GetGLInternalFormat(m_desc.m_format),
+				m_desc.m_width,
+				m_desc.m_height,
+				0,
+				pixelDataSize,
+				m_desc.m_data);
+		}
+		else
+		{
+			glTexImage2D(GL_TEXTURE_2D,
+				0,
+				GetGLFormat(m_desc.m_format),
+				m_desc.m_width, m_desc.m_height,
+				0,
+				GetGLInternalFormat(m_desc.m_format),
+				//GL_UNSIGNED_BYTE, 
+				GetGLTextureDataType(m_desc.m_format),
+				m_desc.m_data);
+		}
 
 		if (m_desc.m_mipmapping)
 		{
-			glGenerateMipmap(GL_TEXTURE_2D);
-
+			if (!m_desc.m_isCompressed)
+				glGenerateMipmap(GL_TEXTURE_2D);
+			
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

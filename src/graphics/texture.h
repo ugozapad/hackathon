@@ -5,7 +5,6 @@
 
 namespace engine
 {
-
 	struct TextureCreationDesc
 	{
 		void* m_data;

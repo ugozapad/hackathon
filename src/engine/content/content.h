@@ -10,9 +10,13 @@ namespace engine
 	{
 	public:
 		Content();
+		Content(const eastl::string& filename);
 		virtual ~Content();
 
 		virtual void load(const eastl::shared_ptr<DataStream>& dataStream);
+
+	protected:
+		eastl::string m_filename;
 	};
 }
 

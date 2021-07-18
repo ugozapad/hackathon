@@ -15,10 +15,13 @@ namespace engine
 		void release() override;
 		uint32_t getHandle() override { return m_handle; }
 		GLenum getType() { return m_textureType; }
+
+
 	private:
 		TextureCreationDesc m_desc;
 		GLuint m_handle;
 		GLenum m_textureType;
+		GLenum m_target;
 	};
 }
 

@@ -23,7 +23,6 @@ namespace engine
 		if (size < 0)
 			size = 0;
 
-		//std::istream* stream = reinterpret_cast<std::istream*>(user);
 		DataStream* stream = reinterpret_cast<DataStream*>(user);
 		char* p = data;
 		int totalBytesRead = 0;
@@ -36,7 +35,6 @@ namespace engine
 			stream->read(p, static_cast<size_t>(size));
 			int endreadsize = stream->tell();
 
-			//int bytesRead = static_cast<int>(stream->gcount());
 			int bytesRead = static_cast<int>(endreadsize - beginreadsize);
 
 			totalBytesRead += bytesRead;
@@ -57,11 +55,12 @@ namespace engine
 
 	static stbi_io_callbacks g_stdio_callbacks = { stb_read, stb_skip, stb_eof };
 
-	TextureMap::TextureMap(const eastl::string& filename)
+	TextureMap::TextureMap(const eastl::string& filename) :
+		Content(filename)
 	{
-		TextureCreationDesc desc = { 0 };
-		desc.m_mipmapping = true;
-		loadTexture(filename, desc);
+		//TextureCreationDesc desc = { 0 };
+		//desc.m_mipmapping = true;
+		//loadTexture(filename, desc);
 	}
 
 	TextureMap::TextureMap(const eastl::string& filename, const TextureCreationDesc& desc)
@@ -133,16 +132,27 @@ namespace engine
 
 	void TextureMap::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
-		stbi_set_flip_vertically_on_load(true);
+		size_t extensionLocation = m_filename.find('.');
+		eastl::string extension = m_filename.substr(extensionLocation + 1);
 
-		int width, height, channels;
-		m_data = stbi_load_from_callbacks(&g_stdio_callbacks, reinterpret_cast<void*>(dataStream.get()), &width, &height, &channels, 0);
+		if (extension != "dds")
+		{
+			stbi_set_flip_vertically_on_load(true);
 
-		m_texdesc.m_width = width;
-		m_texdesc.m_height = height;
-		m_texdesc.m_format = (channels == 4) ? ImageFormat::RGBA32 : ImageFormat::RGB32;
-		m_texdesc.m_data = m_data;
-		m_texdesc.m_mipmapping = true;
+			int width, height, channels;
+			m_data = stbi_load_from_callbacks(&g_stdio_callbacks, reinterpret_cast<void*>(dataStream.get()), &width, &height, &channels, 0);
+
+			m_texdesc.m_width = width;
+			m_texdesc.m_height = height;
+			m_texdesc.m_format = (channels == 4) ? ImageFormat::RGBA32 : ImageFormat::RGB32;
+			m_texdesc.m_data = m_data;
+			m_texdesc.m_mipmapping = true;
+		}
+		else
+		{
+			spdlog::error("TextureMap::load: dds loading in not implemented!");
+			std::terminate();
+		}
 	}
 
 }

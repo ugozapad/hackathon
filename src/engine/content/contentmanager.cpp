@@ -79,7 +79,7 @@ namespace engine
 		// we will guess content is not loaded for now
 		if (textureMap == m_content.end())
 		{
-			auto content = eastl::make_shared<TextureMap>();
+			auto content = eastl::make_shared<TextureMap>(textureName);
 
 			// lock thread for add info about content loading
 			g_contentMutex.lock();

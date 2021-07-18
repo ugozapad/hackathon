@@ -22,7 +22,12 @@ namespace engine
 			 1.0f,  1.0f,  1.0f, 1.0f
 		};
 
-		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(quadVertices, sizeof(quadVertices), BufferAccess::Static);
+		BufferCreationDesc bufferDesc = { 0 };
+		bufferDesc.m_data = quadVertices;
+		bufferDesc.m_dataSize = sizeof(quadVertices);
+		bufferDesc.m_access = BufferAccess::Static;
+		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(bufferDesc);
+
 		ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.fsh");
 
 		VertexDeclaration position;
