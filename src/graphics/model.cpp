@@ -34,12 +34,8 @@ namespace engine
 
 	SubMesh* ProccessSubMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
 	{
-		std::vector<Vertex> vertices;
-		std::vector<uint32_t> indecies;
-
-		// for speed-up loading
-		vertices.reserve(1024);
-		indecies.reserve(1024);
+		eastl::vector<Vertex> vertices;
+		eastl::vector<uint32_t> indecies;
 
 		for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -97,7 +93,7 @@ namespace engine
 		return mem_new<SubMesh>(*g_sysAllocator, vertices, indecies, transform, material->GetName().C_Str());
 	}
 
-	void ProccessNode(std::vector<SubMesh*>& submeshes, aiNode* node, const aiScene* scene)
+	void ProccessNode(eastl::vector<SubMesh*>& submeshes, aiNode* node, const aiScene* scene)
 	{
 		for (uint32_t i = 0; i < node->mNumMeshes; i++)
 		{
@@ -112,13 +108,13 @@ namespace engine
 		}
 	}
 
-	void ModelBase::Load(const std::string& filename)
+	void ModelBase::load(const eastl::string& filename)
 	{
 		m_filename = filename;
 		spdlog::info("loading model {}", filename.c_str());
 
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(filename, aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
+		const aiScene* scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -130,28 +126,28 @@ namespace engine
 		ProccessNode(m_subMeshes, scene->mRootNode, scene);
 	}
 
-	void ModelBase::Destroy()
+	void ModelBase::destroy()
 	{
 		for (int i = 0; i < m_subMeshes.size(); i++)
 		{
-			m_subMeshes[i]->Destroy();
+			m_subMeshes[i]->destroy();
 			mem_delete(*g_sysAllocator, m_subMeshes[i]);
 		}
 
 		m_subMeshes.clear();
 	}
 
-	void ModelBase::RenderObjects()
+	void ModelBase::renderObjects()
 	{
 		for (int i = 0; i < m_subMeshes.size(); i++)
-			m_subMeshes[i]->Render();
+			m_subMeshes[i]->render();
 	}
 
-	SubMesh::SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname) :
+	SubMesh::SubMesh(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname) :
 		m_vertexBuffer(0),
 		m_indexBuffer(0)
 	{
-		Load(vertices, indecies, position, materialname);
+		load(vertices, indecies, position, materialname);
 	}
 
 	SubMesh::SubMesh() :
@@ -161,7 +157,7 @@ namespace engine
 
 	}
 
-	void SubMesh::Load(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname)
+	void SubMesh::load(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname)
 	{
 		m_transform = position;
 
@@ -188,7 +184,7 @@ namespace engine
 		//	Destroy();
 	}
 
-	void SubMesh::Destroy()
+	void SubMesh::destroy()
 	{
 		if (m_indexBuffer)
 			GraphicsDevice::getInstance()->deleteIndexBuffer(m_indexBuffer);
@@ -197,7 +193,7 @@ namespace engine
 			GraphicsDevice::getInstance()->deleteVertexBuffer(m_vertexBuffer);
 	}
 
-	void SubMesh::Render()
+	void SubMesh::render()
 	{
 		// create saved render ctx as previous model.
 		//RenderContext savedCtx = RenderContext::GetContext();

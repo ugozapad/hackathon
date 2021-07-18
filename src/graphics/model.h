@@ -24,20 +24,20 @@ namespace engine
 		friend class ModelBase;
 	public:
 		SubMesh();
-		SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
-		void Load(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
+		SubMesh(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
+		void load(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
 
 		~SubMesh();
 
-		void Destroy();
+		void destroy();
 
-		void Render();
+		void render();
 
-		GrVertexBuffer* GetVertexBuffer() { return m_vertexBuffer; }
-		GrIndexBuffer* GetIndexBuffer() { return m_indexBuffer; }
+		GrVertexBuffer* getVertexBuffer() { return m_vertexBuffer; }
+		GrIndexBuffer* getIndexBuffer() { return m_indexBuffer; }
 
-		uint32_t GetVerticesCount() { return m_verticesCount; }
-		uint32_t GetIndeciesCount() { return m_indeciesCount; }
+		uint32_t getVerticesCount() { return m_verticesCount; }
+		uint32_t getIndeciesCount() { return m_indeciesCount; }
 
 	private:
 		Material* m_material;
@@ -54,16 +54,16 @@ namespace engine
 	class ModelBase
 	{
 	public:
-		virtual void Load(const std::string& filename);
-		virtual void Destroy();
+		virtual void load(const eastl::string& filename);
+		virtual void destroy();
 
-		virtual void RenderObjects();
+		virtual void renderObjects();
 
-		const std::string& GetFileName() { return m_filename; }
+		const eastl::string& getFileName() { return m_filename; }
 
 	private:
-		std::vector<SubMesh*> m_subMeshes;
-		std::string m_filename;
+		eastl::vector<SubMesh*> m_subMeshes;
+		eastl::string m_filename;
 	};
 }
 
