@@ -46,7 +46,9 @@ namespace engine
 
 						content->load(dataStream);
 					}
-					
+
+					m_contentManager->m_contentForLoad.clear();
+
 					g_needToLoadContent.store(0);
 				}
 
