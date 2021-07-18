@@ -12,4 +12,10 @@ namespace engine
 	{
 
 	}
+
+	void Content::load(const eastl::shared_ptr<DataStream>& dataStream)
+	{
+
+	}
+
 }

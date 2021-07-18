@@ -25,6 +25,9 @@ namespace engine
 		void bind();
 		uint32_t getHandle();
 
+
+		void load(const eastl::shared_ptr<DataStream>& dataStream) override;
+
 	private:
 		GrTexture2D* m_texture2D;
 		const char* m_fileName;

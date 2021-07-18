@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "engine/content/contentmanager.h"
 
+#include "file/filestream.h"
+
 #include "common/thread.h"
 
 namespace engine
@@ -26,7 +28,7 @@ namespace engine
 		{
 			setThreadName("Content thread");
 
-			spdlog::info("Content thread is started!");
+			spdlog::info("Content thread is started");
 
 			while (g_harakiriContentThread.load() != 1)
 			{
@@ -36,9 +38,13 @@ namespace engine
 
 					for (int i = 0; i < m_contentManager->m_contentForLoad.size(); i++)
 					{
+						eastl::string& contentName = m_contentManager->m_contentForLoad[i].first;
+						spdlog::info("[content]: load {}", contentName.c_str());
+
 						eastl::shared_ptr<Content>& content = m_contentManager->m_contentForLoad[i].second;
+						eastl::shared_ptr<DataStream> dataStream = eastl::make_shared<FileStream>(contentName, "r");
 
-
+						content->load(dataStream);
 					}
 					
 					g_needToLoadContent.store(0);
@@ -74,13 +80,19 @@ namespace engine
 		if (!textureMap)
 		{
 			auto content = eastl::make_shared<TextureMap>();
+
+			// lock thread for add info about content loading
+			g_contentMutex.lock();
 			m_contentForLoad.push_back(eastl::make_pair(textureName, content));
+			g_contentMutex.unlock();
 
-			// lock thread
-
-
-			// and wait for finish ...
+			// wait for finish ...
 			while (g_needToLoadContent.load() == 1);
+
+			// little magic
+			m_content.emplace(textureName, content);
+
+			textureMap = content;
 		}
 
 		return eastl::static_shared_pointer_cast<TextureMap>(textureMap);

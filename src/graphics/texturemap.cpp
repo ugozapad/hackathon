@@ -6,6 +6,59 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+static int stbi_eof(void* user)
+{
+	using namespace engine;
+
+	DataStream* stream = reinterpret_cast<DataStream*>(user);
+	return stream->eof();
+}
+
+static int stb_read(void* user, char* data, int size)
+{
+	using namespace engine;
+
+	if (size < 0)
+		size = 0;
+
+	//std::istream* stream = reinterpret_cast<std::istream*>(user);
+	DataStream* stream = reinterpret_cast<DataStream*>(user);
+	char* p = data;
+	int totalBytesRead = 0;
+	do
+	{
+		if (stream->eof())
+			break;
+
+		int beginreadsize = stream->tell();
+		stream->read(p, static_cast<size_t>(size));
+		int endreadsize = stream->tell();
+
+		//int bytesRead = static_cast<int>(stream->gcount());
+		int bytesRead = static_cast<int>(endreadsize - beginreadsize);
+
+		totalBytesRead += bytesRead;
+		p += bytesRead;
+		size -= bytesRead;
+	} while (size > 0);
+
+	return totalBytesRead;
+}
+
+static void stb_skip(void* user, unsigned n)
+{
+	using namespace engine;
+
+	DataStream* stream = reinterpret_cast<DataStream*>(user);
+	stream->seek(FileSeek::Current, n);
+}
+
+//static const stbi_io_callbacks g_StbCB = {
+//	stb_read,
+//	stb_skip,
+//	stb_eof
+//};
+
 namespace engine
 {
 	TextureMap::TextureMap(const eastl::string& filename)
@@ -70,6 +123,11 @@ namespace engine
 	}
 
 	GLuint TextureMap::getHandle()
+	{
+		throw std::logic_error("The method or operation is not implemented.");
+	}
+
+	void TextureMap::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
 		throw std::logic_error("The method or operation is not implemented.");
 	}
