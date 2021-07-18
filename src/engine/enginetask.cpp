@@ -26,7 +26,7 @@ namespace engine
 			m_taskData = data;
 		}
 
-		void Execute() override
+		void execute() override
 		{
 			char buffer[256];
 			sprintf(buffer, "Task thread #%i", m_taskData.m_threadId);

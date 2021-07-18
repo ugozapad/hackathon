@@ -31,6 +31,16 @@ namespace engine
 		return ftell(m_filehandle);
 	}
 
+	bool FileWin32::eof()
+	{
+		return feof(m_filehandle);
+	}
+
+	void FileWin32::flush()
+	{
+		fflush(m_filehandle);
+	}
+
 	size_t FileWin32::read(void* buffer, size_t size)
 	{
 		return fread(buffer, size, 1, m_filehandle);

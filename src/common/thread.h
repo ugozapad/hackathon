@@ -21,7 +21,7 @@ public:
 
 	void stopThread();
 
-	virtual void Execute() = 0;
+	virtual void execute() = 0;
 
 	bool IsRunning() { return m_isRunning; }
 

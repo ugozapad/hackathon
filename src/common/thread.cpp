@@ -62,7 +62,7 @@ void Thread::stopThread()
 static unsigned threadProc(void* data)
 {
 	Thread* thread = reinterpret_cast<Thread*>(data);
-	thread->Execute();
+	thread->execute();
 	_endthreadex(0);
 	return 0;
 }

@@ -30,7 +30,7 @@ namespace engine
 		
 		spdlog::info("OpenGL successful initialized");
 		spdlog::info("OpenGL ver. {}", glGetString(GL_VERSION));
-		spdlog::info("[Device:{}] [Vendor:{}]", glGetString(GL_RENDERER), glGetString(GL_VENDOR));
+		spdlog::info("[device:{}] [vendor:{}]", glGetString(GL_RENDERER), glGetString(GL_VENDOR));
 	}
 
 	void GraphicsDevice::shutdown()

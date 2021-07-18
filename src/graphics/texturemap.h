@@ -1,13 +1,17 @@
 #ifndef TEXTUREMAP_H
 #define TEXTUREMAP_H
 
+#include "engine/content/content.h"
+
 #include "graphics/texture.h"
 
 namespace engine
 {
-	class TextureMap
+	class TextureMap : public Content//,
+					  /* public eastl::enable_shared_from_this<TextureMap>*/
 	{
 	public:
+		TextureMap();
 		TextureMap(const eastl::string& filename);
 		TextureMap(const eastl::string& filename, const TextureCreationDesc& desc);
 

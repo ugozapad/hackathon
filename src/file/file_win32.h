@@ -18,6 +18,10 @@ namespace engine
 		void seek(FileSeek seekdir, long offset);
 		long tell();
 
+		bool eof();
+
+		void flush();
+
 		size_t read(void* buffer, size_t size);
 		size_t write(void* buffer, size_t size);
 

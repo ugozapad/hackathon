@@ -20,6 +20,11 @@ namespace engine
 		loadTexture(filename, desc);
 	}
 
+	TextureMap::TextureMap()
+	{
+
+	}
+
 	TextureMap::~TextureMap()
 	{
 		release();
