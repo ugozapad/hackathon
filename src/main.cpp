@@ -27,10 +27,10 @@ namespace engine
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);
-		if (strstr(buffer, "bin"))
-			optionsFilename = "hackathon.ini";
-		if (strstr(buffer, "build/src"))
-			optionsFilename = "../../bin/hackathon.ini";
+		//if (strstr(buffer, "bin"))
+		//	optionsFilename = "hackathon.ini";
+		//if (strstr(buffer, "build/src"))
+		//	optionsFilename = "../../bin/hackathon.ini";
 
 		if (!g_graphicsOptions.loadSettings(optionsFilename))
 		{
@@ -56,7 +56,7 @@ namespace engine
 		g_sysAllocator = &g_allocator;
 	
 		// Initialize file system
-		FileDevice::getInstance()->setDefaultPath(".");
+		FileDevice::getInstance()->setDefaultPath("./");
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);

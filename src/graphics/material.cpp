@@ -189,7 +189,6 @@ namespace engine
 
 		if (detailTextureName)
 			m_detailTexture = ContentManager::getInstance()->loadTexture(detailTextureName);
-
 	}
 
 	void Material::Bind()
