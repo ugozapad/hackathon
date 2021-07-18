@@ -13,7 +13,6 @@ namespace engine
 	public:
 		TextureMap();
 		TextureMap(const eastl::string& filename);
-		TextureMap(const eastl::string& filename, const TextureCreationDesc& desc);
 
 		~TextureMap();
 		

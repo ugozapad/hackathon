@@ -56,21 +56,14 @@ namespace engine
 	static stbi_io_callbacks g_stdio_callbacks = { stb_read, stb_skip, stb_eof };
 
 	TextureMap::TextureMap(const eastl::string& filename) :
-		Content(filename)
+		Content()
 	{
-		//TextureCreationDesc desc = { 0 };
-		//desc.m_mipmapping = true;
-		//loadTexture(filename, desc);
-	}
-
-	TextureMap::TextureMap(const eastl::string& filename, const TextureCreationDesc& desc)
-	{
-		loadTexture(filename, desc);
+		memset(&m_texdesc, 0, sizeof(m_texdesc));
 	}
 
 	TextureMap::TextureMap()
 	{
-		memset(&m_texdesc, 0, sizeof(m_texdesc));
+		
 	}
 
 	TextureMap::~TextureMap()
@@ -132,8 +125,6 @@ namespace engine
 
 	void TextureMap::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
-		memset(&m_texdesc, 0, sizeof(m_texdesc));
-
 		size_t extensionLocation = m_filename.find('.');
 		eastl::string extension = m_filename.substr(extensionLocation + 1);
 
