@@ -11,6 +11,8 @@
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
+#include <assimp/IOStream.hpp>
+#include <assimp/IOSystem.hpp>
 
 #ifdef _MSC_VER
 #	ifdef _DEBUG
@@ -22,6 +24,123 @@
 
 namespace engine
 {
+	class AssImpStream : public Assimp::IOStream
+	{
+	private:
+		eastl::shared_ptr<DataStream> m_dataStream;
+	public:
+		AssImpStream(const eastl::shared_ptr<DataStream>& dataStream)
+		{
+			m_dataStream = dataStream;
+		}
+
+		size_t Read(void* pvBuffer, size_t pSize, size_t pCount) override
+		{
+			size_t beginReadSize = m_dataStream->tell();
+			m_dataStream->read(pvBuffer, pCount);
+			size_t endReadSize = m_dataStream->tell();
+
+			return endReadSize - beginReadSize;
+		}
+
+		size_t Write(const void* pvBuffer, size_t pSize, size_t pCount) override
+		{
+			size_t beginWriteSize = m_dataStream->tell();
+			m_dataStream->write(const_cast<void*>(pvBuffer), pCount);
+			size_t endWriteSize = m_dataStream->tell();
+
+			return endWriteSize - beginWriteSize;
+		}
+
+		aiReturn Seek(size_t pOffset, aiOrigin pOrigin) override
+		{
+			if (m_dataStream->eof())
+				return aiReturn_FAILURE;
+
+			FileSeek seekDirection;
+
+			switch (pOrigin)
+			{
+			case aiOrigin_SET:
+				seekDirection = FileSeek::Begin;
+				break;
+			case aiOrigin_CUR:
+				seekDirection = FileSeek::Current;
+				break;
+			case aiOrigin_END:
+				seekDirection = FileSeek::End;
+				break;
+			default:
+				break;
+			}
+
+			m_dataStream->seek(seekDirection, pOffset);
+
+			return aiReturn_SUCCESS;
+		}
+
+		size_t Tell() const override
+		{
+			return m_dataStream->tell();
+		}
+
+		size_t FileSize() const override
+		{
+			size_t currentPosition = m_dataStream->tell();
+
+			m_dataStream->seek(FileSeek::End, 0);
+			size_t filesize = m_dataStream->tell();
+			m_dataStream->seek(FileSeek::Begin, currentPosition);
+
+			return filesize;
+		}
+
+		void Flush() override
+		{
+			return m_dataStream->flush();
+		}
+
+	};
+
+	class AssImpIOSystem : public Assimp::IOSystem
+	{
+	private:
+		eastl::shared_ptr<DataStream> m_dataStream;
+	public:
+		AssImpIOSystem(const eastl::shared_ptr<DataStream>& dataStream)
+		{
+			m_dataStream = dataStream;
+		}
+
+		bool Exists(const char* pFile) const override
+		{
+			File* file = FileDevice::getInstance()->openFile(pFile, FileAccess::Read);
+			bool exist = file->isValid();
+			FileDevice::getInstance()->closeFile(file);
+
+			return exist;
+		}
+
+
+		char getOsSeparator() const override
+		{
+			return '/';
+		}
+
+
+		Assimp::IOStream* Open(const char* pFile, const char* pMode = "rb") override
+		{
+			//return (Assimp::IOStream*)mem_new<AssImpStream>(*g_sysAllocator, m_dataStream);
+			return (Assimp::IOStream*)new AssImpStream(m_dataStream);
+		}
+
+		void Close(Assimp::IOStream* pFile) override
+		{
+			//mem_delete(*g_sysAllocator, pFile);
+			delete pFile;
+		}
+	};
+
 	inline static glm::mat4 Assimp2Glm(const aiMatrix4x4& from)
 	{
 		return glm::mat4(
@@ -115,6 +234,24 @@ namespace engine
 
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			spdlog::error("Failed to load model. {}", importer.GetErrorString());
+			std::terminate();
+		}
+
+		assert(scene);
+		ProccessNode(m_subMeshes, scene->mRootNode, scene);
+	}
+
+	void ModelBase::load(const eastl::shared_ptr<DataStream>& dataStream)
+	{
+		AssImpIOSystem assimpIoSystem(dataStream);
+
+		Assimp::Importer importer;
+		importer.SetIOHandler(&assimpIoSystem);
+		const aiScene* scene = importer.ReadFile("dumb", aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{

@@ -101,4 +101,35 @@ namespace engine
 		return eastl::static_shared_pointer_cast<TextureMap>((*textureMap).second);
 	}
 
+	eastl::shared_ptr<ModelBase> ContentManager::loadModel(const eastl::string& modelName)
+	{
+		auto model = m_content.find(modelName);
+
+		// we will guess content is not loaded for now
+		if (model == m_content.end())
+		{
+			auto content = eastl::make_shared<TextureMap>();
+
+			// lock thread for add info about content loading
+			g_contentMutex.lock();
+			m_contentForLoad.push_back(eastl::make_pair(modelName, content));
+			g_contentMutex.unlock();
+
+			// lock thread for loading
+			g_needToLoadContent.store(1);
+
+			// wait for finish ...
+			while (g_needToLoadContent.load() == 1);
+
+			// because gl is shit we need to this magic
+			//eastl::static_shared_pointer_cast<TextureMap>(content)->createHWTexture();
+
+			// little magic
+			m_content.emplace(modelName, content);
+		}
+
+		model = m_content.find(modelName);
+		return eastl::static_shared_pointer_cast<ModelBase>((*model).second);
+	}
+
 }

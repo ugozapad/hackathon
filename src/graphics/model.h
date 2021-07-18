@@ -1,6 +1,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "engine/content/content.h"
+
 namespace engine
 {
 	struct Vertex
@@ -51,9 +53,11 @@ namespace engine
 		uint32_t m_indeciesCount;
 	};
 
-	class ModelBase
+	class ModelBase : public Content
 	{
 	public:
+		virtual void load(const eastl::shared_ptr<DataStream>& dataStream);
+
 		virtual void load(const eastl::string& filename);
 		virtual void destroy();
 
