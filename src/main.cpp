@@ -109,7 +109,7 @@ namespace engine
 		Renderer::createInstance();
 		Renderer::getInstance()->init();
 
-		eastl::shared_ptr<TextureMap> testTexture = ContentManager::getInstance()->loadTexture("data/textures/test.bmp");
+		eastl::shared_ptr<TextureMap> testTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
