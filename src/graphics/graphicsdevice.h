@@ -39,12 +39,16 @@ namespace engine
 		void swapBuffers();
 
 		// drawing
+		void drawArray(PrimitiveMode mode, size_t startOf, size_t count);
 
 		// state
 		void depthTest(bool value);
 		void depthMask(bool value);
 
 		// device creation
+		GrVertexBuffer* createVertexBuffer(void* data, size_t size, BufferAccess access);
+		GrIndexBuffer* createIndexBuffer(unsigned int* data, size_t size, BufferAccess access);
+
 		GrVertexBuffer* createVertexBuffer(const BufferCreationDesc& desc);
 		void deleteVertexBuffer(GrVertexBuffer* buffer);
 

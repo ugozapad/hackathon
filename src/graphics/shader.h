@@ -40,6 +40,8 @@ namespace engine
 
 		void hotReload();
 
+		void addVertexDeclaration(const VertexDeclaration& vecdecl);
+
 	private:
 		eastl::vector<VertexDeclaration> m_vertexDeclarations;
 

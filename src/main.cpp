@@ -4,11 +4,14 @@
 #include "file/filedevice.h"
 
 #include "engine/engine.h"
+#include "engine/content/contentmanager.h"
 
 #include "graphics/graphicsdevice.h"
 #include "graphics/renderer.h"
 #include "graphics/view.h"
 #include "graphics/graphicsoptions.h"
+
+#include "graphics/screenquad.h"
 
 #include <GLFW/glfw3.h>
 
@@ -106,6 +109,8 @@ namespace engine
 		Renderer::createInstance();
 		Renderer::getInstance()->init();
 
+		eastl::shared_ptr<TextureMap> testTexture = ContentManager::getInstance()->loadTexture("data/textures/test.bmp");
+
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
 			if (glfwGetKey(g_engineWindow, GLFW_KEY_ESCAPE))
@@ -115,6 +120,8 @@ namespace engine
 			
 			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
 			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
+
+			ScreenQuad::render(testTexture->getHWTexture());
 
 			graphicsDevice->swapBuffers();
 		}

@@ -6,6 +6,8 @@
 
 #include "file/filedevice.h"
 
+#include "engine/content/contentmanager.h"
+
 #include <sstream>
 
 namespace engine
@@ -69,9 +71,9 @@ namespace engine
 		//m_normalTexture = nullptr;
 		//m_detailTexture = nullptr;
 
-		mem_delete(*g_sysAllocator, m_detailTexture);
-		mem_delete(*g_sysAllocator, m_normalTexture);
-		mem_delete(*g_sysAllocator, m_albedoTexture);
+		//mem_delete(*g_sysAllocator, m_detailTexture);
+		//mem_delete(*g_sysAllocator, m_normalTexture);
+		//mem_delete(*g_sysAllocator, m_albedoTexture);
 	}
 
 	void Material::Load(const eastl::string& filename)
@@ -177,16 +179,16 @@ namespace engine
 
 		delete[] data;
 
-		TextureCreationDesc desc;
-		desc.m_mipmapping = !disableMipMapping;
+		//TextureCreationDesc desc;
+		//desc.m_mipmapping = !disableMipMapping;
 
-		m_albedoTexture = mem_new<TextureMap>(*g_sysAllocator, albedoTextureName);
+		m_albedoTexture = ContentManager::getInstance()->loadTexture(albedoTextureName);
 
 		if (normalTextureName)
-			m_normalTexture = mem_new<TextureMap>(*g_sysAllocator, normalTextureName);
+			m_normalTexture = ContentManager::getInstance()->loadTexture(normalTextureName);
 
 		if (detailTextureName)
-			m_detailTexture = mem_new<TextureMap>(*g_sysAllocator, detailTextureName);
+			m_detailTexture = ContentManager::getInstance()->loadTexture(detailTextureName);
 
 	}
 
@@ -228,9 +230,9 @@ namespace engine
 	{
 		switch (tex)
 		{
-		case MAT_TEX_DIFFUSE: return m_albedoTexture;
-		case MAT_TEX_NORMALMAP: return m_normalTexture;
-		case MAT_TEX_DETAIL: return m_detailTexture;
+		case MAT_TEX_DIFFUSE: return m_albedoTexture.get();
+		case MAT_TEX_NORMALMAP: return m_normalTexture.get();
+		case MAT_TEX_DETAIL: return m_detailTexture.get();
 		}
 
 		return nullptr;

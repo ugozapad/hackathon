@@ -72,12 +72,10 @@ namespace engine
 
 	eastl::shared_ptr<TextureMap> ContentManager::loadTexture(const eastl::string& textureName)
 	{
-		//auto textureMap = eastl::find(m_content.begin(), m_content.end(), texturename);
-		auto textureMap = m_content.at(textureName);
+		auto textureMap = m_content.find(textureName);
 
 		// we will guess content is not loaded for now
-		//if (textureMap == m_content.end())
-		if (!textureMap)
+		if (textureMap == m_content.end())
 		{
 			auto content = eastl::make_shared<TextureMap>();
 
@@ -86,16 +84,21 @@ namespace engine
 			m_contentForLoad.push_back(eastl::make_pair(textureName, content));
 			g_contentMutex.unlock();
 
+			// lock thread for loading
+			g_needToLoadContent.store(1);
+
 			// wait for finish ...
 			while (g_needToLoadContent.load() == 1);
 
+			// because gl is shit we need to this magic
+			eastl::static_shared_pointer_cast<TextureMap>(content)->createHWTexture();
+
 			// little magic
 			m_content.emplace(textureName, content);
-
-			textureMap = content;
 		}
 
-		return eastl::static_shared_pointer_cast<TextureMap>(textureMap);
+		textureMap = m_content.find(textureName);
+		return eastl::static_shared_pointer_cast<TextureMap>((*textureMap).second);
 	}
 
 }

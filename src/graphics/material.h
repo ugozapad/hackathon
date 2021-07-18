@@ -2,6 +2,7 @@
 #define MATERIAL_H
 
 #include "graphics/shader.h"
+#include "graphics/texturemap.h"
 
 namespace engine
 {
@@ -34,9 +35,9 @@ namespace engine
 	private:
 		Shader* m_shader;
 
-		TextureMap* m_albedoTexture;
-		TextureMap* m_normalTexture;
-		TextureMap* m_detailTexture;
+		eastl::shared_ptr<TextureMap> m_albedoTexture;
+		eastl::shared_ptr<TextureMap> m_normalTexture;
+		eastl::shared_ptr<TextureMap> m_detailTexture;
 
 		eastl::string m_materialName;
 

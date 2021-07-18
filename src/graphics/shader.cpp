@@ -50,7 +50,7 @@ namespace engine
 
 	Shader::Shader()
 	{
-
+		m_allVxDeclsSize = 0;
 	}
 
 	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath, const eastl::vector<VertexDeclaration>& vertexDecls)
@@ -72,6 +72,7 @@ namespace engine
 
 	bool Shader::create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
 	{
+		m_allVxDeclsSize = 0;
 		m_name = name;
 		m_vsName = vertexPath;
 		m_fsName = fragmentPath;
@@ -176,6 +177,12 @@ namespace engine
 		spdlog::info("--- HOT RELOAD %s ---", m_name.c_str());
 		destroy();
 		create(m_name, m_vsName, m_fsName);
+	}
+
+	void Shader::addVertexDeclaration(const VertexDeclaration& vecdecl)
+	{
+		m_allVxDeclsSize += vecdecl.size;
+		m_vertexDeclarations.push_back(vecdecl);
 	}
 
 }

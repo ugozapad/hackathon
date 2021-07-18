@@ -22,19 +22,26 @@ namespace engine
 			 1.0f,  1.0f,  1.0f, 1.0f
 		};
 
-		BufferCreationDesc desc = {0};
-		desc.m_data = quadVertices;
-		desc.m_dataSize = sizeof(quadVertices);
-		desc.m_access = BufferAccess::Static;
-
-		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(desc);
+		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(quadVertices, sizeof(quadVertices), BufferAccess::Static);
 		ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.fsh");
+
+		VertexDeclaration position;
+		position.name = "position";
+		position.size = 2;
+		position.type = VertexDeclaration::Float;
+		ms_screenQuadShader->addVertexDeclaration(position);
+
+		VertexDeclaration uv;
+		uv.name = "uv";
+		uv.size = 2;
+		uv.type = VertexDeclaration::Float;
+		ms_screenQuadShader->addVertexDeclaration(uv);
 	}
 
 	void ScreenQuad::shutdown()
 	{
 		mem_delete(*g_sysAllocator, ms_screenQuadShader);
-		mem_delete(*g_sysAllocator, ms_vertexBuffer);
+		GraphicsDevice::getInstance()->deleteVertexBuffer(ms_vertexBuffer);
 	}
 
 	void ScreenQuad::render(GrTexture2D* texture)
@@ -48,6 +55,7 @@ namespace engine
 
 		ms_screenQuadShader->bind();
 		//g_renderDevice->DrawArray(PM_TRIANGLES, 0, 6);
+		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, 6);
 	}
 
 	void ScreenQuad::render(GrTexture2D* texture, Shader* shader)

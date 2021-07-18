@@ -6,64 +6,60 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-static int stbi_eof(void* user)
-{
-	using namespace engine;
-
-	DataStream* stream = reinterpret_cast<DataStream*>(user);
-	return stream->eof();
-}
-
-static int stb_read(void* user, char* data, int size)
-{
-	using namespace engine;
-
-	if (size < 0)
-		size = 0;
-
-	//std::istream* stream = reinterpret_cast<std::istream*>(user);
-	DataStream* stream = reinterpret_cast<DataStream*>(user);
-	char* p = data;
-	int totalBytesRead = 0;
-	do
-	{
-		if (stream->eof())
-			break;
-
-		int beginreadsize = stream->tell();
-		stream->read(p, static_cast<size_t>(size));
-		int endreadsize = stream->tell();
-
-		//int bytesRead = static_cast<int>(stream->gcount());
-		int bytesRead = static_cast<int>(endreadsize - beginreadsize);
-
-		totalBytesRead += bytesRead;
-		p += bytesRead;
-		size -= bytesRead;
-	} while (size > 0);
-
-	return totalBytesRead;
-}
-
-static void stb_skip(void* user, unsigned n)
-{
-	using namespace engine;
-
-	DataStream* stream = reinterpret_cast<DataStream*>(user);
-	stream->seek(FileSeek::Current, n);
-}
-
-//static const stbi_io_callbacks g_StbCB = {
-//	stb_read,
-//	stb_skip,
-//	stb_eof
-//};
-
 namespace engine
 {
+	static int stb_eof(void* user)
+	{
+		using namespace engine;
+
+		DataStream* stream = reinterpret_cast<DataStream*>(user);
+		return stream->eof();
+	}
+
+	static int stb_read(void* user, char* data, int size)
+	{
+		using namespace engine;
+
+		if (size < 0)
+			size = 0;
+
+		//std::istream* stream = reinterpret_cast<std::istream*>(user);
+		DataStream* stream = reinterpret_cast<DataStream*>(user);
+		char* p = data;
+		int totalBytesRead = 0;
+		do
+		{
+			if (stream->eof())
+				break;
+
+			int beginreadsize = stream->tell();
+			stream->read(p, static_cast<size_t>(size));
+			int endreadsize = stream->tell();
+
+			//int bytesRead = static_cast<int>(stream->gcount());
+			int bytesRead = static_cast<int>(endreadsize - beginreadsize);
+
+			totalBytesRead += bytesRead;
+			p += bytesRead;
+			size -= bytesRead;
+		} while (size > 0);
+
+		return totalBytesRead;
+	}
+
+	static void stb_skip(void* user, int n)
+	{
+		using namespace engine;
+
+		DataStream* stream = reinterpret_cast<DataStream*>(user);
+		stream->seek(FileSeek::Current, n);
+	}
+
+	static stbi_io_callbacks g_stdio_callbacks = { stb_read, stb_skip, stb_eof };
+
 	TextureMap::TextureMap(const eastl::string& filename)
 	{
-		TextureCreationDesc desc = {0};
+		TextureCreationDesc desc = { 0 };
 		desc.m_mipmapping = true;
 		loadTexture(filename, desc);
 	}
@@ -75,7 +71,7 @@ namespace engine
 
 	TextureMap::TextureMap()
 	{
-
+		memset(&m_texdesc, 0, sizeof(m_texdesc));
 	}
 
 	TextureMap::~TextureMap()
@@ -115,6 +111,9 @@ namespace engine
 			m_texture2D->release();
 			GraphicsDevice::getInstance()->deleteTexture2D(m_texture2D);
 		}
+
+		if (m_data)
+			stbi_image_free(m_data);
 	}
 
 	void TextureMap::bind()
@@ -127,9 +126,23 @@ namespace engine
 		throw std::logic_error("The method or operation is not implemented.");
 	}
 
+	void TextureMap::createHWTexture()
+	{
+		m_texture2D = GraphicsDevice::getInstance()->createTexture2D(m_texdesc);
+	}
+
 	void TextureMap::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
-		throw std::logic_error("The method or operation is not implemented.");
+		stbi_set_flip_vertically_on_load(true);
+
+		int width, height, channels;
+		m_data = stbi_load_from_callbacks(&g_stdio_callbacks, reinterpret_cast<void*>(dataStream.get()), &width, &height, &channels, 0);
+
+		m_texdesc.m_width = width;
+		m_texdesc.m_height = height;
+		m_texdesc.m_format = (channels == 4) ? ImageFormat::RGBA32 : ImageFormat::RGB32;
+		m_texdesc.m_data = m_data;
+		m_texdesc.m_mipmapping = true;
 	}
 
 }

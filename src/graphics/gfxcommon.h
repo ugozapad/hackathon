@@ -51,6 +51,13 @@ namespace engine
 		virtual void* map(BufferMapping mapping) = 0;
 		virtual void  unmap() = 0;
 	};
+
+	enum class PrimitiveMode
+	{
+		Triangles,
+		TriangleStrip,
+	};
+
 }
 
 #endif // GFXCOMMON_H
