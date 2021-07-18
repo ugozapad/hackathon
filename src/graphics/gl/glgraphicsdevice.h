@@ -1,27 +1,14 @@
-#ifndef GRAPHICS_DEVICE_H
-#define GRAPHICS_DEVICE_H
+#ifndef GLGRAPHICSDEVICE_H
+#define GLGRAPHICSDEVICE_H
 
-#include "graphics/vertexbuffer.h"
-#include "graphics/indexbuffer.h"
-#include "graphics/texture.h"
-#include "graphics/framebuffer.h"
-
-#include <GLFW/glfw3.h>
+#include "graphics/graphicsdevice.h"
 
 namespace engine
 {
-	enum ClearFlags
+	class GLGraphicsDevice : public GraphicsDevice
 	{
-		ClearRenderTarget = 1 << 0,
-		ClearDepth = 1 << 0,
-		ClearStencil = 1 << 0,
-	};
-
-	class GraphicsDevice : public Singleton<GraphicsDevice>
-	{
-	public:
-		static GraphicsDevice* instance();
-
+	private:
+		static GLGraphicsDevice ms_instance;
 	public:
 		virtual void init(GLFWwindow* window);
 		virtual void shutdown();
@@ -63,10 +50,7 @@ namespace engine
 		virtual void setIndexBuffer(GrIndexBuffer* buffer);
 		virtual void setTexture2D(int slot, GrTexture2D* texture);
 		virtual void setFramebuffer(GrFramebuffer* framebuffer);
-
-	protected:
-		GLFWwindow* m_window;
 	};
 }
 
-#endif // !GRAPHICS_DEVICE_H
+#endif // !GLGRAPHICSDEVICE_H
