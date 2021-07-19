@@ -43,6 +43,18 @@ namespace engine
 		//////////////////////////////////////////////////////////////////////////
 
 		m_fadeInOutShader = mem_new<Shader>(*g_sysAllocator, "fade_in_out", "data/shaders/fade_in_out.vsh", "data/shaders/fade_in_out.fsh");
+
+		VertexDeclaration position;
+		position.name = "position";
+		position.size = 2;
+		position.type = VertexDeclaration::Float;
+		m_fadeInOutShader->addVertexDeclaration(position);
+
+		VertexDeclaration uv;
+		uv.name = "uv";
+		uv.size = 2;
+		uv.type = VertexDeclaration::Float;
+		m_fadeInOutShader->addVertexDeclaration(uv);
 	}
 
 	void PostProcessingRenderer::shutdown()
