@@ -2,6 +2,9 @@
 #include "graphics/renderer.h"
 #include "graphics/screenquad.h"
 #include "graphics/deferredrenderer.h"
+#include "graphics/gfxcommon.h"
+#include "graphics/view.h"
+#include "graphics/graphicsdevice.h"
 
 namespace engine
 {
@@ -41,5 +44,15 @@ namespace engine
 		g_deferredRenderer.shutdown();
 
 		ScreenQuad::shutdown();
+	}
+
+	void Renderer::renderView(View* view)
+	{
+		// set viewport
+		Viewport vp = {0};
+		vp.m_width = view->m_width;
+		vp.m_height = view->m_height;
+
+		GraphicsDevice::getInstance()->setViewport(&vp);
 	}
 }

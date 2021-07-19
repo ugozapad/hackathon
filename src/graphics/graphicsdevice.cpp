@@ -117,4 +117,9 @@ namespace engine
 	{
 
 	}
+
+	void GraphicsDevice::setViewport(Viewport* viewport)
+	{
+
+	}
 }

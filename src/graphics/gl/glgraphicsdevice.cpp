@@ -231,4 +231,14 @@ namespace engine
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	void GLGraphicsDevice::setViewport(Viewport* viewport)
+	{
+		if (!viewport)
+		{
+			spdlog::error("GLGraphicsDevice::setViewport: viewport is null ptr");
+			std::terminate();
+		}
+
+		glViewport(viewport->m_x, viewport->m_y, viewport->m_width, viewport->m_height);
+	}
 }

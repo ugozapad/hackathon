@@ -50,6 +50,10 @@ namespace engine
 		virtual void setIndexBuffer(GrIndexBuffer* buffer);
 		virtual void setTexture2D(int slot, GrTexture2D* texture);
 		virtual void setFramebuffer(GrFramebuffer* framebuffer);
+
+		// viewport
+		virtual void setViewport(Viewport* viewport);
+
 	};
 }
 

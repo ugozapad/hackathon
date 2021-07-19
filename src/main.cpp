@@ -61,6 +61,14 @@ namespace engine
 		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
 		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
+
+		g_engineView = mem_new<View>(*g_sysAllocator);
+		g_engineView->m_width = width;
+		g_engineView->m_height = height;
+		g_engineView->m_fov = 75.0f;
+		g_engineView->m_znear = 0.01f;
+		g_engineView->m_zfar = 10000.0f;
+		g_engineView->updateInternalValues();
 	}
 
 	int main(int argc, char* argv[])
@@ -136,7 +144,11 @@ namespace engine
 			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
 			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
 
-			ScreenQuad::render(testTexture->getHWTexture());
+			bool showIntro = true;
+			if (showIntro)
+				ScreenQuad::render(testTexture->getHWTexture());
+			else
+				Renderer::getInstance()->renderView(g_engineView);
 
 			graphicsDevice->swapBuffers();
 		}
@@ -149,6 +161,10 @@ namespace engine
 		Engine::shutdown();
 
 		graphicsDevice->shutdown();
+		
+		mem_delete(*g_sysAllocator, g_engineView);
+
+		glfwTerminate();
 
 		return 0;
 	}

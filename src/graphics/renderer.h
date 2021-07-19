@@ -3,6 +3,8 @@
 
 namespace engine
 {
+	class View;
+
 	class Renderer : public Singleton<Renderer>
 	{
 	private:
@@ -15,9 +17,10 @@ namespace engine
 		Renderer();
 		~Renderer();
 
-	public:
 		void init();
 		void shutdown();
+
+		void renderView(View* view);
 	};
 }
 
