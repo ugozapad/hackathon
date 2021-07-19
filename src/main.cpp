@@ -4,6 +4,7 @@
 #include "file/filedevice.h"
 
 #include "engine/engine.h"
+#include "engine/camera.h"
 #include "engine/content/contentmanager.h"
 
 #include "graphics/graphicsdevice.h"
@@ -69,6 +70,9 @@ namespace engine
 		g_engineView->m_znear = 0.01f;
 		g_engineView->m_zfar = 10000.0f;
 		g_engineView->updateInternalValues();
+
+		CameraProxy::getInstance()->setCamera(mem_new<Camera>(*g_sysAllocator));
+		CameraProxy::getInstance()->setView(g_engineView);
 	}
 
 	int main(int argc, char* argv[])
