@@ -70,6 +70,8 @@ namespace engine
 	{
 		g_harakiriContentThread.store(1);
 		g_contentThread.stopThread();
+
+		m_content.clear();
 	}
 
 	eastl::shared_ptr<TextureMap> ContentManager::loadTexture(const eastl::string& textureName)
@@ -110,7 +112,7 @@ namespace engine
 		// we will guess content is not loaded for now
 		if (model == m_content.end())
 		{
-			auto content = eastl::make_shared<TextureMap>();
+			auto content = eastl::make_shared<ModelBase>(modelName);
 
 			// lock thread for add info about content loading
 			g_contentMutex.lock();
@@ -123,8 +125,8 @@ namespace engine
 			// wait for finish ...
 			while (g_needToLoadContent.load() == 1);
 
-			// because gl is shit we need to this magic
-			//eastl::static_shared_pointer_cast<TextureMap>(content)->createHWTexture();
+			// because our content manager is shit we need to this magic
+			eastl::static_shared_pointer_cast<ModelBase>(content)->loadMaterials();
 
 			// little magic
 			m_content.emplace(modelName, content);

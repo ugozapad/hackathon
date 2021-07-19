@@ -42,7 +42,8 @@ namespace engine
 		uint32_t getIndeciesCount() { return m_indeciesCount; }
 
 	private:
-		Material* m_material;
+		eastl::shared_ptr<Material> m_material;
+		eastl::string m_materialName;
 
 		GrVertexBuffer* m_vertexBuffer;
 		GrIndexBuffer* m_indexBuffer;
@@ -56,10 +57,14 @@ namespace engine
 	class ModelBase : public Content
 	{
 	public:
+		ModelBase(const eastl::string& name);
+
 		virtual void load(const eastl::shared_ptr<DataStream>& dataStream);
 
 		virtual void load(const eastl::string& filename);
 		virtual void destroy();
+
+		virtual void loadMaterials();
 
 		virtual void renderObjects();
 
@@ -67,7 +72,6 @@ namespace engine
 
 	private:
 		eastl::vector<SubMesh*> m_subMeshes;
-		eastl::string m_filename;
 	};
 }
 

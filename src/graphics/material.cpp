@@ -65,7 +65,7 @@ namespace engine
 		m_selfillum = false;
 	}
 
-	Material::Material(const eastl::string& filename) : Content()
+	Material::Material(const eastl::string& filename) : Content(filename)
 	{
 		Material();
 	}
@@ -187,13 +187,20 @@ namespace engine
 		//TextureCreationDesc desc;
 		//desc.m_mipmapping = !disableMipMapping;
 
-		m_albedoTextureName = albedoTextureName;
+		m_albedoTextureName += "data/textures/";
+		m_albedoTextureName += albedoTextureName;
 
 		if (normalTextureName)
-			m_normalTextureName = normalTextureName;
-
+		{
+			m_normalTextureName += "data/textures/";
+			m_normalTextureName += normalTextureName;
+		}
+			
 		if (detailTextureName)
-			m_detailTextureName = detailTextureName;
+		{
+			m_detailTextureName += "data/textures/";
+			m_detailTextureName += detailTextureName;
+		}
 	}
 
 	void Material::createHwTextures()

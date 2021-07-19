@@ -3,6 +3,8 @@
 
 #include "file/filedevice.h"
 
+#include "engine/content/contentmanager.h"
+
 #include "graphics/shader.h"
 #include "graphics/material.h"
 
@@ -118,7 +120,8 @@ namespace engine
 			bool exist = file->isValid();
 			FileDevice::getInstance()->closeFile(file);
 
-			return exist;
+			//return exist;
+			return true;
 		}
 
 
@@ -227,6 +230,11 @@ namespace engine
 		}
 	}
 
+	ModelBase::ModelBase(const eastl::string& name) : Content(name)
+	{
+
+	}
+
 	void ModelBase::load(const eastl::string& filename)
 	{
 		m_filename = filename;
@@ -247,11 +255,11 @@ namespace engine
 
 	void ModelBase::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
-		AssImpIOSystem assimpIoSystem(dataStream);
+		AssImpIOSystem* assimpIoSystem = new AssImpIOSystem(dataStream);
 
 		Assimp::Importer importer;
-		importer.SetIOHandler(&assimpIoSystem);
-		const aiScene* scene = importer.ReadFile("dumb", aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
+		importer.SetIOHandler(assimpIoSystem);
+		const aiScene* scene = importer.ReadFile(m_filename.c_str(), aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -261,6 +269,8 @@ namespace engine
 
 		assert(scene);
 		ProccessNode(m_subMeshes, scene->mRootNode, scene);
+
+		//delete assimpIoSystem;
 	}
 
 	void ModelBase::destroy()
@@ -272,6 +282,15 @@ namespace engine
 		}
 
 		m_subMeshes.clear();
+	}
+
+	void ModelBase::loadMaterials()
+	{
+		for (int i = 0; i < m_subMeshes.size(); i++)
+		{
+			SubMesh* submesh = m_subMeshes[i];
+			submesh->m_material = ContentManager::getInstance()->loadMaterial(submesh->m_materialName);
+		}
 	}
 
 	void ModelBase::renderObjects()
@@ -296,6 +315,11 @@ namespace engine
 
 	void SubMesh::load(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname)
 	{
+		//m_materialName = materialname;
+		m_materialName += "data/materials/";
+		m_materialName += materialname;
+		m_materialName += ".material";
+
 		m_transform = position;
 
 		BufferCreationDesc vertexBufferDesc = { 0 };
@@ -314,6 +338,7 @@ namespace engine
 		m_indeciesCount = indecies.size();
 
 		//m_material = g_materialSystem.CreateMaterial(materialname);
+		//m_material = ContentManager::getInstance()->loadMaterial(materialname);
 	}
 
 	SubMesh::~SubMesh()

@@ -102,6 +102,7 @@ namespace engine
 		if (m_texture2D) {
 			m_texture2D->release();
 			GraphicsDevice::getInstance()->deleteTexture2D(m_texture2D);
+			m_texture2D = nullptr;
 		}
 
 		if (m_data)
