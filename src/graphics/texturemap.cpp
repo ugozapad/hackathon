@@ -6,6 +6,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include "graphics/nv_dds.h"
+
 namespace engine
 {
 	static int stb_eof(void* user)
@@ -56,14 +58,15 @@ namespace engine
 	static stbi_io_callbacks g_stdio_callbacks = { stb_read, stb_skip, stb_eof };
 
 	TextureMap::TextureMap(const eastl::string& filename) :
-		Content()
+		Content(filename)
 	{
+		m_data = nullptr;
 		memset(&m_texdesc, 0, sizeof(m_texdesc));
 	}
 
 	TextureMap::TextureMap()
 	{
-		
+
 	}
 
 	TextureMap::~TextureMap()
@@ -144,9 +147,28 @@ namespace engine
 		}
 		else
 		{
-			spdlog::error("TextureMap::load: dds loading in not implemented!");
-			std::terminate();
+#define GL_COMPRESSED_RGB_S3TC_DXT1_EXT                   0x83F0
+#define GL_COMPRESSED_RGBA_S3TC_DXT1_EXT                  0x83F1
+#define GL_COMPRESSED_RGBA_S3TC_DXT3_EXT                  0x83F2
+#define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT                  0x83F3
+
+			using namespace nv_dds;
+
+			CDDSImage image;
+			image.load(dataStream);
+
+			m_texdesc.m_width = image.get_width();
+			m_texdesc.m_height = image.get_height();
+			m_texdesc.m_format = (image.get_components() == 4) ? ImageFormat::RGBA32 : ImageFormat::RGB32;
+			m_texdesc.m_data = image;
+			m_texdesc.m_mipmapping = true;
+			m_texdesc.m_isCompressed = true;
+			m_texdesc.m_size = image.get_size();
+
+			if (image.get_format() == GL_COMPRESSED_RGBA_S3TC_DXT3_EXT)
+				std::terminate();
+
+			m_texdesc.m_compressionFormat = (image.get_format() == GL_COMPRESSED_RGB_S3TC_DXT1_EXT) ? TextureCompressionFormat::DXT1 : TextureCompressionFormat::DXT5;
 		}
 	}
-
 }

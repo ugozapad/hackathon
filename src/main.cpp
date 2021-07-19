@@ -148,7 +148,6 @@ namespace engine
 		Renderer::getInstance()->init(g_engineView);
 
 		eastl::shared_ptr<TextureMap> testTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
-		eastl::shared_ptr<ModelBase> testModel = ContentManager::getInstance()->loadModel("data/models/test1.dae");
  
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{

@@ -1,6 +1,11 @@
 #include "pch.h"
 #include "gltextures.h"
 
+#define GL_COMPRESSED_RGB_S3TC_DXT1_EXT                   0x83F0
+#define GL_COMPRESSED_RGBA_S3TC_DXT1_EXT                  0x83F1
+#define GL_COMPRESSED_RGBA_S3TC_DXT3_EXT                  0x83F2
+#define GL_COMPRESSED_RGBA_S3TC_DXT5_EXT                  0x83F3
+
 namespace engine
 {
 	GLenum GetGLFormat(ImageFormat format)
@@ -8,8 +13,8 @@ namespace engine
 		switch (format)
 		{
 
-		//case ImageFormat::DEPTH24_STENCIL8: return GL_DEPTH24_STENCIL8;
-		//case ImageFormat::DEPTH32_STENCIL_8_F: return GL_DEPTH32F_STENCIL8;
+			//case ImageFormat::DEPTH24_STENCIL8: return GL_DEPTH24_STENCIL8;
+			//case ImageFormat::DEPTH32_STENCIL_8_F: return GL_DEPTH32F_STENCIL8;
 
 		case ImageFormat::RGB16: return GL_RGB16;
 		case ImageFormat::RGBA16: return GL_RGBA16;
@@ -21,7 +26,7 @@ namespace engine
 		case ImageFormat::RGB32F: return GL_RGB32F;
 		case ImageFormat::RGBA32F: return GL_RGBA32F;
 
-		//case ImageFormat::SRGB: return GL_SRGB;
+			//case ImageFormat::SRGB: return GL_SRGB;
 		}
 
 		return 0;
@@ -32,10 +37,10 @@ namespace engine
 		switch (format)
 		{
 
-		//case ImageFormat::FMT_SRGB: return GL_RGB;
+			//case ImageFormat::FMT_SRGB: return GL_RGB;
 
-		//case ImageFormat::FMT_DEPTH24_STENCIL8: return GL_DEPTH24_STENCIL8;
-		//case ImageFormat::FMT_DEPTH32_STENCIL_8_F: return GL_DEPTH32F_STENCIL8;
+			//case ImageFormat::FMT_DEPTH24_STENCIL8: return GL_DEPTH24_STENCIL8;
+			//case ImageFormat::FMT_DEPTH32_STENCIL_8_F: return GL_DEPTH32F_STENCIL8;
 
 		case ImageFormat::RGB16:
 		case ImageFormat::RGB32:
@@ -96,6 +101,31 @@ namespace engine
 		return 0;
 	}
 
+	GLenum GetCompressionFormat(ImageFormat textureFormat, TextureCompressionFormat compressionFormat)
+	{
+		GLenum glFormat = 0;
+
+		switch (compressionFormat)
+		{
+		case engine::TextureCompressionFormat::DXT1:
+			if (textureFormat == ImageFormat::RGB32)
+				glFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+			else if (textureFormat == ImageFormat::RGBA32)
+				glFormat = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+
+			break;
+		case engine::TextureCompressionFormat::DXT5:
+			if (textureFormat == ImageFormat::RGBA32)
+				glFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+			break;
+		default:
+			break;
+		}
+
+
+		return glFormat;
+	}
+
 	//#define ENABLE_TEST_ANISOTROPIC_FILTERING
 
 	GLTexture2D::GLTexture2D(const TextureCreationDesc& desc) :
@@ -106,7 +136,7 @@ namespace engine
 		glBindTexture(GL_TEXTURE_2D, m_handle);
 
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		
+
 		if (m_desc.m_isCompressed)
 		{
 			unsigned int pixelDataSize = (m_desc.m_width * m_desc.m_height * GetComponentsFromFormat(m_desc.m_format)) >> 3;
@@ -114,12 +144,15 @@ namespace engine
 
 			glCompressedTexImage2D(GL_TEXTURE_2D,
 				0,
-				GetGLInternalFormat(m_desc.m_format),
+				GetCompressionFormat(m_desc.m_format, m_desc.m_compressionFormat),
 				m_desc.m_width,
 				m_desc.m_height,
 				0,
 				pixelDataSize,
 				m_desc.m_data);
+
+			//glCompressedTexImage2D(GL_TEXTURE_2D, 0, GetCompressionFormat(m_desc.m_format, m_desc.m_compressionFormat),
+			//	m_desc.m_width, m_desc.m_height, 0, m_desc.m_size, m_desc.m_data);
 		}
 		else
 		{
@@ -138,7 +171,7 @@ namespace engine
 		{
 			if (!m_desc.m_isCompressed)
 				glGenerateMipmap(GL_TEXTURE_2D);
-			
+
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

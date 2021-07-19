@@ -5,6 +5,12 @@
 
 namespace engine
 {
+	enum class TextureCompressionFormat
+	{
+		DXT1,
+		DXT5,
+	};
+
 	struct TextureCreationDesc
 	{
 		void* m_data;
@@ -12,7 +18,11 @@ namespace engine
 		int m_width;
 		int m_height;
 		bool m_mipmapping;
-		bool m_isCompressed; // DDS Support
+
+		// DDS Support
+		bool m_isCompressed;
+		TextureCompressionFormat m_compressionFormat;
+		int m_size;
 	};
 
 	class GrTextureBase
