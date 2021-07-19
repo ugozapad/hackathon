@@ -41,12 +41,12 @@ namespace engine
 
 		g_deferredRenderer.init();
 
-		PostProcessingManager::getInstance()->init(view);
+		PostProcessingRenderer::getInstance()->init(view);
 	}
 
 	void Renderer::shutdown()
 	{
-		PostProcessingManager::getInstance()->shutdown();
+		PostProcessingRenderer::getInstance()->shutdown();
 
 		g_deferredRenderer.shutdown();
 

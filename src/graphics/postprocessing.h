@@ -8,10 +8,10 @@ namespace engine
 	class GrTexture2D;
 	class View;
 
-	class PostProcessingManager : public Singleton<PostProcessingManager>
+	class PostProcessingRenderer : public Singleton<PostProcessingRenderer>
 	{
 	private:
-		static PostProcessingManager ms_instance;
+		static PostProcessingRenderer ms_instance;
 
 	public:
 		void init(View* view);

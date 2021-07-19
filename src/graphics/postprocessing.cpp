@@ -12,9 +12,9 @@
 
 namespace engine
 {
-	PostProcessingManager PostProcessingManager::ms_instance;
+	PostProcessingRenderer PostProcessingRenderer::ms_instance;
 
-	void PostProcessingManager::init(View* view)
+	void PostProcessingRenderer::init(View* view)
 	{
 		GraphicsDevice* device = GraphicsDevice::getInstance();
 		m_framebuffer = device->createFramebuffer(view->m_width, view->m_height);
@@ -45,7 +45,7 @@ namespace engine
 		m_fadeInOutShader = mem_new<Shader>(*g_sysAllocator, "fade_in_out", "data/shaders/fade_in_out.vsh", "data/shaders/fade_in_out.fsh");
 	}
 
-	void PostProcessingManager::shutdown()
+	void PostProcessingRenderer::shutdown()
 	{
 		mem_delete(*g_sysAllocator, m_fadeInOutShader);
 
