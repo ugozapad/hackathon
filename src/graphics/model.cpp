@@ -167,10 +167,10 @@ namespace engine
 			else
 				vertex.m_texcoord0 = glm::vec2(0.0f, 0.0f);
 
-			if (mesh->mTextureCoords[1])
-				vertex.m_texcoord1 = glm::vec2(mesh->mTextureCoords[1][i].x, mesh->mTextureCoords[1][i].y);
-			else
-				vertex.m_texcoord1 = glm::vec2(0.0f, 0.0f);
+			//if (mesh->mTextureCoords[1])
+			//	vertex.m_texcoord1 = glm::vec2(mesh->mTextureCoords[1][i].x, mesh->mTextureCoords[1][i].y);
+			//else
+			//	vertex.m_texcoord1 = glm::vec2(0.0f, 0.0f);
 
 			//if (mesh->mTangents)
 			//	vertex.m_tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
