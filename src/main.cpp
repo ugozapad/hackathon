@@ -4,6 +4,7 @@
 #include "file/filedevice.h"
 
 #include "engine/engine.h"
+#include "engine/inputmanager.h"
 #include "engine/camera.h"
 #include "engine/content/contentmanager.h"
 
@@ -36,6 +37,16 @@ namespace engine
 		}
 
 		return commandline;
+	}
+
+	void glfwKeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		InputManager::getInstance()->keyboardAction(key, action);
+	}
+
+	void initInputCallbacks(GLFWwindow* window)
+	{
+		glfwSetKeyCallback(window, glfwKeyboardCallback);
 	}
 
 	void createEngineView()
@@ -121,6 +132,9 @@ namespace engine
 
 		// create engine view
 		createEngineView();
+
+		// initialize input callbacks
+		initInputCallbacks(g_engineWindow);
 
 		// initialize engine
 		Engine::init();
