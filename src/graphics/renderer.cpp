@@ -6,6 +6,9 @@
 #include "graphics/view.h"
 #include "graphics/graphicsdevice.h"
 
+// render stuff
+#include "graphics/postprocessing.h"
+
 namespace engine
 {
 	Renderer* Renderer::ms_instance;
@@ -32,15 +35,19 @@ namespace engine
 
 	}
 
-	void Renderer::init()
-	{
+	void Renderer::init(View* view)
+{
 		ScreenQuad::init();
 
 		g_deferredRenderer.init();
+
+		PostProcessingManager::getInstance()->init(view);
 	}
 
 	void Renderer::shutdown()
 	{
+		PostProcessingManager::getInstance()->shutdown();
+
 		g_deferredRenderer.shutdown();
 
 		ScreenQuad::shutdown();

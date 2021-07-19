@@ -17,7 +17,7 @@ namespace engine
 		Renderer();
 		~Renderer();
 
-		void init();
+		void init(View* view);
 		void shutdown();
 
 		void renderView(View* view);

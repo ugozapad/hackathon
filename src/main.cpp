@@ -127,7 +127,7 @@ namespace engine
 
 		// initialize renderer
 		Renderer::createInstance();
-		Renderer::getInstance()->init();
+		Renderer::getInstance()->init(g_engineView);
 
 		eastl::shared_ptr<TextureMap> testTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 

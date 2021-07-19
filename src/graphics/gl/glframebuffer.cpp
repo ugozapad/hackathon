@@ -50,5 +50,10 @@ namespace engine
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	void GLFramebuffer::finalize()
+	{
+
+	}
+
 }
 

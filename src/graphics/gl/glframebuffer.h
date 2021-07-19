@@ -16,6 +16,8 @@ namespace engine
 		void setColorTexture(int index, GrTexture2D* colorTexture);
 		void setDepthTexture(GrTexture2D* depthTexture);
 
+		void finalize();
+
 	private:
 		uint32_t m_handle;
 		uint32_t m_renderBuffer;
