@@ -151,7 +151,7 @@ namespace engine
  
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
-			if (glfwGetKey(g_engineWindow, GLFW_KEY_ESCAPE))
+			if (InputManager::getInstance()->getKey(GLFW_KEY_ESCAPE))
 				break;
 
 			if (commandLine == "-quit")
