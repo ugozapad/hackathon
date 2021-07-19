@@ -202,7 +202,7 @@ namespace engine
 			aiString normalPath;
 			material->GetTexture(aiTextureType_NORMALS, 0, &normalPath);
 
-			Material::CreateMaterialFromImport(material->GetName().C_Str(), diffusePath.C_Str(), normalPath.C_Str());
+			Material::createMaterialFromImport(material->GetName().C_Str(), diffusePath.C_Str(), normalPath.C_Str());
 		}
 
 		aiMatrix4x4 nodePosition = node->mTransformation;

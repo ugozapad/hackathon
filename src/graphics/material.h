@@ -1,6 +1,7 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include "engine/content/content.h"
 #include "graphics/shader.h"
 #include "graphics/texturemap.h"
 
@@ -15,22 +16,27 @@ namespace engine
 
 	class TextureMap;
 
-	class Material
+	class Material : public Content
 	{
 	public:
-		static void CreateMaterialFromImport(const char* name, const char* diffuseName, const char* normalName);
+		static void createMaterialFromImport(const char* name, const char* diffuseName, const char* normalName);
 
 	public:
 		Material();
+		Material(const eastl::string& filename);
+
 		~Material();
 
-		void Load(const eastl::string& filename);
-		void Bind();
+		void load(const eastl::shared_ptr<DataStream>& dataStream) override;
 
-		eastl::string& GetName() { return m_materialName; }
-		Shader* GetShader() { return m_shader; }
+		void createHwTextures();
 
-		TextureMap* GetTexture(MAT_TEX tex);
+		void bind();
+
+		eastl::string& getName() { return m_materialName; }
+		Shader* getShader() { return m_shader; }
+
+		TextureMap* getTexture(MAT_TEX tex);
 
 	private:
 		Shader* m_shader;
@@ -40,6 +46,9 @@ namespace engine
 		eastl::shared_ptr<TextureMap> m_detailTexture;
 
 		eastl::string m_materialName;
+		eastl::string m_albedoTextureName;
+		eastl::string m_normalTextureName;
+		eastl::string m_detailTextureName;
 
 		bool m_depthWrite;
 		bool m_selfillum;

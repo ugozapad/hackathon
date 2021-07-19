@@ -6,13 +6,14 @@
 
 #include "file/filedevice.h"
 
+#include "engine/camera.h"
 #include "engine/content/contentmanager.h"
 
 #include <sstream>
 
 namespace engine
 {
-	void Material::CreateMaterialFromImport(const char* name, const char* diffuseName, const char* normalName)
+	void Material::createMaterialFromImport(const char* name, const char* diffuseName, const char* normalName)
 	{
 		eastl::string materiaName;
 		materiaName += FileDevice::getInstance()->getDefaultPath();
@@ -64,6 +65,11 @@ namespace engine
 		m_selfillum = false;
 	}
 
+	Material::Material(const eastl::string& filename) : Content()
+	{
+		Material();
+	}
+
 	Material::~Material()
 	{
 		//m_shader = nullptr;
@@ -76,16 +82,14 @@ namespace engine
 		//mem_delete(*g_sysAllocator, m_albedoTexture);
 	}
 
-	void Material::Load(const eastl::string& filename)
+	void Material::load(const eastl::shared_ptr<DataStream>& dataStream)
 	{
-		File* file = FileDevice::getInstance()->openFile(filename, FileAccess::Write);
-
-		file->seek(FileSeek::End, 0);
-		size_t length = file->tell();
-		file->seek(FileSeek::Begin, 0);
+		dataStream->seek(FileSeek::End, 0);
+		size_t length = dataStream->tell();
+		dataStream->seek(FileSeek::Begin, 0);
 
 		char* data = new char[length + 1];
-		file->read((void*)data, length);
+		dataStream->read((void*)data, length);
 		data[length] = '\0';
 
 		const char* albedoTextureName = NULL;
@@ -170,7 +174,8 @@ namespace engine
 			else
 			{
 				spdlog::error("Material::Load: get unknowed token '{}' while reading '{}' file.",
-					token, filename.c_str());
+					token, m_filename.c_str());
+
 				std::terminate();
 			}
 
@@ -182,16 +187,27 @@ namespace engine
 		//TextureCreationDesc desc;
 		//desc.m_mipmapping = !disableMipMapping;
 
-		m_albedoTexture = ContentManager::getInstance()->loadTexture(albedoTextureName);
+		m_albedoTextureName = albedoTextureName;
 
 		if (normalTextureName)
-			m_normalTexture = ContentManager::getInstance()->loadTexture(normalTextureName);
+			m_normalTextureName = normalTextureName;
 
 		if (detailTextureName)
-			m_detailTexture = ContentManager::getInstance()->loadTexture(detailTextureName);
+			m_detailTextureName = detailTextureName;
 	}
 
-	void Material::Bind()
+	void Material::createHwTextures()
+	{
+		m_albedoTexture = ContentManager::getInstance()->loadTexture(m_albedoTextureName);
+
+		if (!m_normalTextureName.empty())
+			m_normalTexture = ContentManager::getInstance()->loadTexture(m_normalTextureName);
+
+		if (!m_detailTextureName.empty())
+			m_detailTexture = ContentManager::getInstance()->loadTexture(m_detailTextureName);
+	}
+
+	void Material::bind()
 	{
 		GraphicsDevice* device = GraphicsDevice::getInstance();
 		device->depthTest(true);
@@ -218,14 +234,13 @@ namespace engine
 			m_shader->setInteger("u_detailTexture", 5);
 		}
 
-		//Camera* camera = g_cameraManager.GetActiveCamera();
-		//m_shader->SetFloat("u_znear", camera->m_NearZ);
-		//m_shader->SetFloat("u_zfar", camera->m_FarZ);
+		m_shader->setFloat("u_znear", CameraProxy::getInstance()->getView()->m_znear);
+		m_shader->setFloat("u_zfar", CameraProxy::getInstance()->getView()->m_zfar);
 
 		m_shader->setInteger("u_selfillum", m_selfillum);
 	}
 
-	TextureMap* Material::GetTexture(MAT_TEX tex)
+	TextureMap* Material::getTexture(MAT_TEX tex)
 	{
 		switch (tex)
 		{

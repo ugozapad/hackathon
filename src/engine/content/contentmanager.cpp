@@ -134,4 +134,34 @@ namespace engine
 		return eastl::static_shared_pointer_cast<ModelBase>((*model).second);
 	}
 
+	eastl::shared_ptr<engine::Material> ContentManager::loadMaterial(const eastl::string& materialName)
+	{
+		auto material = m_content.find(materialName);
+
+		// we will guess content is not loaded for now
+		if (material == m_content.end())
+		{
+			auto content = eastl::make_shared<Material>(materialName);
+
+			// lock thread for add info about content loading
+			g_contentMutex.lock();
+			m_contentForLoad.push_back(eastl::make_pair(materialName, content));
+			g_contentMutex.unlock();
+
+			// lock thread for loading
+			g_needToLoadContent.store(1);
+
+			// wait for finish ...
+			while (g_needToLoadContent.load() == 1);
+
+			// because gl is shit we need to this magic
+			eastl::static_shared_pointer_cast<Material>(content)->createHwTextures();
+
+			// little magic
+			m_content.emplace(materialName, content);
+		}
+
+		material = m_content.find(materialName);
+		return eastl::static_shared_pointer_cast<Material>((*material).second);
+	}
 }

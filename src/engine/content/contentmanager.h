@@ -5,6 +5,7 @@
 
 #include "graphics/texturemap.h"
 #include "graphics/model.h"
+#include "graphics/material.h"
 
 namespace engine
 {
@@ -22,6 +23,7 @@ namespace engine
 
 		eastl::shared_ptr<TextureMap> loadTexture(const eastl::string& textureName);
 		eastl::shared_ptr<ModelBase> loadModel(const eastl::string& modelName);
+		eastl::shared_ptr<Material> loadMaterial(const eastl::string& materialName);
 
 	private:
 		eastl::map<eastl::string, eastl::shared_ptr<Content>> m_content;
