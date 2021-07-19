@@ -7,12 +7,12 @@ namespace engine
 
 	void InputManager::keyboardAction(uint32_t keyId, bool state)
 	{
-		if (keyId >= 420)
-		{
-			spdlog::error("InputManager::keyboardAction: keyId >= 420");
-			std::terminate();
-		}
-
 		m_keys[keyId] = state;
 	}
+
+	bool InputManager::getKey(uint32_t keyid)
+	{
+		return m_keys[keyid];
+	}
+
 }

@@ -13,6 +13,8 @@ namespace engine
 	public:
 		void keyboardAction(uint32_t keyId, bool state);
 
+		bool getKey(uint32_t keyid);
+
 	private:
 		bool m_keys[420];
 	};
