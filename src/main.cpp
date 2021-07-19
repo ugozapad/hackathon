@@ -147,7 +147,7 @@ namespace engine
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
 
-		eastl::shared_ptr<TextureMap> testTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
+		eastl::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
  
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
@@ -164,7 +164,7 @@ namespace engine
 
 			bool showIntro = true;
 			if (showIntro)
-				ScreenQuad::render(testTexture->getHWTexture());
+				ScreenQuad::render(logoTexture->getHWTexture());
 			else
 				Renderer::getInstance()->renderView(g_engineView);
 
