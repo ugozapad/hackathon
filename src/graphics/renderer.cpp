@@ -8,6 +8,7 @@
 
 // render stuff
 #include "graphics/postprocessing.h"
+#include "graphics/shaderconstantmanager.h"
 
 namespace engine
 {
@@ -36,7 +37,7 @@ namespace engine
 	}
 
 	void Renderer::init(View* view)
-{
+	{
 		ScreenQuad::init();
 
 		g_deferredRenderer.init();
@@ -56,7 +57,7 @@ namespace engine
 	void Renderer::renderView(View* view)
 	{
 		// set viewport
-		Viewport vp = {0};
+		Viewport vp = { 0 };
 		vp.m_width = view->m_width;
 		vp.m_height = view->m_height;
 
