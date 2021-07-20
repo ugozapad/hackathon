@@ -59,6 +59,7 @@ namespace engine
 		if (extension != "dds")
 		{
 			Image image;
+			image.setFlip(true);
 			image.createFromFile(dataStream);
 
 			m_texdesc.m_width = image.getWidth();

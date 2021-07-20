@@ -94,6 +94,7 @@ namespace engine
 
 		Image image;
 		image.createRaw((void*)screenBuffer, width, height, 3);
+		image.setFlip(true);
 
 		char buffer[256];
 		for (int i = 0;; i++)

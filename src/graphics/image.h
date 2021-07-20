@@ -39,6 +39,10 @@ namespace engine
 
 		void setFlip(bool flip) { m_flip = flip; }
 		bool getFlip() { return m_flip; }
+
+		// image operations
+		void resize(int width, int height);
+
 	private:
 		void* m_data;
 		int m_width, m_height, m_channels;

@@ -78,6 +78,7 @@ namespace engine
 		m_width = 0;
 		m_height = 0;
 		m_channels = 0;
+		m_flip = false;
 		ImageFormat m_format = (ImageFormat)0;
 	}
 
@@ -99,7 +100,7 @@ namespace engine
 
 	void Image::createFromFile(const eastl::shared_ptr<DataStream>& stream)
 	{
-		stbi_set_flip_vertically_on_load(true);
+		stbi_set_flip_vertically_on_load(m_flip);
 		m_data = stbi_load_from_callbacks(&g_stdio_callbacks, reinterpret_cast<void*>(stream.get()), &m_width, &m_height, &m_channels, 0);
 	}
 
@@ -159,4 +160,8 @@ namespace engine
 		return m_data;
 	}
 
+	void Image::resize(int width, int height)
+	{
+		
+	}
 }
