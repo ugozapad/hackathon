@@ -26,4 +26,10 @@ namespace engine
 		return m_isActive.load();
 	}
 
+
+	void Component::onNodeSet(Node* node)
+	{
+		m_node = node;
+	}
+
 }

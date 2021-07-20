@@ -11,7 +11,7 @@
 
 namespace engine
 {
-	World* Engine::ms_world;
+	eastl::shared_ptr<World> Engine::ms_world;
 
 	void registerEngineObjects()
 	{
@@ -42,6 +42,25 @@ namespace engine
 		TaskManager::getInstance()->destroyTaskWorkers();
 
 		ContentManager::getInstance()->shutdown();
+	}
+
+	void Engine::loadWorld(const eastl::string& filename)
+	{
+
+	}
+
+	void Engine::loadEmptyWorld()
+	{
+		ms_world = Context::getInstance()->createObject<World>();
+	}
+
+	void Engine::update()
+	{
+		if (ms_world)
+		{
+			ms_world->updatePhysicWorld();
+			ms_world->updateLogicWorld();
+		}
 	}
 
 }

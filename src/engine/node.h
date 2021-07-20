@@ -33,12 +33,12 @@ namespace engine
 			return (T*)getComponentByTypeInfo(T::getStaticTypeInfo());
 		}
 
+		eastl::shared_ptr<Component> createComponentByType(const TypeInfo* typeinfo);
+
 		template <typename T>
 		eastl::shared_ptr<T> createComponentByType()
 		{
-			eastl::shared_ptr<T> component = Context::getInstance()->createObject<T>();
-			m_components.push_back(component);
-			return component;
+			return eastl::static_shared_pointer_cast<T>(createComponentByType(T::getStaticTypeInfo()));
 		}
 
 	private:

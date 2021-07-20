@@ -51,11 +51,19 @@ namespace engine
 				if (component->isA(typeinfo))
 				{
 					return component.get();
-				}	
+				}
 			}
 		}
 
 		return nullptr;
+	}
+
+	eastl::shared_ptr<Component> Node::createComponentByType(const TypeInfo* typeinfo)
+	{
+		eastl::shared_ptr<Component> component = eastl::static_shared_pointer_cast<Component>(Context::getInstance()->createObject(typeinfo));
+		m_components.push_back(component);
+		component->onNodeSet(this);
+		return component;
 	}
 
 }

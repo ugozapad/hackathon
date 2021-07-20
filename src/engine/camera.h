@@ -11,8 +11,12 @@ namespace engine
 		void  setView(View* view) { m_view = view; m_view->updateInternalValues(); }
 		View* getView() { return m_view; }
 
+		glm::vec3& getPosition() { return m_position; }
+
 	private:
 		View* m_view;
+
+		glm::vec3 m_position;
 	};
 
 	class CameraProxy : public Singleton<CameraProxy>

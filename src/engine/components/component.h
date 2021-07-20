@@ -4,6 +4,8 @@
 namespace engine
 {
 
+class Node;
+
 // Base class for node component
 class Component : public Object
 {
@@ -17,6 +19,11 @@ public:
 
 	void setActive(bool active);
 	bool isActive();
+
+	virtual void onNodeSet(Node* node);
+
+public:
+	Node* m_node;
 
 private:
 	eastl::atomic<bool> m_isActive;

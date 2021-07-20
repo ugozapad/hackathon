@@ -30,9 +30,12 @@ public:
 	void updateLogicWorld();
 	void updateGraphicWorld();
 
+	eastl::shared_ptr<Node> createNodePtr();
+	Node* createNode();
+
 private:
-	typedef eastl::list<Node*>::iterator NodeIt;
-	eastl::list<Node*> m_nodes;
+	typedef eastl::list<eastl::shared_ptr<Node>>::iterator NodeIt;
+	eastl::list<eastl::shared_ptr<Node>> m_nodes;
 };
 
 } // namespace sword

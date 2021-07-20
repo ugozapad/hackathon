@@ -51,6 +51,15 @@ namespace engine
 
 			return eastl::shared_ptr<T>();
 		}
+		
+		eastl::shared_ptr<Object> createObject(const TypeInfo* typeInfo)
+		{
+			for (int i = 0; i < m_factories.size(); i++)
+				if (m_factories[i]->getTypeInfo() == typeInfo)
+					return m_factories[i]->createObject();
+
+			return eastl::shared_ptr<Object>();
+		}
 
 	private:
 		eastl::vector<FactoryBase*> m_factories;

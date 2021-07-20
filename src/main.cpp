@@ -19,13 +19,83 @@
 #include "graphics/renderer.h"
 #include "graphics/view.h"
 #include "graphics/graphicsoptions.h"
-
 #include "graphics/screenquad.h"
+
+#include "graphics/graphicscomponent.h"
 
 #include <GLFW/glfw3.h>
 
 namespace engine
 {
+	class BirdComponent : public LogicComponent
+	{
+		ImplementObject(BirdComponent, LogicComponent);
+	public:
+		BirdComponent();
+		~BirdComponent();
+
+		static void registerObject();
+
+		virtual void update(float dt);
+	};
+
+	BirdComponent::BirdComponent()
+	{
+
+	}
+
+	BirdComponent::~BirdComponent()
+	{
+
+	}
+
+	void BirdComponent::registerObject()
+	{
+		Context::getInstance()->registerObject<BirdComponent>();
+	}
+
+	void BirdComponent::update(float dt)
+	{
+		InputManager* input = InputManager::getInstance();
+		glm::vec3 pos = m_node->getPosition();
+
+		if (input->getKey(GLFW_KEY_W))
+			spdlog::info("fly upper");
+	}
+
+	class SkyboxComponent : public LogicComponent
+	{
+		ImplementObject(SkyboxComponent, LogicComponent);
+	public:
+		static void registerObject();
+
+	public:
+		SkyboxComponent();
+		~SkyboxComponent();
+
+		virtual void update(float dt);
+	};
+
+	void SkyboxComponent::registerObject()
+	{
+		Context::getInstance()->registerObject<SkyboxComponent>();
+	}
+
+	SkyboxComponent::SkyboxComponent()
+	{
+
+	}
+
+	SkyboxComponent::~SkyboxComponent()
+	{
+
+	}
+
+	void SkyboxComponent::update(float dt)
+	{
+		m_node->setPosition(CameraProxy::getInstance()->getCamera()->getPosition());
+	}
+
 	static MallocAllocator g_allocator;
 	static GLFWwindow* g_engineWindow;
 	static View* g_engineView;
@@ -160,6 +230,22 @@ namespace engine
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
 
+		// game init
+		BirdComponent::registerObject();
+		SkyboxComponent::registerObject();
+
+		Engine::loadEmptyWorld();
+
+		// add skybox to world
+		eastl::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
+		skyboxNode->createComponentByType<SkyboxComponent>();
+
+		eastl::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
+		birdNode->createComponentByType<BirdComponent>();
+
+		eastl::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
+		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/test1.dae"));
+
 		eastl::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
 		while (!glfwWindowShouldClose(g_engineWindow))
@@ -177,11 +263,14 @@ namespace engine
 
 			// update timer
 			Timer::getInstance()->update();
+
+			// run engine frame
+			Engine::update();
 			
 			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
 			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
 
-			bool showIntro = true;
+			bool showIntro = false;
 			if (showIntro)
 				ScreenQuad::render(logoTexture->getHWTexture());
 			else

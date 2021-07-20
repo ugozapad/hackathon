@@ -14,14 +14,19 @@ namespace engine
 		const TypeInfo* m_baseInfo;
 	};
 
+#define ImplementRootObject(typeName) \
+	public: \
+		static const TypeInfo* getStaticTypeInfo() { static const TypeInfo s_typeInfo(#typeName, nullptr); return &s_typeInfo; } \
+		virtual const TypeInfo* getTypeInfo() { return getStaticTypeInfo();  }
+
 #define ImplementObject(typeName, baseTypeName) \
 	public: \
-		static const TypeInfo* getStaticTypeInfo() { static const TypeInfo s_typeInfo(#typeName, 0); return &s_typeInfo; } \
+		static const TypeInfo* getStaticTypeInfo() { static const TypeInfo s_typeInfo(#typeName, baseTypeName::getStaticTypeInfo()); return &s_typeInfo; } \
 		virtual const TypeInfo* getTypeInfo() { return getStaticTypeInfo();  }
 	
 	class Object
 	{
-		ImplementObject(Object, 0);
+		ImplementRootObject(Object);
 	public:
 		Object();
 		virtual ~Object();

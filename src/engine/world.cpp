@@ -31,7 +31,7 @@ namespace engine
 	{
 		for (NodeIt it = m_nodes.begin(); it != m_nodes.end(); ++it)
 		{
-			Node* node = *it;
+			Node* node = (*it).get();
 			if (node)
 			{
 				LogicComponent* logicComponent = node->getComponentByType<LogicComponent>();
@@ -47,7 +47,7 @@ namespace engine
 	{
 		for (NodeIt it = m_nodes.begin(); it != m_nodes.end(); ++it)
 		{
-			Node* node = *it;
+			Node* node = (*it).get();
 			if (node)
 			{
 				GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
@@ -57,6 +57,18 @@ namespace engine
 				}
 			}
 		}
+	}
+
+	eastl::shared_ptr<Node> World::createNodePtr()
+	{
+		eastl::shared_ptr<Node> node = Context::getInstance()->createObject<Node>();
+		m_nodes.push_back(node);
+		return node;
+	}
+
+	Node* World::createNode()
+	{
+		return createNodePtr().get();
 	}
 
 }
