@@ -7,8 +7,7 @@
 
 namespace engine
 {
-	class TextureMap : public Content//,
-					  /* public eastl::enable_shared_from_this<TextureMap>*/
+	class TextureMap : public Content
 	{
 	public:
 		TextureMap();
@@ -17,8 +16,6 @@ namespace engine
 		~TextureMap();
 		
 		void load(const eastl::shared_ptr<DataStream>& dataStream) override;
-
-		void loadTexture(const eastl::string& filename, const TextureCreationDesc& desc);
 	
 		void release();
 		GrTexture2D* getHWTexture() { return m_texture2D; }
@@ -30,9 +27,6 @@ namespace engine
 
 	private:
 		GrTexture2D* m_texture2D;
-		const char* m_fileName;
-		unsigned char* m_data;
-
 		TextureCreationDesc m_texdesc;
 	};
 }
