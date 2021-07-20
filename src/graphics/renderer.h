@@ -21,6 +21,8 @@ namespace engine
 		void shutdown();
 
 		void renderView(View* view);
+
+		void makeScreenshot();
 	};
 }
 

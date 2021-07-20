@@ -7,3 +7,8 @@ vendor/glfw-3.3.4.bin.WIN64
 hackathon_log.txt
 hackathon.ini
 commandline.txt
+
+sshot_*.jpg
+sshot_*.tga
+sshot_*.png
+sshot_*.*

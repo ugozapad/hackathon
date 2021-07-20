@@ -167,6 +167,9 @@ namespace engine
 			if (InputManager::getInstance()->getKey(GLFW_KEY_ESCAPE))
 				break;
 
+			if (InputManager::getInstance()->getKey(GLFW_KEY_F11))
+				Renderer::getInstance()->makeScreenshot();
+
 			if (commandLine == "-quit")
 				break;
 
