@@ -1,16 +1,17 @@
 #include "pch.h"
+#include "graphics/rendercontext.h"
 
-//#include "stdafx.h"
-//#include "rendercontext.h"
-//
-//ENGINE_API RenderContext RenderContext::ms_Instance;
-//
-//RenderContext& RenderContext::GetContext()
-//{
-//	return ms_Instance;
-//}
-//
-//void RenderContext::SetContext(RenderContext& ctx)
-//{
-//	ms_Instance = ctx;
-//}
+namespace engine
+{
+	RenderContext RenderContext::ms_instance;
+
+	RenderContext& RenderContext::getContext()
+	{
+		return ms_instance;
+	}
+
+	void RenderContext::setContext(RenderContext& ctx)
+	{
+		ms_instance = ctx;
+	}
+}
