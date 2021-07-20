@@ -9,6 +9,10 @@
 #include "engine/engine.h"
 #include "engine/inputmanager.h"
 #include "engine/camera.h"
+
+#include "engine/node.h"
+#include "engine/components/logiccomponent.h"
+
 #include "engine/content/contentmanager.h"
 
 #include "graphics/graphicsdevice.h"
@@ -157,7 +161,7 @@ namespace engine
 		Renderer::getInstance()->init(g_engineView);
 
 		eastl::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
- 
+
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
 			if (InputManager::getInstance()->getKey(GLFW_KEY_ESCAPE))

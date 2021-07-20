@@ -379,6 +379,12 @@ namespace engine
 
 		//// return what have been
 		//RenderContext::SetContext(savedCtx);
+
+		GraphicsDevice::getInstance()->setVertexBuffer(m_vertexBuffer);
+
+		m_material->bind();
+
+		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, m_verticesCount);
 	}
 
 }

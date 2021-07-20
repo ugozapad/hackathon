@@ -5,6 +5,7 @@
 #include "engine/world.h"
 
 #include "engine/components/component.h"
+#include "graphics/graphicscomponent.h"
 
 #include "engine/content/contentmanager.h"
 
@@ -19,11 +20,17 @@ namespace engine
 		World::registerObject();
 	}
 
+	void registerGraphicsObjects()
+	{
+		GraphicsComponent::registerObject();
+	}
+
 	void Engine::init()
 	{
 		spdlog::info("Initializing engine");
 
 		registerEngineObjects();
+		registerGraphicsObjects();
 
 		ContentManager::getInstance()->init();
 

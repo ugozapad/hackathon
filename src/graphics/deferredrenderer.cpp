@@ -58,6 +58,7 @@ namespace engine
 
 		// create light pass shader.
 		//m_lightPassShader = g_shaderSystem.CreateShader("def_light");
+
 	}
 
 	void DeferredRenderer::shutdown()

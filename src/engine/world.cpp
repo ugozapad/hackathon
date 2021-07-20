@@ -3,6 +3,8 @@
 
 #include "engine/components/logiccomponent.h"
 
+#include "graphics/graphicscomponent.h"
+
 #include "core/timer.h"
 
 namespace engine
@@ -43,16 +45,18 @@ namespace engine
 
 	void World::updateGraphicWorld()
 	{
-		//for (EntityIt it = m_Entities.begin(); it != m_Entities.end(); ++it)
-		//{
-		//	Entity* entity = *it;
-		//	VisualComponent* visualComponent = nullptr;
-
-		//	if (entity)
-		//		visualComponent = entity->GetComponentByType<VisualComponent>();
-		//	if (visualComponent && visualComponent->IsActive())
-		//		visualComponent->Draw();
-		//}
+		for (NodeIt it = m_nodes.begin(); it != m_nodes.end(); ++it)
+		{
+			Node* node = *it;
+			if (node)
+			{
+				GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+				if (graphicsComponent)
+				{
+					graphicsComponent->render();
+				}
+			}
+		}
 	}
 
 }

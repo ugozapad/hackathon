@@ -34,7 +34,7 @@ namespace engine
 		}
 
 		template <typename T>
-		eastl::shared_ptr<T> createComponent()
+		eastl::shared_ptr<T> createComponentByType()
 		{
 			eastl::shared_ptr<T> component = Context::getInstance()->createObject<T>();
 			m_components.push_back(component);
