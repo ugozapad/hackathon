@@ -3,6 +3,8 @@
 #include "common/mallocallocator.h"
 #include "file/filedevice.h"
 
+#include "core/context.h"
+
 #include "engine/engine.h"
 #include "engine/inputmanager.h"
 #include "engine/camera.h"
@@ -129,6 +131,9 @@ namespace engine
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
+
+		// initialize engine context
+		eastl::shared_ptr<Context> content = eastl::make_shared<Context>();
 
 		// create engine view
 		createEngineView();
