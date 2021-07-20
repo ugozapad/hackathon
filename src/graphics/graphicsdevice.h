@@ -67,6 +67,8 @@ namespace engine
 		// viewport
 		virtual void setViewport(Viewport* viewport);
 
+		GLFWwindow* getWindow() { return m_window; }
+
 	protected:
 		GLFWwindow* m_window;
 	};

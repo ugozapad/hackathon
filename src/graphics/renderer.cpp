@@ -6,6 +6,7 @@
 #include "graphics/gfxcommon.h"
 #include "graphics/view.h"
 #include "graphics/graphicsdevice.h"
+#include "graphics/rendercontext.h"
 
 // render stuff
 #include "graphics/postprocessing.h"
@@ -13,7 +14,11 @@
 
 #include "graphics/image.h"
 
+#include "engine/camera.h"
+#include "engine/engine.h"
 #include "engine/world.h"
+
+#include "graphics/graphicscomponent.h"
 
 #include "file/filedevice.h"
 
@@ -63,12 +68,50 @@ namespace engine
 
 	void Renderer::renderView(View* view)
 	{
+		// make context current
+		glfwMakeContextCurrent(GraphicsDevice::getInstance()->getWindow());
+
 		// set viewport
 		Viewport vp = { 0 };
 		vp.m_width = view->m_width;
 		vp.m_height = view->m_height;
 
 		GraphicsDevice::getInstance()->setViewport(&vp);
+
+		// initialize render context
+		RenderContext& renderContext = RenderContext::getContext();
+		renderContext.width = view->m_width;
+		renderContext.height = view->m_height;
+		renderContext.proj = view->m_projection;
+		renderContext.view = view->m_view;
+		renderContext.model = glm::mat4(1.0f);
+
+		RenderContext::setContext(renderContext);
+
+		World* world = Engine::ms_world.get();
+		if (world)
+		{
+			eastl::list<eastl::shared_ptr<Node>>& nodes = world->getNodeList();
+			typedef eastl::list<eastl::shared_ptr<Node>>::iterator NodeIt;
+			for (NodeIt it = nodes.begin(); it != nodes.end(); ++it)
+			{
+				Node* node = (*it).get();
+				if (node)
+				{
+					GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+					if (graphicsComponent)
+					{
+						// let's render our piece of shit.
+
+						RenderContext& renderCtx = RenderContext::getContext();
+						renderCtx.model = node->getTranslation();
+						RenderContext::setContext(renderCtx);
+
+						graphicsComponent->render();
+					}
+				}
+			}
+		}
 	}
 
 	bool fileExist(const eastl::string& filename)

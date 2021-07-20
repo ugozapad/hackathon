@@ -33,6 +33,8 @@ public:
 	eastl::shared_ptr<Node> createNodePtr();
 	Node* createNode();
 
+	eastl::list<eastl::shared_ptr<Node>>& getNodeList() { return m_nodes; }
+
 private:
 	typedef eastl::list<eastl::shared_ptr<Node>>::iterator NodeIt;
 	eastl::list<eastl::shared_ptr<Node>> m_nodes;

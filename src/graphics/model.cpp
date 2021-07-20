@@ -9,6 +9,7 @@
 #include "graphics/material.h"
 
 #include "graphics/graphicsdevice.h"
+#include "graphics/rendercontext.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -367,34 +368,25 @@ namespace engine
 
 	void SubMesh::render()
 	{
-		// create saved render ctx as previous model.
-		//RenderContext savedCtx = RenderContext::GetContext();
+		//create saved render ctx as previous model.
+		RenderContext savedCtx = RenderContext::getContext();
 
-		//// create local copy of render context
-		//RenderContext localCtx = RenderContext::GetContext();
+		// create local copy of render context
+		RenderContext localCtx = RenderContext::getContext();
 
-		//// and overwrite model matrix
-		//localCtx.model = savedCtx.model * m_transform;
+		// and overwrite model matrix
+		localCtx.model = savedCtx.model * m_transform;
 
-		//// set our local render ctx
-		//RenderContext::SetContext(localCtx);
-
-		//g_renderDevice->SetVertexBuffer(m_vertexBuffer);
-		//g_renderDevice->SetIndexBuffer(m_indexBuffer);
-
-		//m_material->Bind();
-
-		//// render
-		//g_renderDevice->DrawElement(PM_TRIANGLES, m_indeciesCount);
-
-		//// return what have been
-		//RenderContext::SetContext(savedCtx);
+		// set our local render ctx
+		RenderContext::setContext(localCtx);
 
 		GraphicsDevice::getInstance()->setVertexBuffer(m_vertexBuffer);
 
 		m_material->bind();
 
 		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, m_verticesCount);
-	}
 
+		// return what have been
+		RenderContext::setContext(savedCtx);
+	}
 }

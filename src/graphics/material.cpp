@@ -66,7 +66,14 @@ namespace engine
 
 	Material::Material(const eastl::string& filename) : Content(filename)
 	{
-		Material();
+		//Material();
+
+		m_shader = nullptr;
+		m_albedoTexture = nullptr;
+		m_normalTexture = nullptr;
+		m_detailTexture = nullptr;
+		m_depthWrite = true;
+		m_selfillum = false;
 	}
 
 	Material::~Material()

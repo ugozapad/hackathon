@@ -34,4 +34,7 @@
 
 #include "core/context.h"
 
+// must be last !!!
+#include "core/debug.h"
+
 #endif // !PCH_H
