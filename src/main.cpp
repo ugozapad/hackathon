@@ -170,7 +170,7 @@ namespace engine
 
 		// set system allocator
 		g_sysAllocator = &g_allocator;
-	
+
 		// Initialize file system
 		FileDevice::getInstance()->setDefaultPath("./");
 
@@ -178,7 +178,7 @@ namespace engine
 		GetCurrentDirectoryA(256, buffer);
 		if (strstr(buffer, "bin"))
 			FileDevice::getInstance()->setDefaultPath("../");
-		
+
 		eastl::string commandLine = createCommandLine(argc, argv);
 		spdlog::info("command lile: {}", commandLine.c_str());
 
@@ -240,6 +240,9 @@ namespace engine
 		eastl::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
+		eastl::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
+		skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
+
 		eastl::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();
 
@@ -266,7 +269,7 @@ namespace engine
 
 			// run engine frame
 			Engine::update();
-			
+
 			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
 			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
 
@@ -287,7 +290,7 @@ namespace engine
 		Engine::shutdown();
 
 		graphicsDevice->shutdown();
-		
+
 		mem_delete(*g_sysAllocator, g_engineView);
 
 		glfwTerminate();

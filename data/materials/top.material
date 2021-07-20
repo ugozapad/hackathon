@@ -1,0 +1,5 @@
+material "top"
+{
+	shader diffuse
+	albedo "sky_l1escape6_up.tga"
+}

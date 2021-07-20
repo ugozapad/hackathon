@@ -16,7 +16,6 @@ namespace engine
 	void Material::createMaterialFromImport(const char* name, const char* diffuseName, const char* normalName)
 	{
 		eastl::string materiaName;
-		materiaName += FileDevice::getInstance()->getDefaultPath();
 		materiaName += "data/materials/";
 		materiaName += name;
 		materiaName += ".material";
@@ -30,7 +29,7 @@ namespace engine
 		len = sprintf(buffer, "{\n");
 		file->write(buffer, len);
 
-		len = sprintf(buffer, "\ttechnique diffuse\n");
+		len = sprintf(buffer, "\tshader diffuse\n");
 		file->write(buffer, len);
 
 		const char* newAlbedoName;

@@ -154,6 +154,16 @@ namespace engine
 		);
 	}
 
+	bool materialExists(const char* pFile)
+	{
+		File* file = FileDevice::getInstance()->openFile(pFile, FileAccess::Read);
+		bool exist = file->isValid();
+		FileDevice::getInstance()->closeFile(file);
+
+		return exist;
+	}
+
+
 	SubMesh* ProccessSubMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
 	{
 		eastl::vector<Vertex> vertices;
@@ -195,9 +205,9 @@ namespace engine
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 		char buffer[256];
-		sprintf(buffer, "%s/data/materials/%s.material", FileDevice::getInstance()->getDefaultPath().c_str(), material->GetName().C_Str());
+		sprintf(buffer, "data/materials/%s.material", material->GetName().C_Str());
 
-		if (!GetFileAttributesA(buffer))
+		if (!materialExists(buffer))
 		{
 			aiString diffusePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &diffusePath);

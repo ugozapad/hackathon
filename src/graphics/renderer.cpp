@@ -13,6 +13,8 @@
 
 #include "graphics/image.h"
 
+#include "engine/world.h"
+
 #include "file/filedevice.h"
 
 namespace engine
