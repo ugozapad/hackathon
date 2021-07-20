@@ -2,6 +2,7 @@
 #include "graphics/material.h"
 #include "graphics/texturemap.h"
 #include "graphics/shader.h"
+#include "graphics/shadermanager.h"
 #include "graphics/graphicsdevice.h"
 
 #include "file/filedevice.h"
@@ -13,6 +14,14 @@
 
 namespace engine
 {
+	Shader* getEngineShaderFromMaterialName(const eastl::string& shaderName)
+	{
+		if (shaderName == "diffuse")
+			return ShaderManager::getInstance()->createShader("def_geom");
+
+		return nullptr;
+	}
+
 	void Material::createMaterialFromImport(const char* name, const char* diffuseName, const char* normalName)
 	{
 		eastl::string materiaName;
@@ -118,7 +127,7 @@ namespace engine
 			else if (strcmp(token, "shader") == 0)
 			{
 				char* shader = strtok(NULL, tokenizerStr);
-				//m_shader = g_shaderSystem.CreateShader(technique);
+				m_shader = getEngineShaderFromMaterialName(shader);
 				shaderName = strdup(shader);
 				token = strtok(NULL, tokenizerStr);
 				continue;

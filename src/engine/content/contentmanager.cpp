@@ -126,7 +126,7 @@ namespace engine
 			while (g_needToLoadContent.load() == 1);
 
 			// because our content manager is shit we need to this magic
-			eastl::static_shared_pointer_cast<ModelBase>(content)->loadMaterials();
+			eastl::static_shared_pointer_cast<ModelBase>(content)->createHwShit();
 
 			// little magic
 			m_content.emplace(modelName, content);

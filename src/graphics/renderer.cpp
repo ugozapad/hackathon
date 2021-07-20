@@ -9,6 +9,7 @@
 #include "graphics/rendercontext.h"
 
 // render stuff
+#include "graphics/shadermanager.h"
 #include "graphics/postprocessing.h"
 #include "graphics/shaderconstantmanager.h"
 
@@ -50,6 +51,8 @@ namespace engine
 
 	void Renderer::init(View* view)
 	{
+		ShaderManager::getInstance()->init();
+
 		ScreenQuad::init();
 
 		g_deferredRenderer.init(view);
@@ -64,6 +67,8 @@ namespace engine
 		g_deferredRenderer.shutdown();
 
 		ScreenQuad::shutdown();
+
+		ShaderManager::getInstance()->shutdown();
 	}
 
 	void Renderer::renderView(View* view)

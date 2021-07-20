@@ -9,6 +9,7 @@
 #include "graphics/texture.h"
 #include "graphics/framebuffer.h"
 #include "graphics/shader.h"
+#include "graphics/shadermanager.h"
 
 namespace engine
 {
@@ -42,7 +43,8 @@ namespace engine
 		GraphicsDevice::instance()->setFramebuffer(0);
 		//////////////////////////////////////////////////////////////////////////
 
-		m_fadeInOutShader = mem_new<Shader>(*g_sysAllocator, "fade_in_out", "data/shaders/fade_in_out.vsh", "data/shaders/fade_in_out.fsh");
+		//m_fadeInOutShader = mem_new<Shader>(*g_sysAllocator, "fade_in_out", "data/shaders/fade_in_out.vsh", "data/shaders/fade_in_out.fsh");
+		m_fadeInOutShader = ShaderManager::getInstance()->createShader("fade_in_out");
 
 		VertexDeclaration position;
 		position.name = "position";
@@ -59,7 +61,7 @@ namespace engine
 
 	void PostProcessingRenderer::shutdown()
 	{
-		mem_delete(*g_sysAllocator, m_fadeInOutShader);
+	//	mem_delete(*g_sysAllocator, m_fadeInOutShader);
 
 		GraphicsDevice::getInstance()->deleteTexture2D(m_colorTexture);
 		GraphicsDevice::getInstance()->deleteFramebuffer(m_framebuffer);

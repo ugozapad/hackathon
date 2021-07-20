@@ -48,6 +48,9 @@ namespace engine
 		GrVertexBuffer* m_vertexBuffer;
 		GrIndexBuffer* m_indexBuffer;
 
+		eastl::vector<Vertex> m_vertices;
+		eastl::vector<uint32_t> m_indecies;
+
 		glm::mat4 m_transform;
 
 		uint32_t m_verticesCount;
@@ -64,7 +67,7 @@ namespace engine
 		virtual void load(const eastl::string& filename);
 		virtual void destroy();
 
-		virtual void loadMaterials();
+		virtual void createHwShit();
 
 		virtual void renderObjects();
 

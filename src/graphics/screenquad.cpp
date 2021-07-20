@@ -3,6 +3,7 @@
 
 #include "graphics/graphicsdevice.h"
 #include "graphics/shader.h"
+#include "graphics/shadermanager.h"
 
 namespace engine
 {
@@ -28,7 +29,8 @@ namespace engine
 		bufferDesc.m_access = BufferAccess::Static;
 		ms_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(bufferDesc);
 
-		ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.fsh");
+		//ms_screenQuadShader = mem_new<Shader>(*g_sysAllocator, "quad", "data/shaders/quad.vsh", "data/shaders/quad.fsh");
+		ms_screenQuadShader = ShaderManager::getInstance()->createShader("quad");
 
 		VertexDeclaration position;
 		position.name = "position";
@@ -45,7 +47,7 @@ namespace engine
 
 	void ScreenQuad::shutdown()
 	{
-		mem_delete(*g_sysAllocator, ms_screenQuadShader);
+	//	mem_delete(*g_sysAllocator, ms_screenQuadShader);
 		GraphicsDevice::getInstance()->deleteVertexBuffer(ms_vertexBuffer);
 	}
 

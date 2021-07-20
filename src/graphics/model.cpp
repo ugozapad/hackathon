@@ -295,11 +295,27 @@ namespace engine
 		m_subMeshes.clear();
 	}
 
-	void ModelBase::loadMaterials()
+	void ModelBase::createHwShit()
 	{
 		for (int i = 0; i < m_subMeshes.size(); i++)
 		{
 			SubMesh* submesh = m_subMeshes[i];
+
+			// create vertex and index buffer
+			BufferCreationDesc vertexBufferDesc = { 0 };
+			vertexBufferDesc.m_data = submesh->m_vertices.data();
+			vertexBufferDesc.m_dataSize = submesh->m_vertices.size() * sizeof(Vertex);
+			vertexBufferDesc.m_access = BufferAccess::Static;
+			submesh->m_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(vertexBufferDesc);
+			submesh->m_vertices.clear();
+
+			BufferCreationDesc indexBufferDesc = { 0 };
+			indexBufferDesc.m_data = submesh->m_indecies.data();
+			indexBufferDesc.m_dataSize = submesh->m_indecies.size() * sizeof(uint32_t);
+			indexBufferDesc.m_access = BufferAccess::Static;
+			submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(indexBufferDesc);
+			submesh->m_indecies.clear();
+
 			submesh->m_material = ContentManager::getInstance()->loadMaterial(submesh->m_materialName);
 		}
 	}
@@ -333,18 +349,8 @@ namespace engine
 
 		m_transform = position;
 
-		BufferCreationDesc vertexBufferDesc = { 0 };
-		vertexBufferDesc.m_data = vertices.data();
-		vertexBufferDesc.m_dataSize = vertices.size() * sizeof(Vertex);
-		vertexBufferDesc.m_access = BufferAccess::Static;
-		m_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(vertexBufferDesc);
-
-		BufferCreationDesc indexBufferDesc = { 0 };
-		indexBufferDesc.m_data = indecies.data();
-		indexBufferDesc.m_dataSize = indecies.size() * sizeof(uint32_t);
-		indexBufferDesc.m_access = BufferAccess::Static;
-		m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(indexBufferDesc);
-
+		m_vertices = vertices;
+		m_indecies = indecies;
 		m_verticesCount = vertices.size();
 		m_indeciesCount = indecies.size();
 
