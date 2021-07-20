@@ -1,6 +1,8 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include "engine/node.h"
+
 namespace engine
 {
 
@@ -14,18 +16,23 @@ struct WorldNode
 };
 
 // Entity container, world and other stuff.
-class World
+class World : public Object
 {
+	ImplementObject(World, Object);
+public:
+	static void registerObject();
+
 public:
 	World();
 	~World();
 
 	void updatePhysicWorld();
+	void updateLogicWorld();
 	void updateGraphicWorld();
 
 private:
-	typedef eastl::list<Entity*>::iterator EntityIt;
-	eastl::list<Entity*> m_entities;
+	typedef eastl::list<Node*>::iterator NodeIt;
+	eastl::list<Node*> m_nodes;
 };
 
 } // namespace sword

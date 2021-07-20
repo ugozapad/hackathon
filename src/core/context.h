@@ -7,6 +7,12 @@ namespace engine
 {
 	class FactoryBase
 	{
+	protected:
+		const TypeInfo* m_typeInfo;
+
+	public:
+		const TypeInfo* getTypeInfo() { return m_typeInfo; }
+
 	public:
 		virtual eastl::shared_ptr<Object> createObject() = 0;
 	};
@@ -14,8 +20,6 @@ namespace engine
 	template <typename T>
 	class FactoryTemplated : public FactoryBase
 	{
-	private:
-		const TypeInfo* m_typeInfo;
 	public:
 		FactoryTemplated(const TypeInfo* typeInfo)
 		{
@@ -36,6 +40,16 @@ namespace engine
 		void registerObject()
 		{
 			m_factories.push_back(new FactoryTemplated<T>(T::getStaticTypeInfo()));
+		}
+
+		template <typename T>
+		eastl::shared_ptr<T> createObject()
+		{
+			for (int i = 0; i < m_factories.size(); i++)
+				if (m_factories[i]->getTypeInfo() == T::getStaticTypeInfo())
+					return eastl::static_shared_pointer_cast<T>(m_factories[i]->createObject());
+
+			return eastl::shared_ptr<T>();
 		}
 
 	private:

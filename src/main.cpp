@@ -4,6 +4,7 @@
 #include "file/filedevice.h"
 
 #include "core/context.h"
+#include "core/timer.h"
 
 #include "engine/engine.h"
 #include "engine/inputmanager.h"
@@ -135,6 +136,9 @@ namespace engine
 		// initialize engine context
 		eastl::shared_ptr<Context> content = eastl::make_shared<Context>();
 
+		// initialize timer
+		Timer::getInstance()->init();
+
 		// create engine view
 		createEngineView();
 
@@ -163,6 +167,9 @@ namespace engine
 				break;
 
 			glfwPollEvents();
+
+			// update timer
+			Timer::getInstance()->update();
 			
 			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
 			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
