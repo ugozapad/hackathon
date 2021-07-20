@@ -45,7 +45,7 @@ namespace engine
 	{
 		ScreenQuad::init();
 
-		g_deferredRenderer.init();
+		g_deferredRenderer.init(view);
 
 		PostProcessingRenderer::getInstance()->init(view);
 	}

@@ -10,6 +10,7 @@ namespace engine
 	class Camera;
 	class Entity;
 	class Light;
+	class View;
 
 	class DeferredRenderer
 	{
@@ -21,7 +22,7 @@ namespace engine
 			RT_COLOR
 		};
 	public:
-		void init();
+		void init(View* view);
 		void shutdown();
 
 		GrFramebuffer* getFramebuffer() { return m_framebuffer; }

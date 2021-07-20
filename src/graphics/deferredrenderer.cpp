@@ -2,15 +2,15 @@
 #include "graphics/gl/glad/glad.h"
 #include "graphics/deferredrenderer.h"
 #include "graphics/graphicsdevice.h"
+#include "graphics/view.h"
 
 namespace engine
 {
 	DeferredRenderer g_deferredRenderer;
 
-	void DeferredRenderer::init()
-	{
-		int width = 800, height = 600;
-		//glfwGetWindowSize(g_engine.m_app->GetWindow(), &width, &height);
+	void DeferredRenderer::init(View* view)
+{
+		int width = view->m_width, height = view->m_height;
 
 		// create position texture
 		TextureCreationDesc positionDesc = { 0 };
