@@ -50,18 +50,6 @@ namespace engine
 		m_allVxDeclsSize = 0;
 	}
 
-	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath, const eastl::vector<VertexDeclaration>& vertexDecls)
-	{
-		assert(!vertexDecls.empty());
-		m_vertexDeclarations = vertexDecls;
-
-		m_allVxDeclsSize = 0;
-		for (int i = 0, size = m_vertexDeclarations.size(); i < size; i++)
-			m_allVxDeclsSize += m_vertexDeclarations[i].size;
-
-		create(name, vertexPath, fragmentPath);
-	}
-
 	Shader::~Shader()
 	{
 		//glDeleteProgram(m_Program);
@@ -116,12 +104,8 @@ namespace engine
 		for (int i = 0, size = m_vertexDeclarations.size(); i < size; i++)
 		{
 			VertexDeclaration& vxdecl = m_vertexDeclarations[i];
-
 			glVertexAttribPointer(i, vxdecl.size, GL_FLOAT, GL_FALSE, m_allVxDeclsSize * sizeof(float), (void*)(appliedOffset * sizeof(float)));
 			glEnableVertexAttribArray(i);
-
-			//glVertexAttribPointer(i, vxdecl.size, GL_FLOAT, GL_FALSE, m_allVxDeclsSize * sizeof(float), (void*)(appliedOffset * sizeof(float)));
-			//glEnableVertexAttribArray(i);
 
 			appliedOffset += vxdecl.size;
 		}

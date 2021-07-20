@@ -22,7 +22,6 @@ namespace engine
 	public:
 		Shader();
 		Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath);
-		Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath, const eastl::vector<VertexDeclaration>& vertexDecls);
 		~Shader();
 		bool create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath);
 		void destroy();
@@ -43,7 +42,7 @@ namespace engine
 		void addVertexDeclaration(const VertexDeclaration& vecdecl);
 
 	private:
-		eastl::vector<VertexDeclaration> m_vertexDeclarations;
+		eastl::fixed_vector<VertexDeclaration, 32> m_vertexDeclarations;
 
 		eastl::string m_name;
 		eastl::string m_vsName;
