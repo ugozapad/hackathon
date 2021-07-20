@@ -63,6 +63,10 @@ namespace engine
 
 	void DeferredRenderer::shutdown()
 	{
+		//m_framebuffer->setColorTexture(0, 0);
+		//m_framebuffer->setColorTexture(1, 0);
+		//m_framebuffer->setColorTexture(2, 0);
+
 		GraphicsDevice::instance()->deleteFramebuffer(m_framebuffer);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[2]);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[1]);
