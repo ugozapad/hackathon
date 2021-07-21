@@ -13,6 +13,29 @@ namespace engine
 		createShader("quad");
 		createShader("fade_in_out");
 		createShader("def_geom");
+
+		// because no one want to initialize def_geom input, we need do it by own hand :(((
+		{
+			Shader* shader = createShader("def_geom");
+			
+			VertexDeclaration position;
+			position.name = "position";
+			position.size = 3;
+			position.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(position);
+
+			VertexDeclaration normal;
+			normal.name = "normal";
+			normal.size = 3;
+			normal.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(normal);
+
+			VertexDeclaration texcoord;
+			texcoord.name = "texcoord";
+			texcoord.size = 2;
+			texcoord.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(texcoord);
+		}
 	}
 
 	void ShaderManager::shutdown()

@@ -4,6 +4,7 @@
 #include "graphics/shader.h"
 #include "graphics/shadermanager.h"
 #include "graphics/graphicsdevice.h"
+#include "graphics/rendercontext.h"
 
 #include "file/filedevice.h"
 
@@ -260,6 +261,12 @@ namespace engine
 		m_shader->setFloat("u_zfar", CameraProxy::getInstance()->getView()->m_zfar);
 
 		m_shader->setInteger("u_selfillum", m_selfillum);
+
+		// apply constants here !!!
+		RenderContext& renderContext = RenderContext::getContext();
+		m_shader->setMatrix("u_model", renderContext.model);
+		m_shader->setMatrix("u_view", renderContext.view);
+		m_shader->setMatrix("u_proj", renderContext.proj);
 	}
 
 	TextureMap* Material::getTexture(MAT_TEX tex)

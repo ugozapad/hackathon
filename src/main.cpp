@@ -172,7 +172,7 @@ namespace engine
 		g_sysAllocator = &g_allocator;
 
 		// Initialize file system
-		FileDevice::getInstance()->setDefaultPath("./");
+		FileDevice::getInstance()->setDefaultPath("");
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);

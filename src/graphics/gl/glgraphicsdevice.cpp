@@ -25,8 +25,8 @@ namespace engine
 		const void* userParam)
 	{
 
-		/*if (type != GL_DEBUG_TYPE_ERROR)
-			return;*/
+		if (type != GL_DEBUG_TYPE_ERROR)
+			return;
 
 		if (type == GL_DEBUG_TYPE_ERROR)
 			spdlog::error("[gl]: {}type = 0x{}, severity = 0x{}, message = {}",
