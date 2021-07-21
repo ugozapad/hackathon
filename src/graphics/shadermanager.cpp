@@ -40,7 +40,11 @@ namespace engine
 
 	void ShaderManager::shutdown()
 	{
+		for (auto it : m_shaders)
+			if ((it).second)
+				mem_delete(*g_sysAllocator, it.second);
 
+		m_shaders.clear();
 	}
 
 	Shader* ShaderManager::createShader(const eastl::string& name)
