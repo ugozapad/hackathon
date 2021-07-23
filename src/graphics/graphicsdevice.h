@@ -37,6 +37,7 @@ namespace engine
 
 		// drawing
 		virtual void drawArray(PrimitiveMode mode, size_t startOf, size_t count);
+		virtual void drawElements(PrimitiveMode mode, size_t count);
 
 		// state
 		virtual void depthTest(bool value);

@@ -390,6 +390,7 @@ namespace engine
 		RenderContext::setContext(localCtx);
 
 		GraphicsDevice::getInstance()->setVertexBuffer(m_vertexBuffer);
+		GraphicsDevice::getInstance()->setIndexBuffer(m_indexBuffer);
 
 		m_material->bind();
 

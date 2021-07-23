@@ -124,9 +124,13 @@ namespace engine
 			}
 		}
 
-		GraphicsDevice::getInstance()->setFramebuffer(0);
+		GraphicsDevice::getInstance()->setFramebuffer(PostProcessingRenderer::getInstance()->getFramebuffer());
 
 		g_deferredRenderer.drawNoLight();
+
+		GraphicsDevice::getInstance()->setFramebuffer(0);
+
+		PostProcessingRenderer::getInstance()->test();
 		//ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 

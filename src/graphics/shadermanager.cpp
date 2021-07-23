@@ -14,7 +14,6 @@ namespace engine
 		createShader("fade_in_out");
 		createShader("def_geom");
 
-		// because no one want to initialize def_geom input, we need do it by own hand :(((
 		{
 			Shader* shader = createShader("def_geom");
 			
@@ -37,9 +36,24 @@ namespace engine
 			shader->addVertexDeclaration(texcoord);
 		}
 
-		// because no one want to initialize def_light input, we need do it by own hand :(((
 		{
 			Shader* shader = createShader("def_light");
+
+			VertexDeclaration position;
+			position.name = "position";
+			position.size = 2;
+			position.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(position);
+
+			VertexDeclaration texcoord;
+			texcoord.name = "texcoord";
+			texcoord.size = 2;
+			texcoord.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(texcoord);
+		}
+
+		{
+			Shader* shader = createShader("pp_test");
 
 			VertexDeclaration position;
 			position.name = "position";

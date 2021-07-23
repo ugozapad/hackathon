@@ -38,6 +38,11 @@ namespace engine
 
 	}
 
+	void GraphicsDevice::drawElements(PrimitiveMode mode, size_t count)
+	{
+
+	}
+
 	void GraphicsDevice::depthTest(bool value)
 	{
 

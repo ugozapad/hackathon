@@ -127,6 +127,18 @@ namespace engine
 		glDrawArrays(primMode, startOf, count);
 	}
 
+	void GLGraphicsDevice::drawElements(PrimitiveMode mode, size_t count)
+	{
+		GLenum primMode = 0;
+
+		if (mode == PrimitiveMode::Triangles)
+			primMode = GL_TRIANGLES;
+		else if (mode == PrimitiveMode::TriangleStrip)
+			primMode = GL_TRIANGLE_STRIP;
+
+		glDrawElements(primMode, count, GL_UNSIGNED_BYTE, NULL);
+	}
+
 	void GLGraphicsDevice::depthTest(bool value)
 	{
 		value ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);

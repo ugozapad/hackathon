@@ -10,6 +10,7 @@
 #include "graphics/framebuffer.h"
 #include "graphics/shader.h"
 #include "graphics/shadermanager.h"
+#include "graphics/screenquad.h"
 
 namespace engine
 {
@@ -57,6 +58,8 @@ namespace engine
 		uv.size = 2;
 		uv.type = VertexDeclaration::Float;
 		m_fadeInOutShader->addVertexDeclaration(uv);
+
+		m_testPp = ShaderManager::getInstance()->createShader("pp_test");
 	}
 
 	void PostProcessingRenderer::shutdown()
@@ -65,6 +68,13 @@ namespace engine
 
 		GraphicsDevice::getInstance()->deleteTexture2D(m_colorTexture);
 		GraphicsDevice::getInstance()->deleteFramebuffer(m_framebuffer);
+	}
+
+	void PostProcessingRenderer::test()
+	{
+		m_testPp->bind();
+		GraphicsDevice::getInstance()->setTexture2D(0, m_colorTexture);
+		ScreenQuad::renderWithoutTextureBinding(m_testPp);
 	}
 
 }
