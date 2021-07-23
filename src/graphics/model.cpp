@@ -213,6 +213,9 @@ namespace engine
 			aiString diffusePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &diffusePath);
 
+			if (diffusePath.length == 0)
+				material->GetTexture(aiTextureType_BASE_COLOR, 0, &diffusePath);
+
 			aiString normalPath;
 			material->GetTexture(aiTextureType_NORMALS, 0, &normalPath);
 

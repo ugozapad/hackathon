@@ -62,5 +62,4 @@ namespace engine
 			ms_world->updateLogicWorld();
 		}
 	}
-
 }

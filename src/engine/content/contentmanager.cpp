@@ -136,7 +136,7 @@ namespace engine
 		return eastl::static_shared_pointer_cast<ModelBase>((*model).second);
 	}
 
-	eastl::shared_ptr<engine::Material> ContentManager::loadMaterial(const eastl::string& materialName)
+	eastl::shared_ptr<Material> ContentManager::loadMaterial(const eastl::string& materialName)
 	{
 		auto material = m_content.find(materialName);
 

@@ -109,7 +109,7 @@ namespace engine
 			if (argv[i])
 			{
 				commandline.append(argv[i]);
-				//commandline.append(" ");
+				commandline.append(" ");
 			}
 		}
 
@@ -259,7 +259,7 @@ namespace engine
 			if (InputManager::getInstance()->getKey(GLFW_KEY_F11))
 				Renderer::getInstance()->makeScreenshot();
 
-			if (commandLine == "-quit")
+			if (strstr(commandLine.c_str(), "-quit"))
 				break;
 
 			glfwPollEvents();
