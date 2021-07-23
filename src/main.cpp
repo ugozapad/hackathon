@@ -62,14 +62,14 @@ namespace engine
 
 	void createEngineView()
 	{
-		std::string optionsFilename = "hackathon.ini";
+		std::string optionsFilename = "engine.ini";
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);
 		//if (strstr(buffer, "bin"))
-		//	optionsFilename = "hackathon.ini";
+		//	optionsFilename = "engine.ini";
 		//if (strstr(buffer, "build/src"))
-		//	optionsFilename = "../../bin/hackathon.ini";
+		//	optionsFilename = "../../bin/engine.ini";
 
 		if (!g_graphicsOptions.loadSettings(optionsFilename))
 		{
@@ -80,7 +80,7 @@ namespace engine
 		// create window
 		int width = g_graphicsOptions.m_width, height = g_graphicsOptions.m_height;
 		bool fullscreen = g_graphicsOptions.m_fullscreen;
-		std::string title = "Hackathon";
+		std::string title = "engine";
 		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
 		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
@@ -264,7 +264,7 @@ HANDLE g_semaphore;
 
 int main(int argc, char* argv[])
 {
-	g_semaphore = CreateSemaphoreA(NULL, 1, 1, "hackathon_semaphore");
+	g_semaphore = CreateSemaphoreA(NULL, 1, 1, "engine_semaphore");
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 		return 1;
 
