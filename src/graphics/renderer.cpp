@@ -93,6 +93,12 @@ namespace engine
 
 		RenderContext::setContext(renderContext);
 
+		GrFramebuffer* deferredFramebuffer = g_deferredRenderer.getFramebuffer();
+		assert(deferredFramebuffer);
+
+		GraphicsDevice::getInstance()->setFramebuffer(deferredFramebuffer);
+		GraphicsDevice::getInstance()->clear(ClearRenderTarget | ClearDepth);
+
 		World* world = Engine::ms_world.get();
 		if (world)
 		{
@@ -117,6 +123,10 @@ namespace engine
 				}
 			}
 		}
+
+		GraphicsDevice::getInstance()->setFramebuffer(0);
+
+		ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 
 	bool fileExist(const std::string& filename)

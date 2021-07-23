@@ -247,7 +247,7 @@ namespace engine
 		birdNode->createComponentByType<BirdComponent>();
 
 		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
-		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/test1.dae"));
+		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/bird.dae"));
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
@@ -266,6 +266,18 @@ namespace engine
 
 			// update timer
 			Timer::getInstance()->update();
+
+			// update camera
+			Camera* camera = CameraProxy::getInstance()->getCamera();
+
+			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+			float radius = 10.0f;
+			float camX = sin(glfwGetTime()) * radius;
+			float camZ = cos(glfwGetTime()) * radius;
+			glm::vec3 pos = glm::vec3(camX, -5.0f, camZ);
+			view = glm::lookAt(pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+			camera->m_position = pos;
+			camera->getView()->m_view = view;
 
 			// run engine frame
 			Engine::update();

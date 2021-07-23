@@ -1,0 +1,5 @@
+material "bird"
+{
+	shader diffuse
+	albedo "bird_color.png"
+}

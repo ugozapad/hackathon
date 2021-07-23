@@ -16,6 +16,7 @@ namespace engine
 	private:
 		View* m_view;
 
+	public:
 		glm::vec3 m_position;
 	};
 
