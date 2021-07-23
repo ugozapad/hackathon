@@ -56,17 +56,17 @@ namespace engine
 
 	void BirdComponent::update(float dt)
 	{
-		//InputManager* input = InputManager::getInstance();
-		//glm::vec3 pos = m_node->getPosition();
+		InputManager* input = InputManager::getInstance();
+		glm::vec3 pos = m_node->getPosition();
 
-		//const float speed = 12.0f;
-		//const float fallingSpeed = 6.0f;
-		//pos.y -= fallingSpeed * dt;
-		//
-		//if (input->getKey(GLFW_KEY_SPACE))
-		//	pos.y += speed * dt;
+		const float speed = 12.0f;
+		const float fallingSpeed = 6.0f;
+		pos.y -= fallingSpeed * dt;
 
-		//m_node->setPosition(pos);
+		if (input->getKey(GLFW_KEY_SPACE))
+			pos.y += speed * dt;
+
+		m_node->setPosition(pos);
 	}
 
 	class SkyboxComponent : public LogicComponent
@@ -243,11 +243,11 @@ namespace engine
 		Engine::loadEmptyWorld();
 
 		// add skybox to world
-		//std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
-		//skyboxNode->createComponentByType<SkyboxComponent>();
+		std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
+		skyboxNode->createComponentByType<SkyboxComponent>();
 
-		//std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
-		//skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
+		std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
+		skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
 
 		std::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();

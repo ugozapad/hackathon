@@ -126,8 +126,8 @@ namespace engine
 
 		GraphicsDevice::getInstance()->setFramebuffer(0);
 
-		//g_deferredRenderer.drawNoLight();
-		ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
+		g_deferredRenderer.drawNoLight();
+		//ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 
 	bool fileExist(const std::string& filename)
