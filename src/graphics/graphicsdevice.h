@@ -13,8 +13,8 @@ namespace engine
 	enum ClearFlags
 	{
 		ClearRenderTarget = 1 << 0,
-		ClearDepth = 1 << 0,
-		ClearStencil = 1 << 0,
+		ClearDepth        = 1 << 1,
+		ClearStencil      = 1 << 2,
 	};
 
 	class GraphicsDevice : public Singleton<GraphicsDevice>

@@ -32,6 +32,7 @@ namespace engine
 		void drawGeometry(Camera* camera, Entity* entity);
 		void drawLight(Camera* camera, Light** lights, size_t size);
 		void drawNoLight(Camera* camera);
+		void drawNoLight();
 
 	private:
 		GrTexture2D* m_textures[3];

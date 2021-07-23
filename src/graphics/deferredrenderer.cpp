@@ -3,6 +3,9 @@
 #include "graphics/deferredrenderer.h"
 #include "graphics/graphicsdevice.h"
 #include "graphics/view.h"
+#include "graphics/screenquad.h"
+#include "graphics/shadermanager.h"
+#include "graphics/shader.h"
 
 namespace engine
 {
@@ -57,8 +60,7 @@ namespace engine
 		//////////////////////////////////////////////////////////////////////////
 
 		// create light pass shader.
-		//m_lightPassShader = g_shaderSystem.CreateShader("def_light");
-
+		m_lightPassShader = ShaderManager::getInstance()->createShader("def_light");
 	}
 
 	void DeferredRenderer::shutdown()
@@ -150,6 +152,24 @@ namespace engine
 		//m_lightPassShader->SetVec3("u_viewPos", camera->m_Position);
 
 		//ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
+	}
+
+	void DeferredRenderer::drawNoLight()
+	{
+		GraphicsDevice* graphicsDevice = GraphicsDevice::getInstance();
+
+		m_lightPassShader->bind();
+
+		graphicsDevice->setTexture2D(0, m_textures[RT_POS]);
+		m_lightPassShader->setInteger("u_positionTexture", 0);
+
+		graphicsDevice->setTexture2D(1, m_textures[RT_NORMAL]);
+		m_lightPassShader->setInteger("u_normalTexture", 1);
+
+		graphicsDevice->setTexture2D(2, m_textures[RT_COLOR]);
+		m_lightPassShader->setInteger("u_colorTexture", 2);
+
+		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
 	}
 
 }

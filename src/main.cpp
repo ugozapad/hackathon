@@ -56,17 +56,17 @@ namespace engine
 
 	void BirdComponent::update(float dt)
 	{
-		InputManager* input = InputManager::getInstance();
-		glm::vec3 pos = m_node->getPosition();
+		//InputManager* input = InputManager::getInstance();
+		//glm::vec3 pos = m_node->getPosition();
 
-		const float speed = 12.0f;
-		const float fallingSpeed = 6.0f;
-		pos.y -= fallingSpeed * dt;
-		
-		if (input->getKey(GLFW_KEY_SPACE))
-			pos.y += speed * dt;
+		//const float speed = 12.0f;
+		//const float fallingSpeed = 6.0f;
+		//pos.y -= fallingSpeed * dt;
+		//
+		//if (input->getKey(GLFW_KEY_SPACE))
+		//	pos.y += speed * dt;
 
-		m_node->setPosition(pos);
+		//m_node->setPosition(pos);
 	}
 
 	class SkyboxComponent : public LogicComponent
@@ -243,17 +243,17 @@ namespace engine
 		Engine::loadEmptyWorld();
 
 		// add skybox to world
-		std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
-		skyboxNode->createComponentByType<SkyboxComponent>();
+		//std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
+		//skyboxNode->createComponentByType<SkyboxComponent>();
 
-		std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
-		skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
+		//std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
+		//skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
 
 		std::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();
 
 		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
-		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/bird.dae"));
+		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/test1.dae"));
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
@@ -277,12 +277,12 @@ namespace engine
 			Camera* camera = CameraProxy::getInstance()->getCamera();
 
 			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			float radius = 10.0f;
-			//float camX = sin(glfwGetTime()) * radius;
-			//float camZ = cos(glfwGetTime()) * radius;
+			float radius = 5.0f;
+			float camX = sin(glfwGetTime()) * radius;
+			float camZ = cos(glfwGetTime()) * radius;
 
-			float camX = radius;
-			float camZ = radius;
+			//float camX = radius;
+			//float camZ = radius;
 
 			glm::vec3 pos = glm::vec3(camX, 0.0f, camZ);
 			view = glm::lookAt(pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -292,8 +292,7 @@ namespace engine
 			// run engine frame
 			Engine::update();
 
-			graphicsDevice->clearColor(0.5f, 0.5f, 0.5f, 1.0f);
-			graphicsDevice->clear(ClearRenderTarget | ClearDepth);
+			graphicsDevice->clear(/*ClearRenderTarget |*/ ClearDepth);
 
 			bool showIntro = false;
 			if (showIntro)
