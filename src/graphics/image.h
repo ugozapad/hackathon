@@ -20,15 +20,15 @@ namespace engine
 
 		void free();
 
-		void createFromFile(const eastl::string& filename);
-		void createFromFile(const eastl::shared_ptr<DataStream>& stream);
+		void createFromFile(const std::string& filename);
+		void createFromFile(const std::shared_ptr<DataStream>& stream);
 
 		// create from existed data
 		void createRaw(void* data, int width, int height, int channels);
 
 		// saving
-		void save(const eastl::string& filename);
-		void save(const eastl::shared_ptr<DataStream>& stream);
+		void save(const std::string& filename);
+		void save(const std::shared_ptr<DataStream>& stream);
 
 		int getWidth();
 		int getHeight();

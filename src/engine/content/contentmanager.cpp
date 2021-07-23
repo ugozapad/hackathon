@@ -5,10 +5,12 @@
 
 #include "common/thread.h"
 
+#include <atomic>
+
 namespace engine
 {
-	static eastl::atomic<int> g_harakiriContentThread = 0;
-	static eastl::atomic<int> g_needToLoadContent = 0;
+	static std::atomic<int> g_harakiriContentThread = 0;
+	static std::atomic<int> g_needToLoadContent = 0;
 	static std::mutex g_contentMutex;
 
 	class ContentThread : public Thread
@@ -30,7 +32,7 @@ namespace engine
 
 			spdlog::info("Content thread is started");
 
-			while (g_harakiriContentThread.load() != 1)
+			while (g_harakiriContentThread.load() == 0)
 			{
 				if (g_needToLoadContent.load() == 1)
 				{
@@ -38,11 +40,11 @@ namespace engine
 
 					for (int i = 0; i < m_contentManager->m_contentForLoad.size(); i++)
 					{
-						eastl::string& contentName = m_contentManager->m_contentForLoad[i].first;
+						std::string& contentName = m_contentManager->m_contentForLoad[i].first;
 						spdlog::info("[content]: load {}", contentName.c_str());
 
-						eastl::shared_ptr<Content>& content = m_contentManager->m_contentForLoad[i].second;
-						eastl::shared_ptr<DataStream> dataStream = eastl::make_shared<FileStream>(contentName, "r");
+						std::shared_ptr<Content>& content = m_contentManager->m_contentForLoad[i].second;
+						std::shared_ptr<DataStream> dataStream = std::make_shared<FileStream>(contentName, "r");
 
 						content->load(dataStream);
 					}
@@ -59,7 +61,7 @@ namespace engine
 	};
 
 	ContentManager ContentManager::ms_instance;
-	static ContentThread g_contentThread;
+	ContentThread g_contentThread;
 
 	void ContentManager::init()
 	{
@@ -74,18 +76,18 @@ namespace engine
 		m_content.clear();
 	}
 
-	eastl::shared_ptr<TextureMap> ContentManager::loadTexture(const eastl::string& textureName)
+	std::shared_ptr<TextureMap> ContentManager::loadTexture(const std::string& textureName)
 	{
 		auto textureMap = m_content.find(textureName);
 
 		// we will guess content is not loaded for now
 		if (textureMap == m_content.end())
 		{
-			auto content = eastl::make_shared<TextureMap>(textureName);
+			auto content = std::make_shared<TextureMap>(textureName);
 
 			// lock thread for add info about content loading
 			g_contentMutex.lock();
-			m_contentForLoad.push_back(eastl::make_pair(textureName, content));
+			m_contentForLoad.push_back(std::make_pair(textureName, content));
 			g_contentMutex.unlock();
 
 			// lock thread for loading
@@ -95,28 +97,28 @@ namespace engine
 			while (g_needToLoadContent.load() == 1);
 
 			// because gl is shit we need to this magic
-			eastl::static_shared_pointer_cast<TextureMap>(content)->createHWTexture();
+			std::static_pointer_cast<TextureMap>(content)->createHWTexture();
 
 			// little magic
 			m_content.emplace(textureName, content);
 		}
 
 		textureMap = m_content.find(textureName);
-		return eastl::static_shared_pointer_cast<TextureMap>((*textureMap).second);
+		return std::static_pointer_cast<TextureMap>((*textureMap).second);
 	}
 
-	eastl::shared_ptr<ModelBase> ContentManager::loadModel(const eastl::string& modelName)
+	std::shared_ptr<ModelBase> ContentManager::loadModel(const std::string& modelName)
 	{
 		auto model = m_content.find(modelName);
 
 		// we will guess content is not loaded for now
 		if (model == m_content.end())
 		{
-			auto content = eastl::make_shared<ModelBase>(modelName);
+			auto content = std::make_shared<ModelBase>(modelName);
 
 			// lock thread for add info about content loading
 			g_contentMutex.lock();
-			m_contentForLoad.push_back(eastl::make_pair(modelName, content));
+			m_contentForLoad.push_back(std::make_pair(modelName, content));
 			g_contentMutex.unlock();
 
 			// lock thread for loading
@@ -126,28 +128,28 @@ namespace engine
 			while (g_needToLoadContent.load() == 1);
 
 			// because our content manager is shit we need to this magic
-			eastl::static_shared_pointer_cast<ModelBase>(content)->createHwShit();
+			std::static_pointer_cast<ModelBase>(content)->createHwShit();
 
 			// little magic
 			m_content.emplace(modelName, content);
 		}
 
 		model = m_content.find(modelName);
-		return eastl::static_shared_pointer_cast<ModelBase>((*model).second);
+		return std::static_pointer_cast<ModelBase>((*model).second);
 	}
 
-	eastl::shared_ptr<Material> ContentManager::loadMaterial(const eastl::string& materialName)
+	std::shared_ptr<Material> ContentManager::loadMaterial(const std::string& materialName)
 	{
 		auto material = m_content.find(materialName);
 
 		// we will guess content is not loaded for now
 		if (material == m_content.end())
 		{
-			auto content = eastl::make_shared<Material>(materialName);
+			auto content = std::make_shared<Material>(materialName);
 
 			// lock thread for add info about content loading
 			g_contentMutex.lock();
-			m_contentForLoad.push_back(eastl::make_pair(materialName, content));
+			m_contentForLoad.push_back(std::make_pair(materialName, content));
 			g_contentMutex.unlock();
 
 			// lock thread for loading
@@ -157,13 +159,13 @@ namespace engine
 			while (g_needToLoadContent.load() == 1);
 
 			// because gl is shit we need to this magic
-			eastl::static_shared_pointer_cast<Material>(content)->createHwTextures();
+			std::static_pointer_cast<Material>(content)->createHwTextures();
 
 			// little magic
 			m_content.emplace(materialName, content);
 		}
 
 		material = m_content.find(materialName);
-		return eastl::static_shared_pointer_cast<Material>((*material).second);
+		return std::static_pointer_cast<Material>((*material).second);
 	}
 }

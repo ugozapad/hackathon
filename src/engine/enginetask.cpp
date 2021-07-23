@@ -5,11 +5,10 @@
 #include "common/thread.h"
 
 #include <thread>
-#include <EASTL/atomic.h>
 
 namespace engine
 {
-	static eastl::atomic<int> g_needToHarakiriThreads = 0;
+	static std::atomic<int> g_needToHarakiriThreads = 0;
 	static MallocAllocator g_threadAllocator;
 
 	struct TaskThreadData
@@ -52,10 +51,10 @@ namespace engine
 
 	};
 
-	static eastl::fixed_vector<TaskThread, 256> g_threads;
+	static std::vector<TaskThread*> g_threads;
 
 
-	EngineTask::EngineTask(eastl::function<void()>& function)
+	EngineTask::EngineTask(std::function<void()>& function)
 	{
 
 	}
@@ -78,8 +77,8 @@ namespace engine
 			threadData.m_threadId = i;
 			threadData.m_taskManager = this;
 
-			g_threads.push_back(TaskThread(threadData));
-			g_threads.back().startThread();
+			g_threads.push_back(new TaskThread(threadData));
+			g_threads.back()->startThread();
 		}
 	}
 
@@ -89,9 +88,12 @@ namespace engine
 
 		for (int i = 0; i < g_threads.size(); i++)
 		{
-			TaskThread& taskThread = g_threads[i];
-			if (taskThread.IsRunning())
-				taskThread.stopThread();
+			TaskThread* taskThread = g_threads[i];
+			if (taskThread->IsRunning())
+			{
+				taskThread->stopThread();
+				delete taskThread;
+			}
 		}
 	}
 

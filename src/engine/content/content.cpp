@@ -8,7 +8,7 @@ namespace engine
 
 	}
 
-	Content::Content(const eastl::string& filename)
+	Content::Content(const std::string& filename)
 	{
 		m_filename = filename;
 	}
@@ -18,7 +18,7 @@ namespace engine
 
 	}
 
-	void Content::load(const eastl::shared_ptr<DataStream>& dataStream)
+	void Content::load(const std::shared_ptr<DataStream>& dataStream)
 	{
 
 	}

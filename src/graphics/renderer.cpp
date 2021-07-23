@@ -96,8 +96,8 @@ namespace engine
 		World* world = Engine::ms_world.get();
 		if (world)
 		{
-			eastl::list<eastl::shared_ptr<Node>>& nodes = world->getNodeList();
-			typedef eastl::list<eastl::shared_ptr<Node>>::iterator NodeIt;
+			std::list<std::shared_ptr<Node>>& nodes = world->getNodeList();
+			typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
 			for (NodeIt it = nodes.begin(); it != nodes.end(); ++it)
 			{
 				Node* node = (*it).get();
@@ -119,7 +119,7 @@ namespace engine
 		}
 	}
 
-	bool fileExist(const eastl::string& filename)
+	bool fileExist(const std::string& filename)
 	{
 		File* file = FileDevice::getInstance()->openFile(filename, FileAccess::Read);
 		bool valid = file->isValid();

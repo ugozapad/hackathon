@@ -664,7 +664,7 @@ void CDDSImage::load(istream& is, bool flipImage) {
     m_valid = true;
 }
 
-void CDDSImage::load(const eastl::shared_ptr<engine::DataStream>& is, bool flipImage /*= true*/)
+void CDDSImage::load(const std::shared_ptr<engine::DataStream>& is, bool flipImage /*= true*/)
 {
     // clear any previously loaded images
     clear();

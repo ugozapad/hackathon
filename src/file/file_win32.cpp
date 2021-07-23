@@ -7,7 +7,7 @@ namespace engine
 	static const char* s_stdioOpeningMode[] = { "rb", "wb" };
 	static int s_stdioSeekDir[] = { SEEK_SET, SEEK_CUR, SEEK_END };
 
-	FileWin32::FileWin32(const eastl::string& path, FileAccess access)
+	FileWin32::FileWin32(const std::string& path, FileAccess access)
 	{
 		m_filehandle = fopen(path.c_str(), s_stdioOpeningMode[(int)access]);
 	}
@@ -63,7 +63,7 @@ namespace engine
 		buffer[length] = '\0';
 	}
 
-	void FileWin32::readString(eastl::string& buffer)
+	void FileWin32::readString(std::string& buffer)
 	{
 		seek(FileSeek::End, 0);
 		size_t length = tell();

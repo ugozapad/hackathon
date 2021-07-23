@@ -26,8 +26,8 @@ namespace engine
 		friend class ModelBase;
 	public:
 		SubMesh();
-		SubMesh(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
-		void load(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
+		SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
+		void load(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname);
 
 		~SubMesh();
 
@@ -42,14 +42,14 @@ namespace engine
 		uint32_t getIndeciesCount() { return m_indeciesCount; }
 
 	private:
-		eastl::shared_ptr<Material> m_material;
-		eastl::string m_materialName;
+		std::shared_ptr<Material> m_material;
+		std::string m_materialName;
 
 		GrVertexBuffer* m_vertexBuffer;
 		GrIndexBuffer* m_indexBuffer;
 
-		eastl::vector<Vertex> m_vertices;
-		eastl::vector<uint32_t> m_indecies;
+		std::vector<Vertex> m_vertices;
+		std::vector<uint32_t> m_indecies;
 
 		glm::mat4 m_transform;
 
@@ -60,21 +60,21 @@ namespace engine
 	class ModelBase : public Content
 	{
 	public:
-		ModelBase(const eastl::string& name);
+		ModelBase(const std::string& name);
 
-		virtual void load(const eastl::shared_ptr<DataStream>& dataStream);
+		virtual void load(const std::shared_ptr<DataStream>& dataStream);
 
-		virtual void load(const eastl::string& filename);
+		virtual void load(const std::string& filename);
 		virtual void destroy();
 
 		virtual void createHwShit();
 
 		virtual void renderObjects();
 
-		const eastl::string& getFileName() { return m_filename; }
+		const std::string& getFileName() { return m_filename; }
 
 	private:
-		eastl::vector<SubMesh*> m_subMeshes;
+		std::vector<SubMesh*> m_subMeshes;
 	};
 }
 

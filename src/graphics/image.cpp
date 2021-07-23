@@ -93,12 +93,12 @@ namespace engine
 			Image::freeImageData(m_data);
 	}
 
-	void Image::createFromFile(const eastl::string& filename)
+	void Image::createFromFile(const std::string& filename)
 	{
 
 	}
 
-	void Image::createFromFile(const eastl::shared_ptr<DataStream>& stream)
+	void Image::createFromFile(const std::shared_ptr<DataStream>& stream)
 	{
 		stbi_set_flip_vertically_on_load(m_flip);
 		m_data = stbi_load_from_callbacks(&g_stdio_callbacks, reinterpret_cast<void*>(stream.get()), &m_width, &m_height, &m_channels, 0);
@@ -112,13 +112,13 @@ namespace engine
 		m_channels = channels;
 	}
 
-	void Image::save(const eastl::string& filename)
+	void Image::save(const std::string& filename)
 	{
-		eastl::shared_ptr<FileStream> stream = eastl::make_shared<FileStream>(filename, "w");
+		std::shared_ptr<FileStream> stream = std::make_shared<FileStream>(filename, "w");
 		stbi_flip_vertically_on_write(m_flip);
 
 		size_t extPos = filename.find('.');
-		eastl::string ext = filename.substr(extPos + 1);
+		std::string ext = filename.substr(extPos + 1);
 
 		if (ext == "png")
 			stbi_write_png_to_func(stbi_write_callback, (void*)stream.get(), m_width, m_height, m_channels, m_data, m_width * m_channels);
@@ -130,7 +130,7 @@ namespace engine
 			throw std::logic_error("Image::save: unknowed format to save!");
 	}
 
-	void Image::save(const eastl::shared_ptr<DataStream>& stream)
+	void Image::save(const std::shared_ptr<DataStream>& stream)
 	{
 
 	}

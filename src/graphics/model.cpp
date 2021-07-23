@@ -30,9 +30,9 @@ namespace engine
 	class AssImpStream : public Assimp::IOStream
 	{
 	private:
-		eastl::shared_ptr<DataStream> m_dataStream;
+		std::shared_ptr<DataStream> m_dataStream;
 	public:
-		AssImpStream(const eastl::shared_ptr<DataStream>& dataStream)
+		AssImpStream(const std::shared_ptr<DataStream>& dataStream)
 		{
 			m_dataStream = dataStream;
 		}
@@ -108,9 +108,9 @@ namespace engine
 	class AssImpIOSystem : public Assimp::IOSystem
 	{
 	private:
-		eastl::shared_ptr<DataStream> m_dataStream;
+		std::shared_ptr<DataStream> m_dataStream;
 	public:
-		AssImpIOSystem(const eastl::shared_ptr<DataStream>& dataStream)
+		AssImpIOSystem(const std::shared_ptr<DataStream>& dataStream)
 		{
 			m_dataStream = dataStream;
 		}
@@ -167,8 +167,8 @@ namespace engine
 
 	SubMesh* ProccessSubMesh(aiMesh* mesh, aiNode* node, const aiScene* scene)
 	{
-		eastl::vector<Vertex> vertices;
-		eastl::vector<uint32_t> indecies;
+		std::vector<Vertex> vertices;
+		std::vector<uint32_t> indecies;
 
 		for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -229,7 +229,7 @@ namespace engine
 		return mem_new<SubMesh>(*g_sysAllocator, vertices, indecies, transform, material->GetName().C_Str());
 	}
 
-	void ProccessNode(eastl::vector<SubMesh*>& submeshes, aiNode* node, const aiScene* scene)
+	void ProccessNode(std::vector<SubMesh*>& submeshes, aiNode* node, const aiScene* scene)
 	{
 		for (uint32_t i = 0; i < node->mNumMeshes; i++)
 		{
@@ -244,12 +244,12 @@ namespace engine
 		}
 	}
 
-	ModelBase::ModelBase(const eastl::string& name) : Content(name)
+	ModelBase::ModelBase(const std::string& name) : Content(name)
 	{
 
 	}
 
-	void ModelBase::load(const eastl::string& filename)
+	void ModelBase::load(const std::string& filename)
 	{
 		m_filename = filename;
 		spdlog::info("loading model {}", filename.c_str());
@@ -267,7 +267,7 @@ namespace engine
 		ProccessNode(m_subMeshes, scene->mRootNode, scene);
 	}
 
-	void ModelBase::load(const eastl::shared_ptr<DataStream>& dataStream)
+	void ModelBase::load(const std::shared_ptr<DataStream>& dataStream)
 	{
 		AssImpIOSystem* assimpIoSystem = new AssImpIOSystem(dataStream);
 
@@ -329,7 +329,7 @@ namespace engine
 			m_subMeshes[i]->render();
 	}
 
-	SubMesh::SubMesh(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname) :
+	SubMesh::SubMesh(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname) :
 		m_vertexBuffer(0),
 		m_indexBuffer(0)
 	{
@@ -343,7 +343,7 @@ namespace engine
 
 	}
 
-	void SubMesh::load(eastl::vector<Vertex>& vertices, eastl::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname)
+	void SubMesh::load(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname)
 	{
 		//m_materialName = materialname;
 		m_materialName += "data/materials/";

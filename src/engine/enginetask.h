@@ -6,7 +6,7 @@ namespace engine
 	class EngineTask
 	{
 	public:
-		EngineTask(eastl::function<void()>& function);
+		EngineTask(std::function<void()>& function);
 	};
 
 	class TaskManager : public Singleton<TaskManager>
@@ -21,7 +21,7 @@ namespace engine
 		void destroyTaskWorkers();
 
 	private:
-		eastl::fixed_vector<EngineTask, 256> m_tasks;
+		std::vector<EngineTask> m_tasks;
 	};
 }
 

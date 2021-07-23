@@ -26,7 +26,7 @@ namespace engine
 		}
 	}
 
-	void GraphicsComponent::addModel(eastl::shared_ptr<ModelBase>& model)
+	void GraphicsComponent::addModel(std::shared_ptr<ModelBase>& model)
 	{
 		m_models.push_back(model);
 	}

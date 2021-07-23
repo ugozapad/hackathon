@@ -100,9 +100,9 @@ namespace engine
 	static GLFWwindow* g_engineWindow;
 	static View* g_engineView;
 
-	eastl::string createCommandLine(int argc, char* argv[])
+	std::string createCommandLine(int argc, char* argv[])
 	{
-		eastl::string commandline;
+		std::string commandline;
 
 		for (int i = 1; i < argc; i++)
 		{
@@ -128,7 +128,7 @@ namespace engine
 
 	void createEngineView()
 	{
-		eastl::string optionsFilename = "hackathon.ini";
+		std::string optionsFilename = "hackathon.ini";
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);
@@ -146,7 +146,7 @@ namespace engine
 		// create window
 		int width = g_graphicsOptions.m_width, height = g_graphicsOptions.m_height;
 		bool fullscreen = g_graphicsOptions.m_fullscreen;
-		eastl::string title = "Hackathon";
+		std::string title = "Hackathon";
 		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
 
 		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
@@ -179,7 +179,7 @@ namespace engine
 		if (strstr(buffer, "bin"))
 			FileDevice::getInstance()->setDefaultPath("../");
 
-		eastl::string commandLine = createCommandLine(argc, argv);
+		std::string commandLine = createCommandLine(argc, argv);
 		spdlog::info("command lile: {}", commandLine.c_str());
 
 		if (commandLine.empty())
@@ -208,7 +208,7 @@ namespace engine
 #endif
 
 		// initialize engine context
-		eastl::shared_ptr<Context> content = eastl::make_shared<Context>();
+		std::shared_ptr<Context> content = std::make_shared<Context>();
 
 		// initialize timer
 		Timer::getInstance()->init();
@@ -237,19 +237,19 @@ namespace engine
 		Engine::loadEmptyWorld();
 
 		// add skybox to world
-		eastl::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
+		std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
-		eastl::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
+		std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
 		skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
 
-		eastl::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
+		std::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();
 
-		eastl::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
+		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
 		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/test1.dae"));
 
-		eastl::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
+		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{

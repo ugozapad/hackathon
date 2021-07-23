@@ -47,17 +47,17 @@ namespace engine
 		m_shaders.clear();
 	}
 
-	Shader* ShaderManager::createShader(const eastl::string& name)
+	Shader* ShaderManager::createShader(const std::string& name)
 	{
 		auto shaderAtTable = m_shaders.find(name);
 		if (shaderAtTable == m_shaders.end())
 		{
-			eastl::string vsname;
+			std::string vsname;
 			vsname += "data/shaders/";
 			vsname += name;
 			vsname += ".vsh";
 
-			eastl::string fsname;
+			std::string fsname;
 			fsname += "data/shaders/";
 			fsname += name;
 			fsname += ".fsh";

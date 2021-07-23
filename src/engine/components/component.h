@@ -26,7 +26,7 @@ public:
 	Node* m_node;
 
 private:
-	eastl::atomic<bool> m_isActive;
+	std::atomic<bool> m_isActive;
 };
 
 }

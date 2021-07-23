@@ -28,7 +28,7 @@ namespace engine
 		void write(T* buffer) { return write((void*)buffer, sizeof(T)); }
 	};
 
-	typedef eastl::shared_ptr<DataStream> DataStreamPtr;
+	typedef std::shared_ptr<DataStream> DataStreamPtr;
 }
 
 #endif // DATASTREAM_H

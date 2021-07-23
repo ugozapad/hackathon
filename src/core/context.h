@@ -14,7 +14,7 @@ namespace engine
 		const TypeInfo* getTypeInfo() { return m_typeInfo; }
 
 	public:
-		virtual eastl::shared_ptr<Object> createObject() = 0;
+		virtual std::shared_ptr<Object> createObject() = 0;
 	};
 
 	template <typename T>
@@ -26,10 +26,10 @@ namespace engine
 			m_typeInfo = typeInfo;
 		}
 
-		eastl::shared_ptr<Object> createObject() override
+		std::shared_ptr<Object> createObject() override
 		{
-			typename eastl::shared_ptr<T> object = typename eastl::make_shared<T>();
-			return eastl::static_shared_pointer_cast<Object>(object);
+			typename std::shared_ptr<T> object = typename std::make_shared<T>();
+			return std::static_pointer_cast<Object>(object);
 		}
 	};
 
@@ -43,26 +43,26 @@ namespace engine
 		}
 
 		template <typename T>
-		eastl::shared_ptr<T> createObject()
+		std::shared_ptr<T> createObject()
 		{
 			for (int i = 0; i < m_factories.size(); i++)
 				if (m_factories[i]->getTypeInfo() == T::getStaticTypeInfo())
-					return eastl::static_shared_pointer_cast<T>(m_factories[i]->createObject());
+					return std::static_pointer_cast<T>(m_factories[i]->createObject());
 
-			return eastl::shared_ptr<T>();
+			return std::shared_ptr<T>();
 		}
 		
-		eastl::shared_ptr<Object> createObject(const TypeInfo* typeInfo)
+		std::shared_ptr<Object> createObject(const TypeInfo* typeInfo)
 		{
 			for (int i = 0; i < m_factories.size(); i++)
 				if (m_factories[i]->getTypeInfo() == typeInfo)
 					return m_factories[i]->createObject();
 
-			return eastl::shared_ptr<Object>();
+			return std::shared_ptr<Object>();
 		}
 
 	private:
-		eastl::vector<FactoryBase*> m_factories;
+		std::vector<FactoryBase*> m_factories;
 	};
 }
 

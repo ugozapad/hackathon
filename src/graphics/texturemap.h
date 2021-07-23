@@ -11,11 +11,11 @@ namespace engine
 	{
 	public:
 		TextureMap();
-		TextureMap(const eastl::string& filename);
+		TextureMap(const std::string& filename);
 
 		~TextureMap();
 		
-		void load(const eastl::shared_ptr<DataStream>& dataStream) override;
+		void load(const std::shared_ptr<DataStream>& dataStream) override;
 	
 		void release();
 		GrTexture2D* getHWTexture() { return m_texture2D; }

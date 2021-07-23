@@ -15,7 +15,7 @@
 
 namespace engine
 {
-	Shader* getEngineShaderFromMaterialName(const eastl::string& shaderName)
+	Shader* getEngineShaderFromMaterialName(const std::string& shaderName)
 	{
 		if (shaderName == "diffuse")
 			return ShaderManager::getInstance()->createShader("def_geom");
@@ -25,7 +25,7 @@ namespace engine
 
 	void Material::createMaterialFromImport(const char* name, const char* diffuseName, const char* normalName)
 	{
-		eastl::string materiaName;
+		std::string materiaName;
 		materiaName += "data/materials/";
 		materiaName += name;
 		materiaName += ".material";
@@ -74,7 +74,7 @@ namespace engine
 		m_selfillum = false;
 	}
 
-	Material::Material(const eastl::string& filename) : Content(filename)
+	Material::Material(const std::string& filename) : Content(filename)
 	{
 		//Material();
 
@@ -98,7 +98,7 @@ namespace engine
 		//mem_delete(*g_sysAllocator, m_albedoTexture);
 	}
 
-	void Material::load(const eastl::shared_ptr<DataStream>& dataStream)
+	void Material::load(const std::shared_ptr<DataStream>& dataStream)
 	{
 		dataStream->seek(FileSeek::End, 0);
 		size_t length = dataStream->tell();

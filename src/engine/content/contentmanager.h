@@ -21,14 +21,14 @@ namespace engine
 		void init();
 		void shutdown();
 
-		eastl::shared_ptr<TextureMap> loadTexture(const eastl::string& textureName);
-		eastl::shared_ptr<ModelBase> loadModel(const eastl::string& modelName);
-		eastl::shared_ptr<Material> loadMaterial(const eastl::string& materialName);
+		std::shared_ptr<TextureMap> loadTexture(const std::string& textureName);
+		std::shared_ptr<ModelBase> loadModel(const std::string& modelName);
+		std::shared_ptr<Material> loadMaterial(const std::string& materialName);
 
 	private:
-		eastl::map<eastl::string, eastl::shared_ptr<Content>> m_content;
+		std::map<std::string, std::shared_ptr<Content>> m_content;
 
-		eastl::vector<eastl::pair<eastl::string, eastl::shared_ptr<Content>>> m_contentForLoad;
+		std::vector<std::pair<std::string, std::shared_ptr<Content>>> m_contentForLoad;
 
 	};
 }

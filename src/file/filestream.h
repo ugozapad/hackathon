@@ -9,7 +9,7 @@ namespace engine
 	class FileStream : public DataStream
 	{
 	public:
-		FileStream(const eastl::string& filename, const char* mode);
+		FileStream(const std::string& filename, const char* mode);
 		~FileStream();
 
 		void read(void* buffer, size_t count);

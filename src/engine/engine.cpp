@@ -11,7 +11,7 @@
 
 namespace engine
 {
-	eastl::shared_ptr<World> Engine::ms_world;
+	std::shared_ptr<World> Engine::ms_world;
 
 	void registerEngineObjects()
 	{
@@ -44,7 +44,7 @@ namespace engine
 		ContentManager::getInstance()->shutdown();
 	}
 
-	void Engine::loadWorld(const eastl::string& filename)
+	void Engine::loadWorld(const std::string& filename)
 	{
 
 	}

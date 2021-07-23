@@ -5,16 +5,16 @@ namespace engine
 {
 	FileDevice FileDevice::ms_instance;
 
-	void FileDevice::setDefaultPath(const eastl::string& path)
+	void FileDevice::setDefaultPath(const std::string& path)
 	{
 		m_defaultPath = path;
 	}
 
-	File* FileDevice::openFile(const eastl::string& path, FileAccess access)
+	File* FileDevice::openFile(const std::string& path, FileAccess access)
 	{
 	//	spdlog::info("opening file {}", path.c_str());
 
-		eastl::string pathBuffer = m_defaultPath;
+		std::string pathBuffer = m_defaultPath;
 		pathBuffer += path;
 		return mem_new<File>(*g_sysAllocator, pathBuffer, access);
 	}

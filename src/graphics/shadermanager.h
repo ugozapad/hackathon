@@ -14,10 +14,10 @@ namespace engine
 		void init();
 		void shutdown();
 
-		Shader* createShader(const eastl::string& name);
+		Shader* createShader(const std::string& name);
 
 	private:
-		eastl::map<eastl::string, Shader*> m_shaders;
+		std::map<std::string, Shader*> m_shaders;
 	};
 }
 

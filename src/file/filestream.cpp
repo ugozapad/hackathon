@@ -3,7 +3,7 @@
 
 namespace engine
 {
-	FileStream::FileStream(const eastl::string& filename, const char* mode)
+	FileStream::FileStream(const std::string& filename, const char* mode)
 	{
 		FileAccess fileAccess;
 		if (mode[0] == 'r')

@@ -8,7 +8,7 @@ namespace engine
 	class FileWin32
 	{
 	public:
-		FileWin32(const eastl::string& path, FileAccess access);
+		FileWin32(const std::string& path, FileAccess access);
 		~FileWin32();
 
 		bool isValid() { return !!m_filehandle; }
@@ -27,7 +27,7 @@ namespace engine
 
 		// helpers
 		void readStringBuffer(char* buffer, size_t bufferSize);
-		void readString(eastl::string& buffer);
+		void readString(std::string& buffer);
 
 	private:
 		FILE* m_filehandle;

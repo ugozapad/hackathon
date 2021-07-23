@@ -104,6 +104,3 @@ if (MSVC)
 else()
 	target_link_libraries(engine "libassimp.dll.a")
 endif()
-
-
-target_link_libraries(engine EASTL)

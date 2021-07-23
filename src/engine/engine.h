@@ -11,14 +11,14 @@ namespace engine
 		static void init();
 		static void shutdown();
 
-		static void loadWorld(const eastl::string& filename);
+		static void loadWorld(const std::string& filename);
 
 		static void loadEmptyWorld();
 
 		static void update();
 
 	public:
-		static eastl::shared_ptr<World> ms_world;
+		static std::shared_ptr<World> ms_world;
 	};
 }
 

@@ -8,7 +8,7 @@
 
 namespace engine
 {
-	TextureMap::TextureMap(const eastl::string& filename) :
+	TextureMap::TextureMap(const std::string& filename) :
 		Content(filename)
 	{
 		memset(&m_texdesc, 0, sizeof(m_texdesc));
@@ -51,10 +51,10 @@ namespace engine
 		m_texture2D = GraphicsDevice::getInstance()->createTexture2D(m_texdesc);
 	}
 
-	void TextureMap::load(const eastl::shared_ptr<DataStream>& dataStream)
+	void TextureMap::load(const std::shared_ptr<DataStream>& dataStream)
 	{
 		size_t extensionLocation = m_filename.find('.');
-		eastl::string extension = m_filename.substr(extensionLocation + 1);
+		std::string extension = m_filename.substr(extensionLocation + 1);
 
 		if (extension != "dds")
 		{

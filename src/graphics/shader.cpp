@@ -17,7 +17,7 @@ namespace engine
 			std::terminate();
 		}
 
-		eastl::string content;
+		std::string content;
 		file->readString(content);
 	
 		const char* contentCStr = content.c_str();
@@ -40,7 +40,7 @@ namespace engine
 		return shader;
 	}
 
-	Shader::Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
+	Shader::Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
 	{
 		create(name, vertexPath, fragmentPath);
 	}
@@ -55,7 +55,7 @@ namespace engine
 		//glDeleteProgram(m_Program);
 	}
 
-	bool Shader::create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath)
+	bool Shader::create(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
 	{
 		m_allVxDeclsSize = 0;
 		m_name = name;

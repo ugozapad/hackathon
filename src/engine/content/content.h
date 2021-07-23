@@ -6,17 +6,17 @@
 namespace engine
 {
 	// Base class for all engine manager resources (i.e. textures, models and other shit)
-	class Content //: eastl::enable_shared_from_this<Content>
+	class Content //: std::enable_shared_from_this<Content>
 	{
 	public:
 		Content();
-		Content(const eastl::string& filename);
+		Content(const std::string& filename);
 		virtual ~Content();
 
-		virtual void load(const eastl::shared_ptr<DataStream>& dataStream);
+		virtual void load(const std::shared_ptr<DataStream>& dataStream);
 
 	protected:
-		eastl::string m_filename;
+		std::string m_filename;
 	};
 }
 

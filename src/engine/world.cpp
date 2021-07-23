@@ -59,9 +59,9 @@ namespace engine
 		}
 	}
 
-	eastl::shared_ptr<Node> World::createNodePtr()
+	std::shared_ptr<Node> World::createNodePtr()
 	{
-		eastl::shared_ptr<Node> node = Context::getInstance()->createObject<Node>();
+		std::shared_ptr<Node> node = Context::getInstance()->createObject<Node>();
 		m_nodes.push_back(node);
 		return node;
 	}

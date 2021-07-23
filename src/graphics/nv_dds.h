@@ -120,7 +120,7 @@ public:
     void clear();
 
     void load(std::istream& is, bool flipImage = true);
-    void load(const eastl::shared_ptr<engine::DataStream>& is, bool flipImage = true);
+    void load(const std::shared_ptr<engine::DataStream>& is, bool flipImage = true);
     void load(const std::string& filename, bool flipImage = true);
     void save(const std::string& filename, bool flipImage = true);
 

@@ -20,10 +20,10 @@ namespace engine
 
 		virtual void render();
 
-		virtual void addModel(eastl::shared_ptr<ModelBase>& model);
+		virtual void addModel(std::shared_ptr<ModelBase>& model);
 
 	private:
-		eastl::vector<eastl::shared_ptr<ModelBase>> m_models;
+		std::vector<std::shared_ptr<ModelBase>> m_models;
 	};
 }
 

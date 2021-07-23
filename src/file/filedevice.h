@@ -14,14 +14,14 @@ namespace engine
 		static FileDevice ms_instance;
 
 	public:
-		void setDefaultPath(const eastl::string& path);
-		eastl::string getDefaultPath() { return m_defaultPath; }
+		void setDefaultPath(const std::string& path);
+		std::string getDefaultPath() { return m_defaultPath; }
 
-		File* openFile(const eastl::string& path, FileAccess access);
+		File* openFile(const std::string& path, FileAccess access);
 		void closeFile(File*& file);
 
 	private:
-		eastl::string m_defaultPath;
+		std::string m_defaultPath;
 	};
 }
 

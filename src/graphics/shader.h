@@ -11,7 +11,7 @@ namespace engine
 			Integer
 		};
 
-		eastl::string name;
+		std::string name;
 		uint32_t type;
 		uint32_t size;
 		uint32_t offset;
@@ -21,9 +21,9 @@ namespace engine
 	{
 	public:
 		Shader();
-		Shader(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath);
+		Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath);
 		~Shader();
-		bool create(const eastl::string& name, const eastl::string& vertexPath, const eastl::string& fragmentPath);
+		bool create(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath);
 		void destroy();
 		void bind();
 
@@ -35,18 +35,18 @@ namespace engine
 		void setVec4(const char* name, const glm::vec4& vec);
 		void setMatrix(const char* name, const glm::mat4& matrix);
 
-		eastl::string& getName() { return m_name; }
+		std::string& getName() { return m_name; }
 
 		void hotReload();
 
 		void addVertexDeclaration(const VertexDeclaration& vecdecl);
 
 	private:
-		eastl::fixed_vector<VertexDeclaration, 32> m_vertexDeclarations;
+		std::vector<VertexDeclaration> m_vertexDeclarations;
 
-		eastl::string m_name;
-		eastl::string m_vsName;
-		eastl::string m_fsName;
+		std::string m_name;
+		std::string m_vsName;
+		std::string m_fsName;
 		uint32_t m_program;
 
 		size_t m_allVxDeclsSize;

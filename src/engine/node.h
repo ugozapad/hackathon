@@ -33,17 +33,17 @@ namespace engine
 			return (T*)getComponentByTypeInfo(T::getStaticTypeInfo());
 		}
 
-		eastl::shared_ptr<Component> createComponentByType(const TypeInfo* typeinfo);
+		std::shared_ptr<Component> createComponentByType(const TypeInfo* typeinfo);
 
 		template <typename T>
-		eastl::shared_ptr<T> createComponentByType()
+		std::shared_ptr<T> createComponentByType()
 		{
-			return eastl::static_shared_pointer_cast<T>(createComponentByType(T::getStaticTypeInfo()));
+			return std::static_pointer_cast<T>(createComponentByType(T::getStaticTypeInfo()));
 		}
 
 	private:
-		typedef eastl::fixed_list<eastl::shared_ptr<Component>, 56>::iterator ComponentIt;
-		eastl::fixed_list<eastl::shared_ptr<Component>, 56> m_components;
+		typedef std::list<std::shared_ptr<Component>>::iterator ComponentIt;
+		std::list<std::shared_ptr<Component>> m_components;
 
 		Node* m_rootNode;
 

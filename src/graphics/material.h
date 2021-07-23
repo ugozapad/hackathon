@@ -23,17 +23,17 @@ namespace engine
 
 	public:
 		Material();
-		Material(const eastl::string& filename);
+		Material(const std::string& filename);
 
 		~Material();
 
-		void load(const eastl::shared_ptr<DataStream>& dataStream) override;
+		void load(const std::shared_ptr<DataStream>& dataStream) override;
 
 		void createHwTextures();
 
 		void bind();
 
-		eastl::string& getName() { return m_materialName; }
+		std::string& getName() { return m_materialName; }
 		Shader* getShader() { return m_shader; }
 
 		TextureMap* getTexture(MAT_TEX tex);
@@ -41,14 +41,14 @@ namespace engine
 	private:
 		Shader* m_shader;
 
-		eastl::shared_ptr<TextureMap> m_albedoTexture;
-		eastl::shared_ptr<TextureMap> m_normalTexture;
-		eastl::shared_ptr<TextureMap> m_detailTexture;
+		std::shared_ptr<TextureMap> m_albedoTexture;
+		std::shared_ptr<TextureMap> m_normalTexture;
+		std::shared_ptr<TextureMap> m_detailTexture;
 
-		eastl::string m_materialName;
-		eastl::string m_albedoTextureName;
-		eastl::string m_normalTextureName;
-		eastl::string m_detailTextureName;
+		std::string m_materialName;
+		std::string m_albedoTextureName;
+		std::string m_normalTextureName;
+		std::string m_detailTextureName;
 
 		bool m_depthWrite;
 		bool m_selfillum;

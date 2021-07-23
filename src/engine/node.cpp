@@ -44,7 +44,7 @@ namespace engine
 	{
 		for (ComponentIt it = m_components.begin(); it != m_components.end(); ++it)
 		{
-			eastl::shared_ptr<Component> component = *it;
+			std::shared_ptr<Component> component = *it;
 
 			if (component)
 			{
@@ -58,9 +58,9 @@ namespace engine
 		return nullptr;
 	}
 
-	eastl::shared_ptr<Component> Node::createComponentByType(const TypeInfo* typeinfo)
+	std::shared_ptr<Component> Node::createComponentByType(const TypeInfo* typeinfo)
 	{
-		eastl::shared_ptr<Component> component = eastl::static_shared_pointer_cast<Component>(Context::getInstance()->createObject(typeinfo));
+		std::shared_ptr<Component> component = std::static_pointer_cast<Component>(Context::getInstance()->createObject(typeinfo));
 		m_components.push_back(component);
 		component->onNodeSet(this);
 		return component;

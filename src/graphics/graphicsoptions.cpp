@@ -9,7 +9,7 @@ namespace engine
 {
 	GraphicsOptions g_graphicsOptions;
 
-	bool GraphicsOptions::loadSettings(const eastl::string& filename)
+	bool GraphicsOptions::loadSettings(const std::string& filename)
 	{
 		CIniFile settingsFile(filename.c_str());
 		if (!settingsFile.ReadFile())
@@ -22,7 +22,7 @@ namespace engine
 		return true;
 	}
 
-	void GraphicsOptions::saveSettings(const eastl::string& filename)
+	void GraphicsOptions::saveSettings(const std::string& filename)
 	{
 		CIniFile settingsFile(filename.c_str());
 		if (settingsFile.ReadFile())

@@ -6,8 +6,8 @@ namespace engine
 	class GraphicsOptions
 	{
 	public:
-		bool loadSettings(const eastl::string& filename);
-		void saveSettings(const eastl::string& filename);
+		bool loadSettings(const std::string& filename);
+		void saveSettings(const std::string& filename);
 
 		void applyDefaultOptions();
 
