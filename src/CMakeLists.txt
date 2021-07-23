@@ -53,6 +53,12 @@ file(GLOB GRAPHICS_GL_SRC
 )
 source_group("src\\graphics\\gl" FILES ${GRAPHICS_GL_SRC})
 
+file(GLOB GAME_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/game/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/game/*.cpp"
+)
+source_group("src\\game" FILES ${GAME_SRC})
+
 add_executable(engine
 	${ROOTDIR_SRC}
 	${COMMON_SRC}
@@ -63,6 +69,8 @@ add_executable(engine
 	${ENGINE_COMPONENTS_SRC}
 	${GRAPHICS_SRC}
 	${GRAPHICS_GL_SRC}
+
+	${GAME_SRC}
 )
 
 set_target_name_ex(engine hackathon)

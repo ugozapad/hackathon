@@ -23,85 +23,13 @@
 
 #include "graphics/graphicscomponent.h"
 
+#include "game/birdcomponent.h"
+#include "game/skyboxcomponent.h"
+
 #include <GLFW/glfw3.h>
 
 namespace engine
 {
-	class BirdComponent : public LogicComponent
-	{
-		ImplementObject(BirdComponent, LogicComponent);
-	public:
-		BirdComponent();
-		~BirdComponent();
-
-		static void registerObject();
-
-		virtual void update(float dt);
-	};
-
-	BirdComponent::BirdComponent()
-	{
-
-	}
-
-	BirdComponent::~BirdComponent()
-	{
-
-	}
-
-	void BirdComponent::registerObject()
-	{
-		Context::getInstance()->registerObject<BirdComponent>();
-	}
-
-	void BirdComponent::update(float dt)
-	{
-		InputManager* input = InputManager::getInstance();
-		glm::vec3 pos = m_node->getPosition();
-
-		const float speed = 12.0f;
-		const float fallingSpeed = 6.0f;
-		pos.y -= fallingSpeed * dt;
-
-		if (input->getKey(GLFW_KEY_SPACE))
-			pos.y += speed * dt;
-
-		m_node->setPosition(pos);
-	}
-
-	class SkyboxComponent : public LogicComponent
-	{
-		ImplementObject(SkyboxComponent, LogicComponent);
-	public:
-		static void registerObject();
-
-	public:
-		SkyboxComponent();
-		~SkyboxComponent();
-
-		virtual void update(float dt);
-	};
-
-	void SkyboxComponent::registerObject()
-	{
-		Context::getInstance()->registerObject<SkyboxComponent>();
-	}
-
-	SkyboxComponent::SkyboxComponent()
-	{
-
-	}
-
-	SkyboxComponent::~SkyboxComponent()
-	{
-
-	}
-
-	void SkyboxComponent::update(float dt)
-	{
-		m_node->setPosition(CameraProxy::getInstance()->getCamera()->getPosition());
-	}
-
 	static MallocAllocator g_allocator;
 	static GLFWwindow* g_engineWindow;
 	static View* g_engineView;
@@ -235,6 +163,15 @@ namespace engine
 		// initialize renderer
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
+
+		// hack: render loading screen
+		{
+			std::shared_ptr<TextureMap> loadTex = ContentManager::getInstance()->loadTexture("data/textures/load.bmp");
+
+			graphicsDevice->clear(ClearRenderTarget);
+			ScreenQuad::render(loadTex->getHWTexture());
+			graphicsDevice->swapBuffers();
+		}
 
 		// game init
 		BirdComponent::registerObject();

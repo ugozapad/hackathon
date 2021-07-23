@@ -19,6 +19,9 @@ namespace engine
 		m_height = settingsFile.GetValueI("DisplaySettings", "Height", 600);
 		m_fullscreen = settingsFile.GetValueB("DisplaySettings", "Fullscreen", false);
 
+		m_anisotropicQuality = settingsFile.GetValueI("GraphicsSettings", "AnisotropicQuality");
+		m_shadowsQuality = settingsFile.GetValueI("GraphicsSettings", "ShadowsQuality");
+
 		return true;
 	}
 
@@ -32,6 +35,9 @@ namespace engine
 		settingsFile.SetValueI("DisplaySettings", "Height", m_height);
 		settingsFile.SetValueB("DisplaySettings", "Fullscreen", m_fullscreen);
 
+		settingsFile.SetValueI("GraphicsSettings", "AnisotropicQuality", m_anisotropicQuality);
+		settingsFile.SetValueI("GraphicsSettings", "ShadowsQuality", m_shadowsQuality);
+
 		settingsFile.WriteFile();
 	}
 
@@ -43,6 +49,9 @@ namespace engine
 		m_width = videoMode->width;
 		m_height = videoMode->height;
 		m_fullscreen = true;
+
+		m_anisotropicQuality = 4;
+		m_shadowsQuality = 3;
 	}
 
 }

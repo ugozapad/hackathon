@@ -14,6 +14,9 @@ namespace engine
 	public:
 		int m_width, m_height;
 		bool m_fullscreen;
+
+		int m_anisotropicQuality;
+		int m_shadowsQuality;
 	};
 
 	extern GraphicsOptions g_graphicsOptions;
