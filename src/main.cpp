@@ -59,8 +59,14 @@ namespace engine
 		InputManager* input = InputManager::getInstance();
 		glm::vec3 pos = m_node->getPosition();
 
-		if (input->getKey(GLFW_KEY_W))
-			spdlog::info("fly upper");
+		const float speed = 12.0f;
+		const float fallingSpeed = 6.0f;
+		pos.y -= fallingSpeed * dt;
+		
+		if (input->getKey(GLFW_KEY_SPACE))
+			pos.y += speed * dt;
+
+		m_node->setPosition(pos);
 	}
 
 	class SkyboxComponent : public LogicComponent
@@ -265,16 +271,20 @@ namespace engine
 			glfwPollEvents();
 
 			// update timer
-			Timer::getInstance()->update();
+			Timer::getInstance()->reset();
 
 			// update camera
 			Camera* camera = CameraProxy::getInstance()->getCamera();
 
 			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 			float radius = 10.0f;
-			float camX = sin(glfwGetTime()) * radius;
-			float camZ = cos(glfwGetTime()) * radius;
-			glm::vec3 pos = glm::vec3(camX, -5.0f, camZ);
+			//float camX = sin(glfwGetTime()) * radius;
+			//float camZ = cos(glfwGetTime()) * radius;
+
+			float camX = radius;
+			float camZ = radius;
+
+			glm::vec3 pos = glm::vec3(camX, 0.0f, camZ);
 			view = glm::lookAt(pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			camera->m_position = pos;
 			camera->getView()->m_view = view;
@@ -292,6 +302,8 @@ namespace engine
 				Renderer::getInstance()->renderView(g_engineView);
 
 			graphicsDevice->swapBuffers();
+
+			Timer::getInstance()->update();
 		}
 
 		spdlog::info("Exiting engine ...");
