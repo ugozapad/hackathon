@@ -221,13 +221,15 @@ namespace engine
 
 	void Material::createHwTextures()
 	{
-		m_albedoTexture = ContentManager::getInstance()->loadTexture(m_albedoTextureName);
+		ContentManager* contentManager = ContentManager::getInstance();
+
+		m_albedoTexture = contentManager->loadTexture(m_albedoTextureName);
 
 		if (!m_normalTextureName.empty())
-			m_normalTexture = ContentManager::getInstance()->loadTexture(m_normalTextureName);
+			m_normalTexture = contentManager->loadTexture(m_normalTextureName);
 
 		if (!m_detailTextureName.empty())
-			m_detailTexture = ContentManager::getInstance()->loadTexture(m_detailTextureName);
+			m_detailTexture = contentManager->loadTexture(m_detailTextureName);
 	}
 
 	void Material::bind()
