@@ -6,6 +6,9 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+#include "engine/engine.h"
+#include "engine/world.h"
+
 namespace engine
 {
 	void Node::registerObject()
@@ -64,6 +67,19 @@ namespace engine
 		m_components.push_back(component);
 		component->onNodeSet(this);
 		return component;
+	}
+
+	void Node::setRootNode(Node* node)
+	{
+		m_rootNode = node;
+	}
+
+	std::shared_ptr<Node> Node::createChild()
+	{
+		std::shared_ptr<Node> node = Engine::ms_world->createNodePtr();
+		node->setRootNode(this);
+		m_childs.push_back(node);
+		return node;
 	}
 
 }

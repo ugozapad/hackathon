@@ -3,6 +3,7 @@
 
 namespace engine
 {
+	class World;
 	class Component;
 
 	class Node : public Object
@@ -10,6 +11,9 @@ namespace engine
 		ImplementObject(Node, Object);
 	public:
 		static void registerObject();
+
+	private:
+		friend class World;
 
 	public:
 		Node();
@@ -41,9 +45,16 @@ namespace engine
 			return std::static_pointer_cast<T>(createComponentByType(T::getStaticTypeInfo()));
 		}
 
+		void setRootNode(Node* node);
+
+		std::shared_ptr<Node> createChild();
+
 	private:
 		typedef std::list<std::shared_ptr<Component>>::iterator ComponentIt;
 		std::list<std::shared_ptr<Component>> m_components;
+
+		typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
+		std::list<std::shared_ptr<Node>> m_childs;
 
 		Node* m_rootNode;
 

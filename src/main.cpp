@@ -166,9 +166,12 @@ namespace engine
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
 
+		// Get content manager ptr.
+		ContentManager* contentManager = ContentManager::getInstance();
+
 		// hack: render loading screen
 		{
-			std::shared_ptr<TextureMap> loadTex = ContentManager::getInstance()->loadTexture("data/textures/load.bmp");
+			std::shared_ptr<TextureMap> loadTex = contentManager->loadTexture("data/textures/load.bmp");
 
 			graphicsDevice->clear(ClearRenderTarget);
 			ScreenQuad::render(loadTex->getHWTexture());
@@ -186,13 +189,25 @@ namespace engine
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
 		std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
-		skyboxmesh->addModel(ContentManager::getInstance()->loadModel("data/models/skybox_1.dae"));
+		skyboxmesh->addModel(contentManager->loadModel("data/models/skybox_1.dae"));
 
+		// Add bird
 		std::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();
 
 		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
-		graphicsComponent->addModel(ContentManager::getInstance()->loadModel("data/models/test1.dae"));
+		graphicsComponent->addModel(contentManager->loadModel("data/models/test1.dae"));
+
+		// only for test, add second bird
+		std::shared_ptr<Node> childBirdNode = birdNode->createChild();
+		glm::vec3 testPos = childBirdNode->getPosition();
+		testPos.x = 1.0f;
+		testPos.z = -1.0f;
+		childBirdNode->setPosition(testPos);
+
+		// add test model
+		std::shared_ptr<GraphicsComponent> childBirdMesh = childBirdNode->createComponentByType<GraphicsComponent>();
+		childBirdMesh->addModel(contentManager->loadModel("data/models/test1.dae"));
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
