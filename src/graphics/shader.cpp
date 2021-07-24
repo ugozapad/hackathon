@@ -42,6 +42,7 @@ namespace engine
 
 	Shader::Shader(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
 	{
+		m_allVxDeclsSize = 0;
 		create(name, vertexPath, fragmentPath);
 	}
 
@@ -57,7 +58,9 @@ namespace engine
 
 	bool Shader::create(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
 	{
-		m_allVxDeclsSize = 0;
+		if (m_allVxDeclsSize == 0)
+			m_allVxDeclsSize = 0;
+
 		m_name = name;
 		m_vsName = vertexPath;
 		m_fsName = fragmentPath;
@@ -155,7 +158,7 @@ namespace engine
 
 	void Shader::hotReload()
 	{
-		spdlog::info("--- HOT RELOAD %s ---", m_name.c_str());
+		spdlog::info("--- RELOAD {} ---", m_name.c_str());
 		destroy();
 		create(m_name, m_vsName, m_fsName);
 	}

@@ -28,10 +28,16 @@ namespace engine
 
 		const float speed = 12.0f;
 		const float fallingSpeed = 6.0f;
-		pos.y -= fallingSpeed * dt;
+		//pos.y -= fallingSpeed * dt;
 
 		if (input->getKey(GLFW_KEY_SPACE))
 			pos.y += speed * dt;
+
+		if (input->getKey(GLFW_KEY_W))
+			pos.y += speed * dt;
+
+		if (input->getKey(GLFW_KEY_S))
+			pos.y -= speed * dt;
 
 		m_node->setPosition(pos);
 	}

@@ -100,4 +100,11 @@ namespace engine
 
 		return (*shaderAtTable).second;
 	}
+
+	void ShaderManager::reloadShaders()
+	{
+		for (auto it : m_shaders)
+			it.second->hotReload();
+	}
+
 }

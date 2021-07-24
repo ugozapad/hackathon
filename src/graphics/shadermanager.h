@@ -16,6 +16,8 @@ namespace engine
 
 		Shader* createShader(const std::string& name);
 
+		void reloadShaders();
+
 	private:
 		std::map<std::string, Shader*> m_shaders;
 	};

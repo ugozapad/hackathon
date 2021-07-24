@@ -66,6 +66,20 @@ namespace engine
 		int m_height;
 	};
 
+	enum class TextureWrapComponent
+	{
+		S,
+		T
+	};
+
+	enum class TextureWrap
+	{
+		Repeat,
+		MirroredRepeat,
+		ClampToEdge,
+		ClampToBorder
+	};
+
 }
 
 #endif // GFXCOMMON_H

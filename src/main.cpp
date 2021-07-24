@@ -21,6 +21,8 @@
 #include "graphics/graphicsoptions.h"
 #include "graphics/screenquad.h"
 
+#include "graphics/shadermanager.h"
+
 #include "graphics/graphicscomponent.h"
 
 #include "game/birdcomponent.h"
@@ -202,6 +204,9 @@ namespace engine
 			if (InputManager::getInstance()->getKey(GLFW_KEY_F11))
 				Renderer::getInstance()->makeScreenshot();
 
+			if (InputManager::getInstance()->getKey(GLFW_KEY_F10))
+				ShaderManager::getInstance()->reloadShaders();
+
 			if (strstr(commandLine.c_str(), "-quit"))
 				break;
 
@@ -215,11 +220,11 @@ namespace engine
 
 			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 			float radius = 5.0f;
-			float camX = sin(glfwGetTime()) * radius;
-			float camZ = cos(glfwGetTime()) * radius;
+			//float camX = sin(glfwGetTime()) * radius;
+			//float camZ = cos(glfwGetTime()) * radius;
 
-			//float camX = radius;
-			//float camZ = radius;
+			float camX = radius;
+			float camZ = radius;
 
 			glm::vec3 pos = glm::vec3(camX, 0.0f, camZ);
 			view = glm::lookAt(pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
