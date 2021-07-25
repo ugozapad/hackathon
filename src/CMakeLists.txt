@@ -56,6 +56,7 @@ source_group("src\\graphics\\gl" FILES ${GRAPHICS_GL_SRC})
 file(GLOB AUDIO_SRC
 	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.c"
 )
 source_group("src\\audio" FILES ${AUDIO_SRC})
 
@@ -90,6 +91,8 @@ if (MSVC)
    set_source_files_properties(pch.cpp PROPERTIES COMPILE_FLAGS "/Ycpch.h")
 
    set_source_files_properties(graphics/gl/glad.c PROPERTIES COMPILE_FLAGS /Y-)
+   set_source_files_properties(audio/miniaudio.c PROPERTIES COMPILE_FLAGS /Y-)
+   set_source_files_properties(audio/stb_vorbis.c PROPERTIES COMPILE_FLAGS /Y-)
 else()
 	target_precompile_headers(engine PRIVATE "pch.h")
 endif()

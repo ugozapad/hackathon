@@ -22,4 +22,9 @@ namespace engine
 	{
 
 	}
+
+	void AudioManager::update()
+	{
+
+	}
 }

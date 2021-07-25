@@ -2,27 +2,25 @@
 #define AUDIOMANAGERFMOD_H
 
 #include "audio/audiomanager.h"
-
-#include <fmod.hpp>
+#include "audio/audio_fmod_shared.h"
 
 namespace engine
 {
-	class AudioManagerFmod : public AudioManager
+	class AudioManagerFMOD : public AudioManager
 	{
-		static AudioManagerFmod ms_instance;
-
+		static AudioManagerFMOD ms_instance;
 	public:
-		AudioManagerFmod();
-		~AudioManagerFmod();
+		AudioManagerFMOD();
+		~AudioManagerFMOD();
 
 		virtual void init();
 		virtual void shutdown();
 
+		void update() override;
+
 	private:
 		FMOD::System* m_fmodSystem;
 	};
-
-	std::string getStringFromFMODResult(FMOD_RESULT result);
 }
 
 #endif // !AUDIOMANAGERFMOD_H

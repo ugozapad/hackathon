@@ -11,6 +11,8 @@ namespace engine
 
 		virtual void init();
 		virtual void shutdown();
+
+		virtual void update();
 	};
 }
 
