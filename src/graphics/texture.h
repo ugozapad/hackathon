@@ -32,6 +32,7 @@ namespace engine
 
 		virtual void release() = 0;
 		virtual unsigned int getHandle() = 0;
+
 	};
 
 	class GrTexture2D : public GrTextureBase

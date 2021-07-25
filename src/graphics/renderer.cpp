@@ -51,6 +51,8 @@ namespace engine
 
 	void Renderer::init(View* view)
 	{
+		m_view = view;
+
 		ShaderManager::getInstance()->init();
 
 		ScreenQuad::init();
@@ -145,11 +147,8 @@ namespace engine
 
 	void Renderer::makeScreenshot()
 	{
-		GLint m_viewport[4];
-		glGetIntegerv(GL_VIEWPORT, m_viewport);
-
-		int width = m_viewport[2];
-		int height = m_viewport[3];
+		int width = m_view->m_width;
+		int height = m_view->m_height;
 
 		size_t bufferSize = 3 * width * height;
 		uint8_t* screenBuffer = new uint8_t[bufferSize];

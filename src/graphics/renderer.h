@@ -23,6 +23,9 @@ namespace engine
 		void renderView(View* view);
 
 		void makeScreenshot();
+
+	private:
+		View* m_view;
 	};
 }
 

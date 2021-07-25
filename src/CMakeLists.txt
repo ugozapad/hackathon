@@ -53,6 +53,12 @@ file(GLOB GRAPHICS_GL_SRC
 )
 source_group("src\\graphics\\gl" FILES ${GRAPHICS_GL_SRC})
 
+file(GLOB AUDIO_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.cpp"
+)
+source_group("src\\audio" FILES ${AUDIO_SRC})
+
 file(GLOB GAME_SRC
 	"${CMAKE_CURRENT_SOURCE_DIR}/game/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/game/*.cpp"
@@ -69,7 +75,7 @@ add_executable(engine
 	${ENGINE_COMPONENTS_SRC}
 	${GRAPHICS_SRC}
 	${GRAPHICS_GL_SRC}
-
+	${AUDIO_SRC}
 	${GAME_SRC}
 )
 
@@ -105,10 +111,16 @@ else()
 endif()
 
 target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/include")
+target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/include/fmod")
 
 if (MSVC)
 #	target_link_libraries(engine debug "assimp-vc142-mtd.lib")
 #	target_link_libraries(engine optimized "assimp-vc142-mt.lib")
 else()
 	target_link_libraries(engine "libassimp.dll.a")
+endif()
+
+
+if (MSVC AND WIN32)
+	target_link_libraries(engine "fmod_vc.lib")
 endif()

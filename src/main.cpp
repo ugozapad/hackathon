@@ -1,18 +1,17 @@
 #include "pch.h"
 #include "common/common.h"
 #include "common/mallocallocator.h"
-#include "file/filedevice.h"
 
 #include "core/context.h"
 #include "core/timer.h"
 
+#include "file/filedevice.h"
+
 #include "engine/engine.h"
 #include "engine/inputmanager.h"
 #include "engine/camera.h"
-
 #include "engine/node.h"
 #include "engine/components/logiccomponent.h"
-
 #include "engine/content/contentmanager.h"
 
 #include "graphics/graphicsdevice.h"
@@ -20,10 +19,10 @@
 #include "graphics/view.h"
 #include "graphics/graphicsoptions.h"
 #include "graphics/screenquad.h"
-
 #include "graphics/shadermanager.h"
-
 #include "graphics/graphicscomponent.h"
+
+#include "audio/audiomanager.h"
 
 #include "game/birdcomponent.h"
 #include "game/skyboxcomponent.h"
@@ -88,8 +87,12 @@ namespace engine
 		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
 
 		g_engineView = mem_new<View>(*g_sysAllocator);
-		g_engineView->m_width = width;
-		g_engineView->m_height = height;
+
+		int realWidth, realHeight;
+		glfwGetWindowSize(g_engineWindow, &realWidth, &realHeight);
+
+		g_engineView->m_width = realWidth;
+		g_engineView->m_height = realHeight;
 		g_engineView->m_fov = 75.0f;
 		g_engineView->m_znear = 0.01f;
 		g_engineView->m_zfar = 10000.0f;
@@ -165,6 +168,9 @@ namespace engine
 		// initialize renderer
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
+
+		// initialize audio manager
+		AudioManager::getInstance()->init();
 
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
@@ -263,6 +269,8 @@ namespace engine
 		}
 
 		spdlog::info("Exiting engine ...");
+
+		AudioManager::getInstance()->shutdown();
 
 		Renderer::getInstance()->shutdown();
 		Renderer::destroyInstance();
