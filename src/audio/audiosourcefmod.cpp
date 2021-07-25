@@ -5,10 +5,18 @@ namespace engine
 {
 	AudioSourceFMOD::AudioSourceFMOD(const std::string& filename, FMOD::System* system)
 	{
+		m_soundChannel = nullptr;
+
 		assert(system);
 		m_system = system;
 
 		FMOD_RESULT result = m_system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &m_sound);
+		if (result != FMOD_OK)
+		{
+			spdlog::error("[audio]: failed to create sound!");
+			spdlog::error("[audio]: FMOD ERROR: {}", getStringFromFMODResult(result));
+			std::terminate();
+		}
 	}
 
 	AudioSourceFMOD::~AudioSourceFMOD()
@@ -39,6 +47,12 @@ namespace engine
 				spdlog::error("[audio]: FMOD ERROR: {}", getStringFromFMODResult(result));
 				std::terminate();
 			}
+		}
+
+		if (m_soundChannel && isPlaying())
+		{
+			stop();
+			play();
 		}
 	}
 

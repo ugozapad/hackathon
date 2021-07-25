@@ -126,8 +126,15 @@ namespace arex {
 		void set_format(audio_device_format device_format) { fmt = device_format; }
 		audio_device_format get_format() { return fmt; }
 
-		bool set_position(size_t src_position) { return (ma_decoder_seek_to_pcm_frame(&decoder, src_position) == MA_SUCCESS); }
-		size_t get_position() { return 0; }
+		bool set_position(size_t src_position) {
+			return (ma_decoder_seek_to_pcm_frame(&decoder, src_position) == MA_SUCCESS); 
+		}	
+		
+		size_t get_position() {
+			ma_uint64 outPosition = 0;
+			ma_decoder_get_cursor_in_pcm_frames(&decoder, &outPosition);
+			return outPosition;
+		}
 
 		size_t process(float* pInput, float* pOutput, size_t frames) {
 			return ma_decoder_read_pcm_frames(&decoder, pOutput, frames);
@@ -166,8 +173,8 @@ namespace arex {
 		void set_volume(float value) { volume = value; }
 		float get_volume() { return volume; }
 
-		void set_source_position(size_t src_position) {} 
-		size_t get_source_position() { return 0; }
+		void set_source_position(size_t src_position) { parent_ptr->set_position(src_position); }
+		size_t get_source_position() { return parent_ptr->get_position(); }
 
 		void set_status(emitter_status new_status) { status = new_status; }
 		emitter_status get_status() { return status; }
