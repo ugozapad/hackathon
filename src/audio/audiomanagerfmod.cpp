@@ -3,7 +3,7 @@
 
 namespace engine
 {
-	AudioManagerFMOD AudioManagerFMOD::ms_instance;
+	//AudioManagerFMOD AudioManagerFMOD::ms_instance;
 
 	AudioManagerFMOD::AudioManagerFMOD()
 	{
