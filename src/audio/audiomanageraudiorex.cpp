@@ -3,7 +3,7 @@
 
 namespace engine
 {
-	AudioManagerAudiorex AudioManagerAudiorex::ms_instance;
+	//AudioManagerAudiorex AudioManagerAudiorex::ms_instance;
 
 	void AudioManagerAudiorex::init()
 	{
