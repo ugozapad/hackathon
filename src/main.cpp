@@ -24,6 +24,7 @@
 
 #include "audio/audiomanager.h"
 
+#include "game/gamestate.h"
 #include "game/birdcomponent.h"
 #include "game/skyboxcomponent.h"
 
@@ -216,6 +217,8 @@ namespace engine
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
+		GameState* gameState = GameState::getInstance();
+
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
 			if (InputManager::getInstance()->getKey(GLFW_KEY_ESCAPE))
@@ -242,7 +245,6 @@ namespace engine
 			float radius = 5.0f;
 			//float camX = sin(glfwGetTime()) * radius;
 			//float camZ = cos(glfwGetTime()) * radius;
-
 			float camX = radius;
 			float camZ = radius;
 
