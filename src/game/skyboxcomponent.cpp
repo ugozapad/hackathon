@@ -23,6 +23,6 @@ namespace engine
 
 	void SkyboxComponent::update(float dt)
 	{
-		m_node->setPosition(CameraProxy::getInstance()->getCamera()->getPosition());
+		m_node->setPosition(CameraProxy::getInstance()->getPosition());
 	}
 }

@@ -20,20 +20,15 @@ namespace engine
 		glm::vec3 m_position;
 	};
 
-	class CameraProxy : public Singleton<CameraProxy>
+	class CameraProxy : public Singleton<CameraProxy>,
+						public Camera
 	{
 	private:
 		static CameraProxy ms_cameraProxy;
 
 	public:
-		void    setCamera(Camera* camera) { m_camera = camera; }
-		Camera* getCamera() { return m_camera; }
 
-		void    setView(View* view) { m_camera->setView(view); }
-		View*   getView() { return  m_camera->getView(); }
 
-	private:
-		Camera* m_camera;
 	};
 }
 

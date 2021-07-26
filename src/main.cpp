@@ -98,7 +98,6 @@ namespace engine
 		g_engineView->m_zfar = 10000.0f;
 		g_engineView->updateInternalValues();
 
-		CameraProxy::getInstance()->setCamera(mem_new<Camera>(*g_sysAllocator));
 		CameraProxy::getInstance()->setView(g_engineView);
 	}
 
@@ -237,7 +236,7 @@ namespace engine
 			Timer::getInstance()->reset();
 
 			// update camera
-			Camera* camera = CameraProxy::getInstance()->getCamera();
+			Camera* camera = CameraProxy::getInstance();
 
 			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 			float radius = 5.0f;
