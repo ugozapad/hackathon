@@ -84,6 +84,7 @@ namespace engine
 		m_detailTexture = nullptr;
 		m_depthWrite = true;
 		m_selfillum = false;
+		m_clampToEdge = false;
 	}
 
 	Material::~Material()
@@ -140,6 +141,11 @@ namespace engine
 				if (nextTextureTok && strcmp(nextTextureTok, "skipmips") == 0)
 				{
 					disableMipMapping = true;
+					albedoName = strtok(NULL, tokenizerStr);
+				}
+				else if (nextTextureTok && strcmp(nextTextureTok, "clampedge") == 0)
+				{
+					m_clampToEdge = true;
 					albedoName = strtok(NULL, tokenizerStr);
 				}
 				else
@@ -243,6 +249,18 @@ namespace engine
 
 		// activate diffuse texture as 0
 		device->setTexture2D(0, m_albedoTexture->getHWTexture());
+
+		if (m_clampToEdge)
+		{
+			m_albedoTexture->setWrapS(TextureWrap::ClampToEdge);
+			m_albedoTexture->setWrapT(TextureWrap::ClampToEdge);
+		}
+		else
+		{
+			m_albedoTexture->setWrapS(TextureWrap::Repeat);
+			m_albedoTexture->setWrapT(TextureWrap::Repeat);
+		}
+
 		m_shader->setInteger("u_albedoTexture", 0);
 
 		// Set up normal texture as 1
@@ -269,6 +287,13 @@ namespace engine
 		m_shader->setMatrix("u_model", renderContext.model);
 		m_shader->setMatrix("u_view", renderContext.view);
 		m_shader->setMatrix("u_proj", renderContext.proj);
+
+		// compute mvp matrix
+		glm::mat4 mvp = glm::mat4(1.0f);
+		mvp = renderContext.proj * renderContext.view * renderContext.model;
+
+		m_shader->setMatrix("u_mvp", mvp);
+		m_shader->setMatrix("u_modelViewProjection", mvp);
 	}
 
 	TextureMap* Material::getTexture(MAT_TEX tex)

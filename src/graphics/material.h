@@ -52,6 +52,7 @@ namespace engine
 
 		bool m_depthWrite;
 		bool m_selfillum;
+		bool m_clampToEdge;
 	};
 }
 

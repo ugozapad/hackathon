@@ -25,6 +25,10 @@ namespace engine
 
 		void createHWTexture();
 
+		// #HACK
+		void setWrapS(TextureWrap wrap);
+		void setWrapT(TextureWrap wrap);
+
 	private:
 		GrTexture2D* m_texture2D;
 		TextureCreationDesc m_texdesc;

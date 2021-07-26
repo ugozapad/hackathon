@@ -1,4 +1,7 @@
 #include "pch.h"
+
+#include "graphics/gl/glad/glad.h"
+
 #include "graphics/texturemap.h"
 
 #include "graphics/graphicsdevice.h"
@@ -93,5 +96,37 @@ namespace engine
 
 			m_texdesc.m_compressionFormat = (image.get_format() == GL_COMPRESSED_RGB_S3TC_DXT1_EXT) ? TextureCompressionFormat::DXT1 : TextureCompressionFormat::DXT5;
 		}
+	}
+
+	void TextureMap::setWrapS(TextureWrap wrap)
+	{
+		GLint param = 0;
+
+		if (wrap == TextureWrap::Repeat)
+			param = GL_REPEAT;
+		else if (wrap == TextureWrap::MirroredRepeat)
+			param = GL_MIRRORED_REPEAT;
+		else if (wrap == TextureWrap::ClampToEdge)
+			param = GL_CLAMP_TO_EDGE;
+		else if (wrap == TextureWrap::ClampToBorder)
+			param = GL_CLAMP_TO_BORDER;
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, param);
+	}
+
+	void TextureMap::setWrapT(TextureWrap wrap)
+	{
+		GLint param = 0;
+
+		if (wrap == TextureWrap::Repeat)
+			param = GL_REPEAT;
+		else if (wrap == TextureWrap::MirroredRepeat)
+			param = GL_MIRRORED_REPEAT;
+		else if (wrap == TextureWrap::ClampToEdge)
+			param = GL_CLAMP_TO_EDGE;
+		else if (wrap == TextureWrap::ClampToBorder)
+			param = GL_CLAMP_TO_BORDER;
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, param);
 	}
 }
