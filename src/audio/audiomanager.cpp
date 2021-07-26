@@ -27,4 +27,9 @@ namespace engine
 	{
 
 	}
+
+	AudioSource* AudioManager::create_source(const std::string& filename)
+	{
+		return nullptr;
+	}
 }

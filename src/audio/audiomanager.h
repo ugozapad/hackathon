@@ -3,6 +3,8 @@
 
 namespace engine
 {
+	class AudioSource;
+	
 	class AudioManager : public Singleton<AudioManager>
 	{
 	public:
@@ -13,6 +15,8 @@ namespace engine
 		virtual void shutdown();
 
 		virtual void update();
+
+		virtual AudioSource* create_source(const std::string& filename);
 	};
 }
 

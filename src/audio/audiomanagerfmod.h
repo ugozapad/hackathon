@@ -18,6 +18,8 @@ namespace engine
 
 		void update() override;
 
+		virtual AudioSource* create_source(const std::string& filename);
+	
 	private:
 		FMOD::System* m_fmodSystem;
 	};

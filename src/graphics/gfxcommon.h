@@ -80,6 +80,16 @@ namespace engine
 		ClampToBorder
 	};
 
+	enum class TextureFilter
+	{
+		Nearest,
+		Linear,
+		NearestMipmapNearest,
+		LinearMipmapNearest,
+		NearestMipmapLinear,
+		LinearMipmapLinear
+	};
+
 }
 
 #endif // GFXCOMMON_H

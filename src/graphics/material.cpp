@@ -250,6 +250,7 @@ namespace engine
 		// activate diffuse texture as 0
 		device->setTexture2D(0, m_albedoTexture->getHWTexture());
 
+		// if clamp to edge is enable
 		if (m_clampToEdge)
 		{
 			m_albedoTexture->setWrapS(TextureWrap::ClampToEdge);

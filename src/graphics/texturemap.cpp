@@ -98,7 +98,7 @@ namespace engine
 		}
 	}
 
-	void TextureMap::setWrapS(TextureWrap wrap)
+	GLint getGlWrap(TextureWrap wrap)
 	{
 		GLint param = 0;
 
@@ -111,22 +111,63 @@ namespace engine
 		else if (wrap == TextureWrap::ClampToBorder)
 			param = GL_CLAMP_TO_BORDER;
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, param);
+		return param;
+	}
+
+	void TextureMap::setWrapS(TextureWrap wrap)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, getGlWrap(wrap));
 	}
 
 	void TextureMap::setWrapT(TextureWrap wrap)
 	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, getGlWrap(wrap));
+	}
+
+
+	GLint getGlTexFilter(TextureFilter filter)
+	{
 		GLint param = 0;
 
-		if (wrap == TextureWrap::Repeat)
-			param = GL_REPEAT;
-		else if (wrap == TextureWrap::MirroredRepeat)
-			param = GL_MIRRORED_REPEAT;
-		else if (wrap == TextureWrap::ClampToEdge)
-			param = GL_CLAMP_TO_EDGE;
-		else if (wrap == TextureWrap::ClampToBorder)
-			param = GL_CLAMP_TO_BORDER;
+		if (filter == TextureFilter::Linear)
+			param = GL_LINEAR;
+		else if (filter == TextureFilter::Nearest)
+			param = GL_NEAREST;
+		else if (filter == TextureFilter::LinearMipmapLinear)
+			param = GL_LINEAR_MIPMAP_LINEAR;
+		else if (filter == TextureFilter::LinearMipmapNearest)
+			param = GL_LINEAR_MIPMAP_NEAREST;
+		else if (filter == TextureFilter::NearestMipmapLinear)
+			param = GL_NEAREST_MIPMAP_LINEAR;
+		else if (filter == TextureFilter::NearestMipmapNearest)
+			param = GL_NEAREST_MIPMAP_NEAREST;	
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, param);
+		return param;
 	}
+
+	void TextureMap::setMin(TextureFilter filter)
+	{
+		GLint param = 0;
+		param = getGlTexFilter(filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, param);
+	}
+
+	void TextureMap::setMag(TextureFilter filter)
+	{
+		GLint param = 0;
+		param = getGlTexFilter(filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, param);
+	}
+
+	void TextureMap::gen_mipmaps()
+	{
+		if (!m_texdesc.m_isCompressed)
+		{
+			if (!m_texdesc.m_mipmapping)
+				m_texdesc.m_mipmapping = true;
+
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+	}
+
 }

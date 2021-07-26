@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "audio/audiomanagerfmod.h"
+#include "audio/audiosourcefmod.h"
 
 namespace engine
 {
@@ -74,5 +75,10 @@ namespace engine
 	void AudioManagerFMOD::update()
 	{
 		m_fmodSystem->update();
+	}
+
+	AudioSource* AudioManagerFMOD::create_source(const std::string& filename)
+	{
+		return (AudioSource*) new AudioSourceFMOD(filename, m_fmodSystem);
 	}
 }

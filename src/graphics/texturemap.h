@@ -28,6 +28,10 @@ namespace engine
 		// #HACK
 		void setWrapS(TextureWrap wrap);
 		void setWrapT(TextureWrap wrap);
+		void setMin(TextureFilter filter);
+		void setMag(TextureFilter filter);
+
+		void gen_mipmaps();
 
 	private:
 		GrTexture2D* m_texture2D;

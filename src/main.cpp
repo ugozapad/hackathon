@@ -118,6 +118,8 @@ namespace engine
 		if (strstr(buffer, "bin"))
 			FileDevice::getInstance()->setDefaultPath("../");
 
+		spdlog::info("working path: {}", FileDevice::getInstance()->getDefaultPath());
+
 		std::string commandLine = createCommandLine(argc, argv);
 		spdlog::info("command lile: {}", commandLine.c_str());
 
@@ -276,9 +278,11 @@ namespace engine
 		Renderer::getInstance()->shutdown();
 		Renderer::destroyInstance();
 
+		graphicsDevice->shutdown();
+
 		Engine::shutdown();
 
-		graphicsDevice->shutdown();
+		g_graphicsOptions.saveSettings("engine.ini");
 
 		mem_delete(*g_sysAllocator, g_engineView);
 
