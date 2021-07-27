@@ -24,9 +24,11 @@
 
 #include "audio/audiomanager.h"
 
+#include "game/game.h"
 #include "game/gamestate.h"
 #include "game/birdcomponent.h"
 #include "game/skyboxcomponent.h"
+#include "game/cameralogic.h"
 
 #include <GLFW/glfw3.h>
 
@@ -104,11 +106,11 @@ namespace engine
 
 	int main(int argc, char* argv[])
 	{
-		// initializing logger
-		Logger::init();
-
 		// set system allocator
 		g_sysAllocator = &g_allocator;
+
+		// initializing logger
+		Logger::init();
 
 		// Initialize file system
 		FileDevice::getInstance()->setDefaultPath("");
@@ -177,7 +179,7 @@ namespace engine
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
 
-		// hack: render loading screen
+		// #HACK: render loading screen
 		{
 			std::shared_ptr<TextureMap> loadTex = contentManager->loadTexture("data/textures/load.bmp");
 
@@ -187,8 +189,7 @@ namespace engine
 		}
 
 		// game init
-		BirdComponent::registerObject();
-		SkyboxComponent::registerObject();
+		registerGameClasses();
 
 		Engine::loadEmptyWorld();
 
@@ -202,7 +203,7 @@ namespace engine
 		// Add bird
 		std::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();
-
+		birdNode->createComponentByType<CameraLogicComponent>();
 		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
 		graphicsComponent->addModel(contentManager->loadModel("data/models/test1.dae"));
 
@@ -239,21 +240,6 @@ namespace engine
 
 			// update timer
 			Timer::getInstance()->reset();
-
-			// update camera
-			Camera* camera = CameraProxy::getInstance();
-
-			glm::mat4 view = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			float radius = 5.0f;
-			//float camX = sin(glfwGetTime()) * radius;
-			//float camZ = cos(glfwGetTime()) * radius;
-			float camX = radius;
-			float camZ = radius;
-
-			glm::vec3 pos = glm::vec3(camX, 0.0f, camZ);
-			view = glm::lookAt(pos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			camera->m_position = pos;
-			camera->getView()->m_view = view;
 
 			// run engine frame
 			Engine::update();

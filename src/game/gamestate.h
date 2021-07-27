@@ -3,6 +3,8 @@
 
 namespace engine
 {
+	class Node;
+
 	class GameState : public Singleton<GameState>
 	{
 		static GameState ms_instance;
@@ -15,10 +17,15 @@ namespace engine
 		};
 
 		void       setGameState(GAME_STATE state) { m_gameState = state; }
-		GAME_STATE getGameState() { return m_gameState; }
+		GAME_STATE getGameState()                 { return m_gameState; }
+
+		void       setPlayerNode(Node* node)      { m_playerNode = node; }
+		Node*      getPlayerNode()                { return m_playerNode; }
 
 	private:
 		GAME_STATE m_gameState;
+
+		Node* m_playerNode;
 	};
 }
 

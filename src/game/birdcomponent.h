@@ -14,6 +14,7 @@ namespace engine
 
 		static void registerObject();
 
+		virtual void onNodeSet(Node* node);
 		virtual void update(float dt);
 	};
 }

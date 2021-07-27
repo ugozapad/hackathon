@@ -34,10 +34,13 @@ namespace engine
 			Node* node = (*it).get();
 			if (node)
 			{
-				LogicComponent* logicComponent = node->getComponentByType<LogicComponent>();
-				if (logicComponent)
+				for (Node::ComponentIt compIt = node->m_components.begin(); compIt != node->m_components.end(); ++compIt)
 				{
-					logicComponent->update(Timer::getInstance()->getDelta());
+					Component* component = compIt->get();
+					if (component && component->isA<LogicComponent>())
+					{
+						reinterpret_cast<LogicComponent*>(component)->update(Timer::getInstance()->getDelta());
+					}
 				}
 			}
 		}

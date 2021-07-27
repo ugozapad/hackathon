@@ -4,6 +4,8 @@
 #include "engine/node.h"
 #include "engine/inputmanager.h"
 
+#include "game/gamestate.h"
+
 namespace engine
 {
 	BirdComponent::BirdComponent()
@@ -21,6 +23,12 @@ namespace engine
 		Context::getInstance()->registerObject<BirdComponent>();
 	}
 
+	void BirdComponent::onNodeSet(Node* node)
+	{
+		Component::onNodeSet(node);
+		GameState::getInstance()->setPlayerNode(node);
+	}
+
 	void BirdComponent::update(float dt)
 	{
 		InputManager* input = InputManager::getInstance();
@@ -32,13 +40,19 @@ namespace engine
 
 		if (input->getKey(GLFW_KEY_SPACE))
 			pos.y += speed * dt;
+		if (input->getKey(GLFW_KEY_LEFT_CONTROL))
+			pos.y -= speed * dt;
 
 		if (input->getKey(GLFW_KEY_W))
-			pos.y += speed * dt;
-
+			pos.x += speed * dt;
 		if (input->getKey(GLFW_KEY_S))
-			pos.y -= speed * dt;
+			pos.x -= speed * dt;
+		if (input->getKey(GLFW_KEY_A))
+			pos.z += speed * dt;
+		if (input->getKey(GLFW_KEY_D))
+			pos.z -= speed * dt;
 
 		m_node->setPosition(pos);
 	}
+
 }

@@ -76,6 +76,11 @@ namespace engine
 		spdlog::info("OpenGL ver. {}", glGetString(GL_VERSION));
 		spdlog::info("[device:{}] [vendor:{}]", glGetString(GL_RENDERER), glGetString(GL_VENDOR));
 
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+
+		glCullFace(GL_BACK);
+
 		glGenVertexArrays(1, &g_vao);
 		glBindVertexArray(g_vao);
 	}
