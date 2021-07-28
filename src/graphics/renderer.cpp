@@ -21,6 +21,8 @@
 
 #include "graphics/graphicscomponent.h"
 
+#include "game/skyboxcomponent.h"
+
 #include "file/filedevice.h"
 
 namespace engine
@@ -111,8 +113,35 @@ namespace engine
 				Node* node = (*it).get();
 				if (node)
 				{
+					if (node->getComponentByType<SkyboxComponent>())
+					{
+						GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+						if (graphicsComponent)
+						{
+							// let's render our piece of shit.
+
+							RenderContext& renderCtx = RenderContext::getContext();
+							renderCtx.model = node->getTranslation();
+							RenderContext::setContext(renderCtx);
+
+							graphicsComponent->render();
+						}
+					}
+				}
+			}
+		}
+
+		if (world)
+		{
+			std::list<std::shared_ptr<Node>>& nodes = world->getNodeList();
+			typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
+			for (NodeIt it = nodes.begin(); it != nodes.end(); ++it)
+			{
+				Node* node = (*it).get();
+				if (node)
+				{
 					GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
-					if (graphicsComponent)
+					if (graphicsComponent && ! node->getComponentByType<SkyboxComponent>())
 					{
 						// let's render our piece of shit.
 

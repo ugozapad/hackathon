@@ -193,6 +193,16 @@ namespace engine
 
 		Engine::loadEmptyWorld();
 
+		// static mesh to level
+		std::shared_ptr<Node> levelNode = Engine::ms_world->createNodePtr();
+		std::shared_ptr<GraphicsComponent> levelMesh = levelNode->createComponentByType<GraphicsComponent>();
+		levelMesh->addModel(contentManager->loadModel("data/models/level/test.dae"));
+		{
+			glm::vec3 p = levelNode->getPosition();
+			p.y = -10.0f;
+			levelNode->setPosition(p);
+		}
+
 		// add skybox to world
 		std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
 		skyboxNode->createComponentByType<SkyboxComponent>();

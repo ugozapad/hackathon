@@ -241,7 +241,12 @@ namespace engine
 	void Material::bind()
 	{
 		GraphicsDevice* device = GraphicsDevice::getInstance();
+		
 		device->depthTest(true);
+
+		if (!m_depthWrite)
+			device->depthTest(false);
+
 		device->depthMask(m_depthWrite);
 
 		assert(m_shader);

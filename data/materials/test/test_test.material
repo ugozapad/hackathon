@@ -1,0 +1,5 @@
+material "test/test_test"
+{
+	shader diffuse
+	albedo "stucco_potolok_stucaturka.tga"
+}

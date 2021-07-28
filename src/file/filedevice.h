@@ -8,11 +8,8 @@ namespace engine { typedef FileWin32 File; }
 
 namespace engine
 {
-	class FileDevice //: public Singleton<FileDevice>
+	class FileDevice
 	{
-	private:
-	//	static FileDevice ms_instance;
-
 	public:
 		static FileDevice* getInstance();
 
