@@ -89,6 +89,7 @@ namespace engine
 			vsname += ".vsh";
 
 			std::string fsname;
+
 			fsname += "data/shaders/";
 			fsname += name;
 			fsname += ".fsh";
