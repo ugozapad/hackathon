@@ -241,6 +241,9 @@ namespace engine
 			// update timer
 			Timer::getInstance()->reset();
 
+			// update camera
+			CameraProxy::getInstance()->update();
+
 			// run engine frame
 			Engine::update();
 
