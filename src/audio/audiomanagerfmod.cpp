@@ -81,4 +81,11 @@ namespace engine
 	{
 		return (AudioSource*) new AudioSourceFMOD(filename, m_fmodSystem);
 	}
+
+	void AudioManagerFMOD::delete_source(AudioSource* source)
+	{
+		if (source)
+			delete source;
+	}
+
 }

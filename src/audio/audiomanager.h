@@ -17,6 +17,7 @@ namespace engine
 		virtual void update();
 
 		virtual AudioSource* create_source(const std::string& filename);
+		virtual void delete_source(AudioSource* source);
 	};
 }
 

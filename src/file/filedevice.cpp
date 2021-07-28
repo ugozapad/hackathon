@@ -3,7 +3,7 @@
 
 namespace engine
 {
-	FileDevice FileDevice::ms_instance;
+	//FileDevice FileDevice::ms_instance;
 
 	void FileDevice::setDefaultPath(const std::string& path)
 	{
@@ -22,6 +22,12 @@ namespace engine
 	void FileDevice::closeFile(File*& file)
 	{
 		mem_delete(*g_sysAllocator, file);
+	}
+
+	FileDevice* FileDevice::getInstance()
+	{
+		static FileDevice s_fileDevice;
+		return &s_fileDevice;
 	}
 
 }

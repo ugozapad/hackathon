@@ -32,4 +32,10 @@ namespace engine
 	{
 		return nullptr;
 	}
+
+	void AudioManager::delete_source(AudioSource* source)
+	{
+
+	}
+
 }
