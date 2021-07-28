@@ -54,7 +54,7 @@ namespace engine
 		std::list<std::shared_ptr<Component>> m_components;
 
 		typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
-		std::list<std::shared_ptr<Node>> m_childs;
+		std::list<std::shared_ptr<Node>> m_children;
 
 		Node* m_rootNode;
 
