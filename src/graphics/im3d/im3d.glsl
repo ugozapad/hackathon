@@ -1,109 +1,128 @@
 #if !defined(POINTS) && !defined(LINES) && !defined(TRIANGLES)
 	#error No primitive type defined
 #endif
-#if !defined(VERTEX_SHADER) && !defined(GEOMETRY_SHADER) && !defined(FRAGMENT_SHADER)
+#if !defined(VERTEX_SHADER) && !defined(FRAGMENT_SHADER)
 	#error No shader stage defined
 #endif
-
-#define VertexData \
-	_VertexData { \
-		noperspective float m_edgeDistance; \
-		noperspective float m_size; \
-		smooth vec4 m_color; \
-	}
 
 #define kAntialiasing 2.0
 
 #ifdef VERTEX_SHADER
-	uniform mat4 uViewProjMatrix;
-	
-	layout(location=0) in vec4 aPositionSize;
-	layout(location=1) in vec4 aColor;
-	
-	out VertexData vData;
-	
-	void main() 
-	{
-		vData.m_color = aColor.abgr; // swizzle to correct endianness
-		#if !defined(TRIANGLES)
-			vData.m_color.a *= smoothstep(0.0, 1.0, aPositionSize.w / kAntialiasing);
-		#endif
-		vData.m_size = max(aPositionSize.w, kAntialiasing);
-		gl_Position = uViewProjMatrix * vec4(aPositionSize.xyz, 1.0);
-		#if defined(POINTS)
-			gl_PointSize = vData.m_size;
-		#endif
-	}
-#endif
+/*	This vertex shader fetches Im3d vertex data manually from a uniform buffer (uVertexData). It assumes that the bound vertex buffer contains 4 vertices as follows:
 
-#ifdef GEOMETRY_SHADER
- // expand line -> triangle strip
-	layout(lines) in;
-	layout(triangle_strip, max_vertices = 4) out;
+	 -1,1       1,1
+	   2 ------- 3
+	   | \       |
+	   |   \     |
+	   |     \   |
+	   |       \ |
+	   0 ------- 1
+	 -1,-1      1,-1
+	 
+	Both the vertex ID and the vertex position are used for point/line expansion. This vertex buffer is valid for both triangle strip rendering (points/lines), and
+	triangle render using vertices 0,1,2.
 	
+	See im3d_opengl31.cpp for more details.
+*/
+
+	struct VertexData
+	{
+		vec4 m_positionSize;
+		uint m_color;
+	};
+	uniform VertexDataBlock
+	{
+		VertexData uVertexData[(64 * 1024) / 32]; // assume a 64kb block size, 32 is the aligned size of VertexData
+	};
+
+	uniform mat4 uViewProjMatrix;
 	uniform vec2 uViewport;
 	
-	in  VertexData vData[];
-	out VertexData vDataOut;
+	in vec4 aPosition;
+	
+	#if   defined(POINTS)
+		noperspective out vec2 vUv;
+	#elif defined(LINES)
+		noperspective out float vEdgeDistance;
+	#endif
+	noperspective out float vSize;
+	smooth out vec4  vColor;
+	
+	vec4 UintToRgba(uint _u)
+	{
+		vec4 ret = vec4(0.0);
+		ret.r = float((_u & 0xff000000u) >> 24u) / 255.0;
+		ret.g = float((_u & 0x00ff0000u) >> 16u) / 255.0;
+		ret.b = float((_u & 0x0000ff00u) >> 8u)  / 255.0;
+		ret.a = float((_u & 0x000000ffu) >> 0u)  / 255.0;
+		return ret;
+	}
 	
 	void main() 
 	{
-		vec2 pos0 = gl_in[0].gl_Position.xy / gl_in[0].gl_Position.w;
-		vec2 pos1 = gl_in[1].gl_Position.xy / gl_in[1].gl_Position.w;
+		#if   defined(POINTS)
+			int vid = gl_InstanceID;
+			
+			vSize = max(uVertexData[vid].m_positionSize.w, kAntialiasing);
+			vColor = UintToRgba(uVertexData[vid].m_color);
+			vColor.a *= smoothstep(0.0, 1.0, vSize / kAntialiasing);
 		
-		vec2 dir = pos0 - pos1;
-		dir = normalize(vec2(dir.x, dir.y * uViewport.y / uViewport.x)); // correct for aspect ratio
-		vec2 tng0 = vec2(-dir.y, dir.x);
-		vec2 tng1 = tng0 * vData[1].m_size / uViewport;
-		tng0 = tng0 * vData[0].m_size / uViewport;
-		
-	 // line start
-		gl_Position = vec4((pos0 - tng0) * gl_in[0].gl_Position.w, gl_in[0].gl_Position.zw); 
-		vDataOut.m_edgeDistance = -vData[0].m_size;
-		vDataOut.m_size = vData[0].m_size;
-		vDataOut.m_color = vData[0].m_color;
-		EmitVertex();
-		
-		gl_Position = vec4((pos0 + tng0) * gl_in[0].gl_Position.w, gl_in[0].gl_Position.zw);
-		vDataOut.m_color = vData[0].m_color;
-		vDataOut.m_edgeDistance = vData[0].m_size;
-		vDataOut.m_size = vData[0].m_size;
-		EmitVertex();
-		
-	 // line end
-		gl_Position = vec4((pos1 - tng1) * gl_in[1].gl_Position.w, gl_in[1].gl_Position.zw);
-		vDataOut.m_edgeDistance = -vData[1].m_size;
-		vDataOut.m_size = vData[1].m_size;
-		vDataOut.m_color = vData[1].m_color;
-		EmitVertex();
-		
-		gl_Position = vec4((pos1 + tng1) * gl_in[1].gl_Position.w, gl_in[1].gl_Position.zw);
-		vDataOut.m_color = vData[1].m_color;
-		vDataOut.m_size = vData[1].m_size;
-		vDataOut.m_edgeDistance = vData[1].m_size;
-		EmitVertex();
+			gl_Position = uViewProjMatrix * vec4(uVertexData[vid].m_positionSize.xyz, 1.0);
+			vec2 scale = 1.0 / uViewport * vSize;
+			gl_Position.xy += aPosition.xy * scale * gl_Position.w;
+			vUv = aPosition.xy * 0.5 + 0.5;
+			
+		#elif defined(LINES)
+			int vid0  = gl_InstanceID * 2; // line start
+			int vid1  = vid0 + 1; // line end
+			int vid   = (gl_VertexID % 2 == 0) ? vid0 : vid1; // data for this vertex
+			
+			vColor = UintToRgba(uVertexData[vid].m_color);
+			vSize = uVertexData[vid].m_positionSize.w;
+			vColor.a *= smoothstep(0.0, 1.0, vSize / kAntialiasing);
+			vSize = max(vSize, kAntialiasing);
+			vEdgeDistance = vSize * aPosition.y;
+			
+			vec4 pos0  = uViewProjMatrix * vec4(uVertexData[vid0].m_positionSize.xyz, 1.0);
+			vec4 pos1  = uViewProjMatrix * vec4(uVertexData[vid1].m_positionSize.xyz, 1.0);
+			vec2 dir = (pos0.xy / pos0.w) - (pos1.xy / pos1.w);
+			dir = normalize(vec2(dir.x, dir.y * uViewport.y / uViewport.x)); // correct for aspect ratio
+			vec2 tng = vec2(-dir.y, dir.x) * vSize / uViewport;
+			
+			gl_Position = (gl_VertexID % 2 == 0) ? pos0 : pos1;
+			gl_Position.xy += tng * aPosition.y * gl_Position.w;
+			
+		#elif defined(TRIANGLES)
+			int vid = gl_InstanceID * 3 + gl_VertexID;
+			vColor = UintToRgba(uVertexData[vid].m_color);
+			gl_Position = uViewProjMatrix * vec4(uVertexData[vid].m_positionSize.xyz, 1.0);
+			
+		#endif
 	}
 #endif
 
 #ifdef FRAGMENT_SHADER
-	in VertexData vData;
+	#if   defined(POINTS)
+		noperspective in vec2 vUv;
+	#elif defined(LINES)
+		noperspective in float vEdgeDistance;
+	#endif
+	noperspective in float vSize;
+	smooth in vec4  vColor;
 	
-	layout(location=0) out vec4 fResult;
+	out vec4 fResult;
 	
 	void main() 
 	{
-		fResult = vData.m_color;
-		
+		fResult = vColor;
 		#if   defined(LINES)
-			float d = abs(vData.m_edgeDistance) / vData.m_size;
-			d = smoothstep(1.0, 1.0 - (kAntialiasing / vData.m_size), d);
+			float d = abs(vEdgeDistance) / vSize;
+			d = smoothstep(1.0, 1.0 - (kAntialiasing / vSize), d);
 			fResult.a *= d;
-			
 		#elif defined(POINTS)
-			float d = length(gl_PointCoord.xy - vec2(0.5));
-			d = smoothstep(0.5, 0.5 - (kAntialiasing / vData.m_size), d);
+			float d = length(vUv - vec2(0.5));
+			d = smoothstep(0.5, 0.5 - (kAntialiasing / vSize), d);
 			fResult.a *= d;
-			
-		#endif		
+		#endif
 	}
 #endif

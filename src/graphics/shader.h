@@ -41,6 +41,8 @@ namespace engine
 
 		void addVertexDeclaration(const VertexDeclaration& vecdecl);
 
+		uint32_t getHandle() { return m_program; }
+
 	private:
 		std::vector<VertexDeclaration> m_vertexDeclarations;
 

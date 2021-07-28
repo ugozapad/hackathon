@@ -31,6 +31,8 @@
 	#error im3d: Platform not defined
 #endif
 
+#define IM3D_OPENGL
+
 // Graphics API
 #if defined(IM3D_OPENGL)
  // OpenGL
@@ -38,7 +40,7 @@
 	//#define IM3D_OPENGL_VMIN    3
 	//#define IM3D_OPENGL_VSHADER "#version 150"
  
-	#include "GL/glew.h"
+	#include "graphics/gl/glad/glad.h"
 	#define glAssert(call) \
 		do { \
 			(call); \
@@ -125,8 +127,6 @@
 
 #include "im3d_math.h"
 
-#include "imgui/imgui.h"
-
 namespace Im3d {
 
 void  Assert(const char* _e, const char* _file, int _line, const char* _msg, ...);
@@ -140,59 +140,6 @@ Color RandColor(float _min, float _max);
 
 void  DrawNdcQuad();
 void  DrawTeapot(const Mat4& _world, const Mat4& _viewProj);
-
-struct Example
-{
-	bool init(int _width, int _height, const char* _title);
-	void shutdown();
-	bool update();
-	void draw();
- 
- // window 
-	int m_width, m_height;
-	const char* m_title;
-	Vec2  m_prevCursorPos;
-	
-	bool hasFocus() const;
-	Vec2 getWindowRelativeCursor() const;
-	
- // 3d camera
-	bool  m_camOrtho;
-    Vec3  m_camPos;
-	Vec3  m_camDir;
-	float m_camFovDeg;
-	float m_camFovRad;
-	Mat4  m_camWorld;
-	Mat4  m_camView;
-	Mat4  m_camProj;
-	Mat4  m_camViewProj;
-	
-	float m_deltaTime;
-
- // platform/graphics specifics
-	#if defined(IM3D_PLATFORM_WIN)
-		HWND m_hwnd;
-		LARGE_INTEGER m_currTime, m_prevTime;
-		
-		#if defined(IM3D_OPENGL)
-			HDC   m_hdc;
-			HGLRC m_hglrc;
-		
-		#elif defined(IM3D_DX11)
-			ID3D11Device*           m_d3dDevice;
-			ID3D11DeviceContext*    m_d3dDeviceCtx;
-			IDXGISwapChain*         m_dxgiSwapChain;
-			ID3D11RenderTargetView* m_d3dRenderTarget;
-			ID3D11DepthStencilView* m_d3dDepthStencil;
-		#endif
-	#endif
-
- // text rendering
-	void drawTextDrawListsImGui(const Im3d::TextDrawList _textDrawLists[], U32 _count);
-
-}; // struct Example
-
-extern Example* g_Example;
 
 } // namespace Im3d
 

@@ -53,6 +53,13 @@ file(GLOB GRAPHICS_GL_SRC
 )
 source_group("src\\graphics\\gl" FILES ${GRAPHICS_GL_SRC})
 
+file(GLOB GRAPHICS_IM3D_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/im3d/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/im3d/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/graphics/im3d/*.c"
+)
+source_group("src\\graphics\\im3d" FILES ${GRAPHICS_IM3D_SRC})
+
 file(GLOB AUDIO_SRC
 	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/audio/*.cpp"
@@ -76,6 +83,7 @@ add_executable(engine
 	${ENGINE_COMPONENTS_SRC}
 	${GRAPHICS_SRC}
 	${GRAPHICS_GL_SRC}
+	${GRAPHICS_IM3D_SRC}
 	${AUDIO_SRC}
 	${GAME_SRC}
 )

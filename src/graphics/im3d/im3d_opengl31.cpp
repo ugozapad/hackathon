@@ -3,7 +3,16 @@
 	vertex shader to expand points/lines into triangle strips. This works by uploading Im3d vertex data
 	to a uniform buffer and fetching manually in the vertex shader.
 */
+#include "pch.h"
+#include "graphics/gl/glad/glad.h"
 #include "im3d_example.h"
+
+#include "graphics/graphicsdevice.h"
+#include "graphics/vertexbuffer.h"
+#include "graphics/indexbuffer.h"
+#include "graphics/texture.h"
+#include "graphics/view.h"
+#include "graphics/shader.h"
 
 static GLuint g_Im3dVertexArray;
 static GLuint g_Im3dVertexBuffer;
@@ -13,9 +22,14 @@ static GLuint g_Im3dShaderLines;
 static GLuint g_Im3dShaderTriangles;
 
 using namespace Im3d;
+using namespace engine;
+
+static GrVertexBuffer* g_im3dVertexBuffer;
+static Shader* g_im3dShaderPoints;
 
 // Resource init/shutdown will be app specific. In general you'll need one shader for each of the 3
 // draw primitive types (points, lines, triangles), plus some number of vertex buffers.
+
 bool Im3d_Init()
 {
  // OpenGL uniform buffers require 16 byte alignment for structs - set IM3D_VERTEX_ALIGNMENT in im3d_config.h
@@ -101,8 +115,8 @@ bool Im3d_Init()
 			Im3d::Vec4(-1.0f,  1.0f, 0.0f, 1.0f),
 			Im3d::Vec4( 1.0f,  1.0f, 0.0f, 1.0f)
 		};
-	glAssert(glCreateBuffers(1, &g_Im3dVertexBuffer));;
-	glAssert(glCreateVertexArrays(1, &g_Im3dVertexArray));
+	glAssert(glGenBuffers(1, &g_Im3dVertexBuffer));;
+	glAssert(glGenVertexArrays(1, &g_Im3dVertexArray));
 	glAssert(glBindVertexArray(g_Im3dVertexArray));
 	glAssert(glBindBuffer(GL_ARRAY_BUFFER, g_Im3dVertexBuffer));
 	glAssert(glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), (GLvoid*)vertexData, GL_STATIC_DRAW));
@@ -110,7 +124,7 @@ bool Im3d_Init()
 	glAssert(glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Im3d::Vec4), (GLvoid*)0));
 	glAssert(glBindVertexArray(0));
 
-	glAssert(glCreateBuffers(1, &g_Im3dUniformBuffer));
+	glAssert(glGenBuffers(1, &g_Im3dUniformBuffer));
 
 	return true;
 }
@@ -132,46 +146,46 @@ void Im3d_NewFrame()
 {
 	AppData& ad = GetAppData();
 
-	ad.m_deltaTime     = g_Example->m_deltaTime;
-	ad.m_viewportSize  = Vec2((float)g_Example->m_width, (float)g_Example->m_height);
-	ad.m_viewOrigin    = g_Example->m_camPos; // for VR use the head position
-	ad.m_viewDirection = g_Example->m_camDir;
-	ad.m_worldUp       = Vec3(0.0f, 1.0f, 0.0f); // used internally for generating orthonormal bases
-	ad.m_projOrtho     = g_Example->m_camOrtho;
+	//ad.m_deltaTime     = g_Example->m_deltaTime;
+	//ad.m_viewportSize  = Vec2((float)g_Example->m_width, (float)g_Example->m_height);
+	//ad.m_viewOrigin    = g_Example->m_camPos; // for VR use the head position
+	//ad.m_viewDirection = g_Example->m_camDir;
+	//ad.m_worldUp       = Vec3(0.0f, 1.0f, 0.0f); // used internally for generating orthonormal bases
+	//ad.m_projOrtho     = g_Example->m_camOrtho;
 
  // m_projScaleY controls how gizmos are scaled in world space to maintain a constant screen height
-	ad.m_projScaleY = g_Example->m_camOrtho
-		? 2.0f / g_Example->m_camProj(1, 1) // use far plane height for an ortho projection
-		: tanf(g_Example->m_camFovRad * 0.5f) * 2.0f // or vertical fov for a perspective projection
-		;
+	//ad.m_projScaleY = g_Example->m_camOrtho
+	//	? 2.0f / g_Example->m_camProj(1, 1) // use far plane height for an ortho projection
+	//	: tanf(g_Example->m_camFovRad * 0.5f) * 2.0f // or vertical fov for a perspective projection
+	//	;
 
  // World space cursor ray from mouse position; for VR this might be the position/orientation of the HMD or a tracked controller.
-	Vec2 cursorPos = g_Example->getWindowRelativeCursor();
-	cursorPos = (cursorPos / ad.m_viewportSize) * 2.0f - 1.0f;
-	cursorPos.y = -cursorPos.y; // window origin is top-left, ndc is bottom-left
-	Vec3 rayOrigin, rayDirection;
-	if (g_Example->m_camOrtho)
-	{
-		rayOrigin.x  = cursorPos.x / g_Example->m_camProj(0, 0);
-		rayOrigin.y  = cursorPos.y / g_Example->m_camProj(1, 1);
-		rayOrigin.z  = 0.0f;
-		rayOrigin    = g_Example->m_camWorld * Vec4(rayOrigin, 1.0f);
-		rayDirection = g_Example->m_camWorld * Vec4(0.0f, 0.0f, -1.0f, 0.0f);
-
-	}
-	else
-	{
-		rayOrigin = ad.m_viewOrigin;
-		rayDirection.x  = cursorPos.x / g_Example->m_camProj(0, 0);
-		rayDirection.y  = cursorPos.y / g_Example->m_camProj(1, 1);
-		rayDirection.z  = -1.0f;
-		rayDirection    = g_Example->m_camWorld * Vec4(Normalize(rayDirection), 0.0f);
-	}
-	ad.m_cursorRayOrigin = rayOrigin;
-	ad.m_cursorRayDirection = rayDirection;
+	//Vec2 cursorPos = g_Example->getWindowRelativeCursor();
+	//cursorPos = (cursorPos / ad.m_viewportSize) * 2.0f - 1.0f;
+	//cursorPos.y = -cursorPos.y; // window origin is top-left, ndc is bottom-left
+	//Vec3 rayOrigin, rayDirection;
+	//if (g_Example->m_camOrtho)
+	//{
+	//	rayOrigin.x  = cursorPos.x / g_Example->m_camProj(0, 0);
+	//	rayOrigin.y  = cursorPos.y / g_Example->m_camProj(1, 1);
+	//	rayOrigin.z  = 0.0f;
+	//	rayOrigin    = g_Example->m_camWorld * Vec4(rayOrigin, 1.0f);
+	//	rayDirection = g_Example->m_camWorld * Vec4(0.0f, 0.0f, -1.0f, 0.0f);
+	//
+	//}
+	//else
+	//{
+	//	rayOrigin = ad.m_viewOrigin;
+	//	rayDirection.x  = cursorPos.x / g_Example->m_camProj(0, 0);
+	//	rayDirection.y  = cursorPos.y / g_Example->m_camProj(1, 1);
+	//	rayDirection.z  = -1.0f;
+	//	rayDirection    = g_Example->m_camWorld * Vec4(Normalize(rayDirection), 0.0f);
+	//}
+	//ad.m_cursorRayOrigin = rayOrigin;
+	//ad.m_cursorRayDirection = rayDirection;
 
  // Set cull frustum planes. This is only required if IM3D_CULL_GIZMOS or IM3D_CULL_PRIMTIIVES is enable via im3d_config.h, or if any of the IsVisible() functions are called.
-	ad.setCullFrustum(g_Example->m_camViewProj, true);
+	//ad.setCullFrustum(g_Example->m_camViewProj, true);
 
  // Fill the key state array; using GetAsyncKeyState here but this could equally well be done via the window proc.
  // All key states have an equivalent (and more descriptive) 'Action_' enum.
@@ -202,7 +216,7 @@ void Im3d_EndFrame()
 
  // Primitive rendering.
 
-	glAssert(glViewport(0, 0, (GLsizei)g_Example->m_width, (GLsizei)g_Example->m_height));
+//	glAssert(glViewport(0, 0, (GLsizei)g_Example->m_width, (GLsizei)g_Example->m_height));
 	glAssert(glEnable(GL_BLEND));
 	glAssert(glBlendEquation(GL_FUNC_ADD));
 	glAssert(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
@@ -250,7 +264,8 @@ void Im3d_EndFrame()
 		glAssert(glUseProgram(sh));
 	 	AppData& ad = GetAppData();
 		glAssert(glUniform2f(glGetUniformLocation(sh, "uViewport"), ad.m_viewportSize.x, ad.m_viewportSize.y));
-		glAssert(glUniformMatrix4fv(glGetUniformLocation(sh, "uViewProjMatrix"), 1, false, (const GLfloat*)g_Example->m_camViewProj));
+		//glAssert(glUniformMatrix4fv(glGetUniformLocation(sh, "uViewProjMatrix"), 1, false, (const GLfloat*)g_Example->m_camViewProj));
+		glAssert(glUniformMatrix4fv(glGetUniformLocation(sh, "uViewProjMatrix"), 1, false, (const GLfloat*)NULL));
 	
 	 // Uniform buffers have a size limit; split the vertex data into several passes.
 		const int kMaxBufferSize = 64 * 1024; // assuming 64kb here but the application should check the implementation limit
@@ -275,7 +290,4 @@ void Im3d_EndFrame()
 		}
 	}
 
- // Text rendering.
- // This is common to all examples since we're using ImGui to draw the text lists, see im3d_example.cpp.
-	g_Example->drawTextDrawListsImGui(Im3d::GetTextDrawLists(), Im3d::GetTextDrawListCount());
 }

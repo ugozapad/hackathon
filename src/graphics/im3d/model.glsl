@@ -2,8 +2,8 @@
 	uniform mat4 uWorldMatrix;
 	uniform mat4 uViewProjMatrix;
 	
-	layout(location=0) in vec3 aPosition;
-	layout(location=1) in vec3 aNormal;
+	in vec3 aPosition;
+	in vec3 aNormal;
 	
 	smooth out vec3 vNormalW;
 	
@@ -17,7 +17,7 @@
 #ifdef FRAGMENT_SHADER
 	smooth in vec3 vNormalW;
 	
-	layout(location=0) out vec3 fResult;
+	out vec3 fResult;
 	
 	void main() 
 	{

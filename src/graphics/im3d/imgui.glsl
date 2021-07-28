@@ -1,7 +1,7 @@
 #ifdef VERTEX_SHADER
-	layout(location=0) in vec2 aPosition;
-	layout(location=1) in vec2 aTexcoord;
-	layout(location=2) in vec4 aColor;
+	in vec2 aPosition;
+	in vec2 aTexcoord;
+	in vec4 aColor;
 	
 	uniform mat4 uProjMatrix;
 	
@@ -22,7 +22,7 @@
 	
 	uniform sampler2D txTexture;
 	
-	layout(location=0) out vec4 fResult;
+	out vec4 fResult;
 	
 	void main() 
 	{

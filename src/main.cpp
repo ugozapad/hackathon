@@ -182,7 +182,7 @@ namespace engine
 		// #HACK: render loading screen
 		{
 			std::shared_ptr<TextureMap> loadTex = contentManager->loadTexture("data/textures/load.bmp");
-
+		
 			graphicsDevice->clear(ClearRenderTarget);
 			ScreenQuad::render(loadTex->getHWTexture());
 			graphicsDevice->swapBuffers();
