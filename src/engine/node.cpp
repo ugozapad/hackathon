@@ -78,7 +78,7 @@ namespace engine
 	{
 		std::shared_ptr<Node> node = Engine::ms_world->createNodePtr();
 		node->setRootNode(this);
-		m_childs.push_back(node);
+		m_children.push_back(node);
 		return node;
 	}
 
