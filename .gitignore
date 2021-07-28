@@ -12,3 +12,6 @@ sshot_*.jpg
 sshot_*.tga
 sshot_*.png
 sshot_*.*
+
+engine.ini
+engine_log.txt
