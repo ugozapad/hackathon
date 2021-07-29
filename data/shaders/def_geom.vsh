@@ -7,13 +7,11 @@ out vec3 Pos;
 out vec3 Normal;
 out vec2 TexCoord;
 
-uniform mat4 u_model;
-uniform mat4 u_view;
-uniform mat4 u_proj;
+uniform mat4 u_mvp;
 
 void main()
 {
-	gl_Position = u_proj * u_view * u_model * vec4(position, 1.0);
+	gl_Position = u_mvp * vec4(position, 1.0);
 	Pos = position;
 	Normal = normal;
 	

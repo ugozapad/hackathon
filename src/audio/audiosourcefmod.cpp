@@ -13,8 +13,7 @@ namespace engine
 		FMOD_RESULT result = m_system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &m_sound);
 		if (result != FMOD_OK)
 		{
-			spdlog::error("[audio]: failed to create sound!");
-			spdlog::error("[audio]: FMOD ERROR: {}", getStringFromFMODResult(result));
+			spdlog::error("[audio]: failed to create sound! FMOD ERROR: {}", getStringFromFMODResult(result));
 			std::terminate();
 		}
 	}
