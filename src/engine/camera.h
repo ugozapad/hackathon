@@ -16,7 +16,7 @@ namespace engine
 		void update();
 
 	private:
-		glm::mat4 get_view_proj();
+		glm::mat4 get_view_matrix();
 
 		View* m_view;
 
