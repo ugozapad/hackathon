@@ -18,7 +18,8 @@ namespace engine
 
 	void AudioManagerFMOD::init()
 	{
-		if (FMOD_RESUL result = FMOD::System_Create(&m_fmodSystem) != FMOD_OK)
+		FMOD_RESULT result = FMOD::System_Create(&m_fmodSystem);
+		if (result != FMOD_OK)
 		{
 			spdlog::error("[audio]: failed to create fmod! FMOD ERROR: {}", getStringFromFMODResult(result));
 			std::terminate();
@@ -49,7 +50,12 @@ namespace engine
 	void AudioManagerFMOD::delete_source(AudioSource* source)
 	{
 		if (source)
+		{
+			if (source->isPlaying())
+				source->stop();
+
 			delete source;
+		}
 	}
 
 }

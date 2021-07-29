@@ -24,7 +24,7 @@ namespace engine
 		mem_delete(*g_sysAllocator, file);
 	}
 
-	FileDevice* FileDevice::getInstance()
+	FileDevice* FileDevice::instance()
 	{
 		static FileDevice s_fileDevice;
 		return &s_fileDevice;

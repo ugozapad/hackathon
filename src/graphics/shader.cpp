@@ -10,7 +10,7 @@ namespace engine
 {
 	GLuint createShader(GLenum shaderType, const std::string& filename)
 	{
-		File* file = FileDevice::getInstance()->openFile(filename.c_str(), FileAccess::Read);
+		File* file = FileDevice::instance()->openFile(filename.c_str(), FileAccess::Read);
 
 		if (!file->isValid()) {
 			spdlog::error("createShader: failed to open file {}", filename.c_str());

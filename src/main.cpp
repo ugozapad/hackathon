@@ -113,27 +113,27 @@ namespace engine
 		Logger::init();
 
 		// Initialize file system
-		FileDevice::getInstance()->setDefaultPath("");
+		FileDevice::instance()->setDefaultPath("");
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);
 		if (strstr(buffer, "bin"))
-			FileDevice::getInstance()->setDefaultPath("../");
+			FileDevice::instance()->setDefaultPath("../");
 
-		spdlog::info("working path: {}", FileDevice::getInstance()->getDefaultPath());
+		spdlog::info("working path: {}", FileDevice::instance()->getDefaultPath());
 
 		std::string commandLine = createCommandLine(argc, argv);
 		spdlog::info("command lile: {}", commandLine.c_str());
 
 		if (commandLine.empty())
 		{
-			File* file = FileDevice::getInstance()->openFile("commandline.txt", FileAccess::Read);
+			File* file = FileDevice::instance()->openFile("commandline.txt", FileAccess::Read);
 			if (file->isValid())
 			{
 				file->readString(commandLine);
 			}
 
-			FileDevice::getInstance()->closeFile(file);
+			FileDevice::instance()->closeFile(file);
 		}
 
 		// init glfw

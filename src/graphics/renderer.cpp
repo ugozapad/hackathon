@@ -167,9 +167,9 @@ namespace engine
 
 	bool fileExist(const std::string& filename)
 	{
-		File* file = FileDevice::getInstance()->openFile(filename, FileAccess::Read);
+		File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
 		bool valid = file->isValid();
-		FileDevice::getInstance()->closeFile(file);
+		FileDevice::instance()->closeFile(file);
 
 		return valid;
 	}

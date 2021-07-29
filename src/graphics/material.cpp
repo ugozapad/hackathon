@@ -30,7 +30,7 @@ namespace engine
 		materiaName += name;
 		materiaName += ".material";
 
-		File* file = FileDevice::getInstance()->openFile(materiaName, FileAccess::Write);
+		File* file = FileDevice::instance()->openFile(materiaName, FileAccess::Write);
 	
 		char buffer[256];
 		int len = sprintf(buffer, "material \"%s\"\n", name);
@@ -61,7 +61,7 @@ namespace engine
 		len = sprintf(buffer, "}\n");
 		file->write(buffer, len);
 
-		FileDevice::getInstance()->closeFile(file);
+		FileDevice::instance()->closeFile(file);
 	}
 
 	Material::Material()
@@ -72,6 +72,7 @@ namespace engine
 		m_detailTexture = nullptr;
 		m_depthWrite = true;
 		m_selfillum = false;
+		m_clampToEdge = false;
 	}
 
 	Material::Material(const std::string& filename) : Content(filename)
@@ -195,10 +196,8 @@ namespace engine
 			}
 			else
 			{
-				spdlog::error("Material::Load: get unknowed token '{}' while reading '{}' file.",
+				Core::error("Material::Load: get unknowed token '%s' while reading '%s' file.",
 					token, m_filename.c_str());
-
-				std::terminate();
 			}
 
 			token = strtok(NULL, tokenizerStr);

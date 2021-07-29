@@ -11,14 +11,14 @@ namespace engine
 		if (mode[0] == 'w')
 			fileAccess = FileAccess::Write;
 
-		m_fileHandle = FileDevice::getInstance()->openFile(filename, fileAccess);
+		m_fileHandle = FileDevice::instance()->openFile(filename, fileAccess);
 		assert(m_fileHandle->isValid());
 	}
 
 	FileStream::~FileStream()
 	{
 		if (m_fileHandle)
-			FileDevice::getInstance()->closeFile(m_fileHandle);
+			FileDevice::instance()->closeFile(m_fileHandle);
 	}
 
 	void FileStream::read(void* buffer, size_t count)

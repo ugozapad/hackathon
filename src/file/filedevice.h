@@ -11,7 +11,7 @@ namespace engine
 	class FileDevice
 	{
 	public:
-		static FileDevice* getInstance();
+		static FileDevice* instance();
 
 		void setDefaultPath(const std::string& path);
 		std::string getDefaultPath() { return m_defaultPath; }

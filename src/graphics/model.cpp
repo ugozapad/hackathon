@@ -117,9 +117,9 @@ namespace engine
 
 		bool Exists(const char* pFile) const override
 		{
-			File* file = FileDevice::getInstance()->openFile(pFile, FileAccess::Read);
+			File* file = FileDevice::instance()->openFile(pFile, FileAccess::Read);
 			bool exist = file->isValid();
-			FileDevice::getInstance()->closeFile(file);
+			FileDevice::instance()->closeFile(file);
 
 			//return exist;
 			return true;
@@ -157,9 +157,9 @@ namespace engine
 
 	bool materialExists(const char* pFile)
 	{
-		File* file = FileDevice::getInstance()->openFile(pFile, FileAccess::Read);
+		File* file = FileDevice::instance()->openFile(pFile, FileAccess::Read);
 		bool exist = file->isValid();
-		FileDevice::getInstance()->closeFile(file);
+		FileDevice::instance()->closeFile(file);
 
 		return exist;
 	}
