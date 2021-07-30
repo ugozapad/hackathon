@@ -135,3 +135,5 @@ endif()
 if (MSVC AND WIN32)
 	target_link_libraries(engine "fmod_vc.lib")
 endif()
+
+target_link_libraries(engine bullet)

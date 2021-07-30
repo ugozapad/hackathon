@@ -10,3 +10,6 @@
 [submodule "vendor/stb"]
 	path = vendor/stb
 	url = https://github.com/nothings/stb.git
+[submodule "vendor/bullet"]
+	path = vendor/bullet
+	url = https://github.com/ugozapad/bullet.git
