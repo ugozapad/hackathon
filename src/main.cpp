@@ -27,7 +27,7 @@
 
 #include "game/game.h"
 #include "game/gamestate.h"
-#include "game/birdcomponent.h"
+#include "game/playercomponent.h"
 #include "game/skyboxcomponent.h"
 #include "game/cameralogic.h"
 
@@ -213,23 +213,13 @@ namespace engine
 		auto skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
 		skyboxmesh->addModel(contentManager->loadModel("data/models/skybox_1.dae"));
 
-		// Add bird
-		auto birdNode = Engine::ms_world->createNodePtr();
-		birdNode->createComponentByType<BirdComponent>();
-		birdNode->createComponentByType<CameraLogicComponent>();
-		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
-		graphicsComponent->addModel(contentManager->loadModel("data/models/test1.dae"));
+		// Add player
+		auto playerNode = Engine::ms_world->createNodePtr();
+		playerNode->createComponentByType<PlayerComponent>();
+		playerNode->createComponentByType<CameraLogicComponent>();
 
-		// only for test, add second bird
-		auto childBirdNode = birdNode->createChild();
-		glm::vec3 testPos = childBirdNode->getPosition();
-		testPos.x = 1.0f;
-		testPos.z = -1.0f;
-		childBirdNode->setPosition(testPos);
-
-		// add test model
-		auto childBirdMesh = childBirdNode->createComponentByType<GraphicsComponent>();
-		childBirdMesh->addModel(contentManager->loadModel("data/models/test1.dae"));
+		auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
+		playerModel->addModel(contentManager->loadModel("data/models/test1.dae"));
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
 
