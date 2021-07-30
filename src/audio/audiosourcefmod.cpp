@@ -13,8 +13,7 @@ namespace engine
 		FMOD_RESULT result = m_system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &m_sound);
 		if (result != FMOD_OK)
 		{
-			spdlog::error("[audio]: failed to create sound! FMOD ERROR: {}", getStringFromFMODResult(result));
-			std::terminate();
+			Core::error("[audio]: failed to create sound! FMOD ERROR: %s", getStringFromFMODResult(result).c_str());
 		}
 	}
 
@@ -29,7 +28,7 @@ namespace engine
 		FMOD_RESULT result = m_soundChannel->isPlaying(&playing);
 		if (result != FMOD_OK)
 		{
-			spdlog::error("[audio] {}", getStringFromFMODResult(result));
+			Core::error("[audio]: AudioSourceFMOD::isPlaying: %s", getStringFromFMODResult(result));
 		}
 		return playing;
 	}
@@ -46,9 +45,7 @@ namespace engine
 			result = m_system->playSound(m_sound, 0, false, &m_soundChannel);
 			if (result != FMOD_OK)
 			{
-				spdlog::error("[audio]: failed to play sound!");
-				spdlog::error("[audio]: FMOD ERROR: {}", getStringFromFMODResult(result));
-				std::terminate();
+				Core::error("[audio]: failed to play sound! [audio]: FMOD ERROR: %s", getStringFromFMODResult(result));
 			}
 		}
 
@@ -60,9 +57,7 @@ namespace engine
 			result = m_system->playSound(m_sound, 0, false, &m_soundChannel);
 			if (result != FMOD_OK)
 			{
-				spdlog::error("[audio]: failed to play sound!");
-				spdlog::error("[audio]: FMOD ERROR: {}", getStringFromFMODResult(result));
-				std::terminate();
+				Core::error("[audio]: failed to play sound![audio]: FMOD ERROR: %s", getStringFromFMODResult(result));
 			}
 		}
 	}
@@ -71,8 +66,7 @@ namespace engine
 	{
 		if (!m_soundChannel)
 		{
-			spdlog::error("[audio]: trying to stop sound when his sounds channel is not created!");
-			std::terminate();
+			Core::error("[audio]: trying to stop sound when his sounds channel is not created!");
 		}
 
 		m_soundChannel->stop();
