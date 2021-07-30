@@ -197,8 +197,8 @@ namespace engine
 		Engine::loadEmptyWorld();
 
 		// static mesh to level
-		std::shared_ptr<Node> levelNode = Engine::ms_world->createNodePtr();
-		std::shared_ptr<GraphicsComponent> levelMesh = levelNode->createComponentByType<GraphicsComponent>();
+		auto levelNode = Engine::ms_world->createNodePtr();
+		auto levelMesh = levelNode->createComponentByType<GraphicsComponent>();
 		levelMesh->addModel(contentManager->loadModel("data/models/level/test.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
@@ -207,28 +207,28 @@ namespace engine
 		}
 
 		// add skybox to world
-		std::shared_ptr<Node> skyboxNode = Engine::ms_world->createNodePtr();
+		auto skyboxNode = Engine::ms_world->createNodePtr();
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
-		std::shared_ptr<GraphicsComponent> skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
+		auto skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
 		skyboxmesh->addModel(contentManager->loadModel("data/models/skybox_1.dae"));
 
 		// Add bird
-		std::shared_ptr<Node> birdNode = Engine::ms_world->createNodePtr();
+		auto birdNode = Engine::ms_world->createNodePtr();
 		birdNode->createComponentByType<BirdComponent>();
 		birdNode->createComponentByType<CameraLogicComponent>();
 		std::shared_ptr<GraphicsComponent> graphicsComponent = birdNode->createComponentByType<GraphicsComponent>();
 		graphicsComponent->addModel(contentManager->loadModel("data/models/test1.dae"));
 
 		// only for test, add second bird
-		std::shared_ptr<Node> childBirdNode = birdNode->createChild();
+		auto childBirdNode = birdNode->createChild();
 		glm::vec3 testPos = childBirdNode->getPosition();
 		testPos.x = 1.0f;
 		testPos.z = -1.0f;
 		childBirdNode->setPosition(testPos);
 
 		// add test model
-		std::shared_ptr<GraphicsComponent> childBirdMesh = childBirdNode->createComponentByType<GraphicsComponent>();
+		auto childBirdMesh = childBirdNode->createComponentByType<GraphicsComponent>();
 		childBirdMesh->addModel(contentManager->loadModel("data/models/test1.dae"));
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
