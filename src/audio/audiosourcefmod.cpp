@@ -25,8 +25,12 @@ namespace engine
 
 	bool AudioSourceFMOD::isPlaying()
 	{
-		bool playing;
-		m_soundChannel->isPlaying(&playing);
+		bool playing = false;
+		FMOD_RESULT result = m_soundChannel->isPlaying(&playing);
+		if (result != FMOD_OK)
+		{
+			spdlog::error("[audio] {}", getStringFromFMODResult(result));
+		}
 		return playing;
 	}
 
@@ -48,10 +52,18 @@ namespace engine
 			}
 		}
 
-		if (m_soundChannel && isPlaying())
+		if (m_soundChannel)
 		{
-			stop();
-			play();
+			if (isPlaying())
+				stop();
+
+			result = m_system->playSound(m_sound, 0, false, &m_soundChannel);
+			if (result != FMOD_OK)
+			{
+				spdlog::error("[audio]: failed to play sound!");
+				spdlog::error("[audio]: FMOD ERROR: {}", getStringFromFMODResult(result));
+				std::terminate();
+			}
 		}
 	}
 
@@ -62,5 +74,7 @@ namespace engine
 			spdlog::error("[audio]: trying to stop sound when his sounds channel is not created!");
 			std::terminate();
 		}
+
+		m_soundChannel->stop();
 	}
 }

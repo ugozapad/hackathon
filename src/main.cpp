@@ -23,6 +23,7 @@
 #include "graphics/graphicscomponent.h"
 
 #include "audio/audiomanager.h"
+#include "audio/audiosource.h"
 
 #include "game/game.h"
 #include "game/gamestate.h"
@@ -176,6 +177,8 @@ namespace engine
 		// initialize audio manager
 		AudioManager::getInstance()->init();
 
+		AudioSource* testSource = AudioManager::getInstance()->create_source("data/sounds/f1_explode.wav");
+
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
 
@@ -243,6 +246,9 @@ namespace engine
 			if (InputManager::getInstance()->getKey(GLFW_KEY_F10))
 				ShaderManager::getInstance()->reloadShaders();
 
+			if (InputManager::getInstance()->getKey(GLFW_KEY_O))
+				testSource->play();
+
 			if (strstr(commandLine.c_str(), "-quit"))
 				break;
 
@@ -256,6 +262,9 @@ namespace engine
 
 			// run engine frame
 			Engine::update();
+
+			// sound
+			AudioManager::getInstance()->update();
 
 			graphicsDevice->clear(/*ClearRenderTarget |*/ ClearDepth);
 
