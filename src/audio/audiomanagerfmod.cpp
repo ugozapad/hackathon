@@ -42,12 +42,12 @@ namespace engine
 		m_fmodSystem->update();
 	}
 
-	AudioSource* AudioManagerFMOD::create_source(const std::string& filename)
+	AudioSource* AudioManagerFMOD::createSource(const std::string& filename)
 	{
 		return (AudioSource*) new AudioSourceFMOD(filename, m_fmodSystem);
 	}
 
-	void AudioManagerFMOD::delete_source(AudioSource* source)
+	void AudioManagerFMOD::deleteSource(AudioSource* source)
 	{
 		if (source)
 		{

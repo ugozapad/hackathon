@@ -28,12 +28,12 @@ namespace engine
 
 	}
 
-	AudioSource* AudioManager::create_source(const std::string& filename)
+	AudioSource* AudioManager::createSource(const std::string& filename)
 	{
 		return nullptr;
 	}
 
-	void AudioManager::delete_source(AudioSource* source)
+	void AudioManager::deleteSource(AudioSource* source)
 	{
 
 	}

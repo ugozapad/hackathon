@@ -177,7 +177,7 @@ namespace engine
 		// initialize audio manager
 		AudioManager::getInstance()->init();
 
-		AudioSource* testSource = AudioManager::getInstance()->create_source("data/sounds/f1_explode.wav");
+		AudioSource* testSource = AudioManager::getInstance()->createSource("data/sounds/f1_explode.wav");
 
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();

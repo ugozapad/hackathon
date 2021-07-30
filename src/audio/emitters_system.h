@@ -254,7 +254,7 @@ namespace arex {
 			return true;
 		}
 
-		bool delete_source(std::string name) {
+		bool deleteSource(std::string name) {
 			sources_list.erase(name);
 			return true;
 		}
