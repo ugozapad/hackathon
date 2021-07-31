@@ -13,8 +13,7 @@ namespace engine
 		File* file = FileDevice::instance()->openFile(filename.c_str(), FileAccess::Read);
 
 		if (!file->isValid()) {
-			spdlog::error("createShader: failed to open file {}", filename.c_str());
-			std::terminate();
+			Core::error("createShader: failed to open file %s", filename.c_str());
 		}
 
 		std::string content;
