@@ -6,6 +6,7 @@
 #include "core/timer.h"
 
 #include "file/filedevice.h"
+#include "file/archivemanager.h"
 
 #include "engine/engine.h"
 #include "engine/inputmanager.h"
@@ -33,6 +34,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include <io.h>
+
 namespace engine
 {
 	static MallocAllocator g_allocator;
@@ -53,6 +56,11 @@ namespace engine
 		}
 
 		return commandline;
+	}
+
+	void loadArcives()
+	{
+		ArchiveManager::getInstance()->loadArchive("game.pak");
 	}
 
 	void glfwKeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -136,6 +144,8 @@ namespace engine
 
 			FileDevice::instance()->closeFile(file);
 		}
+
+		loadArcives();
 
 		// init glfw
 		glfwInit();
