@@ -5,6 +5,10 @@
 #include <DbgHelp.h>
 #pragma comment(lib, "DbgHelp.lib")
 
+#include <Process.h>
+#include <imagehlp.h>
+#include <new.h>
+
 namespace engine
 {
 	LONG WINAPI UnhandleExceptionFilter(_EXCEPTION_POINTERS* ExceptionInfo)
@@ -41,6 +45,11 @@ namespace engine
 		return EXCEPTION_CONTINUE_SEARCH;
 	}
 
+	int __cdecl out_of_memory_handler(size_t size)
+	{
+		Core::error("Out of Memory! Failed to allocate %u bytes", size);
+	}
+
 	static struct DebugInitializer
 	{
 		DebugInitializer()
@@ -51,9 +60,23 @@ namespace engine
 
 	void Debug::Initialize()
 	{
+		_set_new_mode(1);
+		_set_new_handler(out_of_memory_handler);
+
 		SetUnhandledExceptionFilter(UnhandleExceptionFilter);
 
-		//SymInitialize(GetCurrentProcess(), )
+		char exePath[MAX_PATH];
+		GetModuleFileNameA(NULL, exePath, MAX_PATH);
+
+		bool ret = SymInitialize(GetCurrentProcess(), exePath, FALSE);
+		if (ret)
+		{
+			GetModuleFileNameA(NULL, exePath, MAX_PATH);
+			if (!SymLoadModule(GetCurrentProcess(), NULL, exePath, NULL, 0, 0))
+			{
+				SymCleanup(GetCurrentProcess());
+			}
+		}
 	}
 #else
 void Debug::Initialize()
