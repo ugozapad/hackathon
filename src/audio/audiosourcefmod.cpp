@@ -26,9 +26,9 @@ namespace engine
 	{
 		bool playing = false;
 		FMOD_RESULT result = m_soundChannel->isPlaying(&playing);
-		if (result != FMOD_OK)
+		if ((result != FMOD_OK) && (result != FMOD_ERR_INVALID_HANDLE) && (result != FMOD_ERR_CHANNEL_STOLEN))
 		{
-			Core::error("[audio]: AudioSourceFMOD::isPlaying: %s", getStringFromFMODResult(result));
+			Core::error("[audio]: AudioSourceFMOD::isPlaying: %s", getStringFromFMODResult(result).c_str());
 		}
 		return playing;
 	}
