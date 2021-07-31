@@ -122,12 +122,14 @@ namespace engine
 		Logger::init();
 
 		// Initialize file system
-		FileDevice::instance()->setDefaultPath("");
+		FileDevice::instance()->setDefaultPath("data/");
 
 		char buffer[256];
 		GetCurrentDirectoryA(256, buffer);
 		if (strstr(buffer, "bin"))
-			FileDevice::instance()->setDefaultPath("../");
+			FileDevice::instance()->setDefaultPath("../data/");
+
+		spdlog::info("current path:{}", buffer);
 
 		spdlog::info("working path: {}", FileDevice::instance()->getDefaultPath());
 
@@ -187,14 +189,14 @@ namespace engine
 		// initialize audio manager
 		AudioManager::getInstance()->init();
 
-		AudioSource* testSource = AudioManager::getInstance()->createSource("data/sounds/f1_explode.wav");
+		AudioSource* testSource = AudioManager::getInstance()->createSource("sounds/f1_explode.wav");
 
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
 
 		// #HACK: render loading screen
 		{
-			std::shared_ptr<TextureMap> loadTex = contentManager->loadTexture("data/textures/load.bmp");
+			std::shared_ptr<TextureMap> loadTex = contentManager->loadTexture("textures/load.bmp");
 		
 			graphicsDevice->clear(ClearRenderTarget);
 			ScreenQuad::render(loadTex->getHWTexture());
@@ -209,7 +211,7 @@ namespace engine
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
 		auto levelMesh = levelNode->createComponentByType<GraphicsComponent>();
-		levelMesh->addModel(contentManager->loadModel("data/models/level/test.dae"));
+		levelMesh->addModel(contentManager->loadModel("models/level/test.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
 			p.y = -10.0f;
@@ -221,7 +223,7 @@ namespace engine
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
 		auto skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
-		skyboxmesh->addModel(contentManager->loadModel("data/models/skybox_1.dae"));
+		skyboxmesh->addModel(contentManager->loadModel("models/skybox_1.dae"));
 
 		// Add player
 		auto playerNode = Engine::ms_world->createNodePtr();
@@ -229,9 +231,9 @@ namespace engine
 		playerNode->createComponentByType<CameraLogicComponent>();
 
 		auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
-		playerModel->addModel(contentManager->loadModel("data/models/test1.dae"));
+		playerModel->addModel(contentManager->loadModel("models/test1.dae"));
 
-		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("data/textures/logo.bmp");
+		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("textures/logo.bmp");
 
 		GameState* gameState = GameState::getInstance();
 

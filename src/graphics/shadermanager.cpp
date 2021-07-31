@@ -84,13 +84,13 @@ namespace engine
 		if (shaderAtTable == m_shaders.end())
 		{
 			std::string vsname;
-			vsname += "data/shaders/";
+			vsname += "shaders/";
 			vsname += name;
 			vsname += ".vsh";
 
 			std::string fsname;
 
-			fsname += "data/shaders/";
+			fsname += "shaders/";
 			fsname += name;
 			fsname += ".fsh";
 

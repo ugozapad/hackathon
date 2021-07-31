@@ -206,7 +206,7 @@ namespace engine
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
 		char buffer[256];
-		sprintf(buffer, "data/materials/%s.material", material->GetName().C_Str());
+		sprintf(buffer, "materials/%s.material", material->GetName().C_Str());
 
 		if (!materialExists(buffer))
 		{
@@ -346,7 +346,7 @@ namespace engine
 	void SubMesh::load(std::vector<Vertex>& vertices, std::vector<uint32_t>& indecies, const glm::mat4& position, const char* materialname)
 	{
 		//m_materialName = materialname;
-		m_materialName += "data/materials/";
+		m_materialName += "materials/";
 		m_materialName += materialname;
 		m_materialName += ".material";
 

@@ -26,7 +26,7 @@ namespace engine
 	void Material::createMaterialFromImport(const char* name, const char* diffuseName, const char* normalName)
 	{
 		std::string materiaName;
-		materiaName += "data/materials/";
+		materiaName += "materials/";
 		materiaName += name;
 		materiaName += ".material";
 
@@ -208,18 +208,18 @@ namespace engine
 		//TextureCreationDesc desc;
 		//desc.m_mipmapping = !disableMipMapping;
 
-		m_albedoTextureName += "data/textures/";
+		m_albedoTextureName += "textures/";
 		m_albedoTextureName += albedoTextureName;
 
 		if (normalTextureName)
 		{
-			m_normalTextureName += "data/textures/";
+			m_normalTextureName += "textures/";
 			m_normalTextureName += normalTextureName;
 		}
 			
 		if (detailTextureName)
 		{
-			m_detailTextureName += "data/textures/";
+			m_detailTextureName += "textures/";
 			m_detailTextureName += detailTextureName;
 		}
 	}

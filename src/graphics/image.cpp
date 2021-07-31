@@ -114,6 +114,10 @@ namespace engine
 
 	void Image::save(const std::string& filename)
 	{
+		std::string defpath = FileDevice::instance()->getDefaultPath();
+
+		FileDevice::instance()->setDefaultPath("");
+
 		std::shared_ptr<FileStream> stream = std::make_shared<FileStream>(filename, "w");
 		stbi_flip_vertically_on_write(m_flip);
 
@@ -128,6 +132,8 @@ namespace engine
 			stbi_write_jpg_to_func(stbi_write_callback, (void*)stream.get(), m_width, m_height, m_channels, m_data, 90);
 		else
 			throw std::logic_error("Image::save: unknowed format to save!");
+
+		FileDevice::instance()->setDefaultPath(defpath);
 	}
 
 	void Image::save(const std::shared_ptr<DataStream>& stream)

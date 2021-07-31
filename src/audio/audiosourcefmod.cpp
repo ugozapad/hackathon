@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "audio/audiosourcefmod.h"
 
+#include "file/filedevice.h"
+
 namespace engine
 {
 	AudioSourceFMOD::AudioSourceFMOD(const std::string& filename, FMOD::System* system)
@@ -10,11 +12,28 @@ namespace engine
 		assert(system);
 		m_system = system;
 
-		FMOD_RESULT result = m_system->createSound(filename.c_str(), FMOD_DEFAULT, 0, &m_sound);
+		//File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
+		//assert(file->isValid());
+
+		//file->seek(FileSeek::End, 0);
+		//size_t size = file->tell();
+		//file->seek(FileSeek::Begin, 0);
+
+		//char* data = (char*)malloc(size * sizeof(char));
+		//file->read(data, size);
+
+		//FileDevice::instance()->closeFile(file);
+
+		std::string realFilename = FileDevice::instance()->getDefaultPath();
+		realFilename += filename;
+
+		FMOD_RESULT result = m_system->createSound(realFilename.c_str(), FMOD_DEFAULT, 0, &m_sound);
 		if (result != FMOD_OK)
 		{
 			Core::error("[audio]: failed to create sound! FMOD ERROR: %s", getStringFromFMODResult(result).c_str());
 		}
+
+	/*	free(data);*/
 	}
 
 	AudioSourceFMOD::~AudioSourceFMOD()
