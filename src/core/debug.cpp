@@ -2,12 +2,12 @@
 #include "debug.h"
 
 #ifdef _MSC_VER
-#include <DbgHelp.h>
-#pragma comment(lib, "DbgHelp.lib")
-
-#include <Process.h>
 #include <imagehlp.h>
+#include <Process.h>
 #include <new.h>
+
+//#include <DbgHelp.h>
+#pragma comment(lib, "DbgHelp.lib")
 
 namespace engine
 {
@@ -48,6 +48,7 @@ namespace engine
 	int __cdecl out_of_memory_handler(size_t size)
 	{
 		Core::error("Out of Memory! Failed to allocate %u bytes", size);
+		return 1;
 	}
 
 	static struct DebugInitializer
