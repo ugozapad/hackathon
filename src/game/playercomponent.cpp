@@ -73,9 +73,9 @@ namespace engine
 
 
 		glm::vec3 front;
-		front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-		front.y = sin(glm::radians(pitch));
-		front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+		front.x = cos(glm::radians(yaw)) * cos(glm::radians(-pitch));
+		front.y = sin(glm::radians(-pitch));
+		front.z = sin(glm::radians(yaw)) * cos(glm::radians(-pitch));
 		cam->m_direction = glm::normalize(front);
 		
 
