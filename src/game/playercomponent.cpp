@@ -41,7 +41,7 @@ namespace engine
 		InputManager* input = InputManager::getInstance();
 		Camera* cam = CameraProxy::getInstance();
 		float camSpeed = 10.0f * dt;
-		glm::vec2 mousePos = InputManager::getInstance()->getCursorPos();
+		glm::vec2 mousePos = input->getCursorPos();
 
 		float xoffset = mousePos.x;
 		float yoffset = mousePos.y;
