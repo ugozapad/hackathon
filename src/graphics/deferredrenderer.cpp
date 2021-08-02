@@ -54,8 +54,7 @@ namespace engine
 		glDrawBuffers(3, DrawBuffers);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-			spdlog::error("DeferredRenderer::init: Framebuffer is not complete.");
-			std::terminate();
+			Core::error("DeferredRenderer::init: Framebuffer is not complete.");
 		}
 
 		GraphicsDevice::instance()->setFramebuffer(0);

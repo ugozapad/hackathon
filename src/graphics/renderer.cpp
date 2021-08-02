@@ -12,6 +12,7 @@
 #include "graphics/shadermanager.h"
 #include "graphics/postprocessing.h"
 #include "graphics/shaderconstantmanager.h"
+#include "graphics/shadowsrenderer.h"
 
 #include "graphics/image.h"
 
@@ -62,10 +63,14 @@ namespace engine
 		g_deferredRenderer.init(view);
 
 		PostProcessingRenderer::getInstance()->init(view);
+
+		ShadowsRenderer::getInstance()->init();
 	}
 
 	void Renderer::shutdown()
 	{
+		ShadowsRenderer::getInstance()->shutdown();
+
 		PostProcessingRenderer::getInstance()->shutdown();
 
 		g_deferredRenderer.shutdown();
