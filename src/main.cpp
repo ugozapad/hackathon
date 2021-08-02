@@ -168,6 +168,8 @@ namespace engine
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
+		
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
 		// initialize engine context
 		std::shared_ptr<Context> content = std::make_shared<Context>();
@@ -220,7 +222,7 @@ namespace engine
 		levelMesh->addModel(contentManager->loadModel("models/level/test.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
-			p.y = -10.0f;
+			p.y = -1.0f;
 			levelNode->setPosition(p);
 		}
 

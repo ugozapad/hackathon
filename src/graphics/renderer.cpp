@@ -64,12 +64,12 @@ namespace engine
 
 		PostProcessingRenderer::getInstance()->init(view);
 
-		ShadowsRenderer::getInstance()->init();
+		//ShadowsRenderer::getInstance()->init();
 	}
 
 	void Renderer::shutdown()
 	{
-		ShadowsRenderer::getInstance()->shutdown();
+		//ShadowsRenderer::getInstance()->shutdown();
 
 		PostProcessingRenderer::getInstance()->shutdown();
 
@@ -77,7 +77,7 @@ namespace engine
 
 		ScreenQuad::shutdown();
 
-		ShaderManager::getInstance()->shutdown();
+		//ShaderManager::getInstance()->shutdown();
 	}
 
 	void Renderer::renderView(View* view)
