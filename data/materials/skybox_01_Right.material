@@ -4,4 +4,5 @@ material "Right"
 	albedo { clampedge "sky_l1escape6_rt.tga" }
 	depth_write false
 	skipmips true
+	selfillum true
 }

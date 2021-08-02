@@ -35,9 +35,19 @@ namespace engine
 		glm::vec3 pos = m_node->getPosition();
 
 		if (input->getKey(GLFW_KEY_W))
-			pos.x += 10.0f * dt;
+			pos.z -= 10.0f * dt;
 		if (input->getKey(GLFW_KEY_S))
+			pos.z += 10.0f * dt;
+
+		if (input->getKey(GLFW_KEY_A))
 			pos.x -= 10.0f * dt;
+		if (input->getKey(GLFW_KEY_D))
+			pos.x += 10.0f * dt;
+
+		if (input->getKey(GLFW_KEY_Q))
+			pos.y += 10.0f * dt;
+		if (input->getKey(GLFW_KEY_Z))
+			pos.y -= 10.0f * dt;
 
 		m_node->setPosition(pos);
 	}

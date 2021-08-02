@@ -7,6 +7,8 @@
 #include "graphics/shadermanager.h"
 #include "graphics/shader.h"
 
+#include "engine/camera.h"
+
 namespace engine
 {
 	DeferredRenderer g_deferredRenderer;
@@ -33,7 +35,7 @@ namespace engine
 		TextureCreationDesc colorDesc = { 0 };
 		colorDesc.m_width = width;
 		colorDesc.m_height = height;
-		colorDesc.m_format = ImageFormat::RGBA32F;
+		colorDesc.m_format = ImageFormat::RGBA32;
 		m_textures[RT_COLOR] = GraphicsDevice::instance()->createTexture2D(positionDesc);
 
 		// create frame buffer
@@ -168,6 +170,12 @@ namespace engine
 
 		graphicsDevice->setTexture2D(2, m_textures[RT_COLOR]);
 		m_lightPassShader->setInteger("u_colorTexture", 2);
+
+		Camera* camera = CameraProxy::getInstance();
+		m_lightPassShader->setVec3("u_viewPos", camera->getPosition());
+
+		glm::vec3 lightPos = glm::vec3(4.3471446f, -5.8285933f, -3.8116999f);
+		m_lightPassShader->setVec3("u_lightPos", lightPos);
 
 		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
 	}

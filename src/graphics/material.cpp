@@ -20,6 +20,8 @@ namespace engine
 	{
 		if (shaderName == "diffuse")
 			return ShaderManager::getInstance()->createShader("def_geom");
+		else if (shaderName == "skybox")
+			return ShaderManager::getInstance()->createShader("forw_geom");
 
 		return nullptr;
 	}

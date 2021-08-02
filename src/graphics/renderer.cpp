@@ -119,7 +119,6 @@ namespace engine
 						if (graphicsComponent)
 						{
 							// let's render our piece of shit.
-
 							RenderContext& renderCtx = RenderContext::getContext();
 							renderCtx.model = node->getTranslation();
 							RenderContext::setContext(renderCtx);
@@ -189,6 +188,9 @@ namespace engine
 		image.createRaw((void*)screenBuffer, width, height, 3);
 		image.setFlip(true);
 
+		std::string defpath = FileDevice::instance()->getDefaultPath();
+		FileDevice::instance()->setDefaultPath("");
+
 		char buffer[256];
 		for (int i = 0;; i++)
 		{
@@ -198,6 +200,7 @@ namespace engine
 		}
 
 		image.save(buffer);
+		FileDevice::instance()->setDefaultPath(defpath);
 
 		delete[] screenBuffer;
 	}

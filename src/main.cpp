@@ -236,8 +236,8 @@ namespace engine
 		playerNode->createComponentByType<PlayerComponent>();
 		playerNode->createComponentByType<CameraLogicComponent>();
 
-		auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
-		playerModel->addModel(contentManager->loadModel("models/test1.dae"));
+		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
+		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("textures/logo.bmp");
 

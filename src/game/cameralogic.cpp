@@ -27,7 +27,7 @@ namespace engine
 		Node* node = GameState::getInstance()->getPlayerNode();
 
 		// update camera
-		float radius = 5.0f;
+		float radius = 0.0f;
 		float camX = radius;
 		float camZ = radius;
 		glm::vec3 pos = glm::vec3(camX, 0.0f, camZ);
