@@ -26,6 +26,10 @@ namespace engine
 		case ImageFormat::RGB32F: return GL_RGB32F;
 		case ImageFormat::RGBA32F: return GL_RGBA32F;
 
+		case ImageFormat::DEPTH24: return GL_DEPTH_COMPONENT24;
+		case ImageFormat::DEPTH32: return GL_DEPTH_COMPONENT32;
+		case ImageFormat::DEPTH32F: return GL_DEPTH_COMPONENT32F;
+
 			//case ImageFormat::SRGB: return GL_SRGB;
 		}
 
@@ -53,6 +57,11 @@ namespace engine
 		case ImageFormat::RGBA32F:
 		case ImageFormat::RGBA16F:
 			return GL_RGBA;
+
+		case ImageFormat::DEPTH24:
+		case ImageFormat::DEPTH32:
+		case ImageFormat::DEPTH32F:
+			return GL_DEPTH_COMPONENT;
 		}
 
 		return 0;
@@ -66,14 +75,16 @@ namespace engine
 		case ImageFormat::RGBA16:
 		case ImageFormat::RGB32:
 		case ImageFormat::RGBA32:
+		case ImageFormat::DEPTH24:
+		case ImageFormat::DEPTH32:
 			return GL_UNSIGNED_BYTE;
 
 		case ImageFormat::RGB16F:
 		case ImageFormat::RGBA16F:
 		case ImageFormat::RGB32F:
 		case ImageFormat::RGBA32F:
+		case ImageFormat::DEPTH32F:
 			return GL_FLOAT;
-
 		}
 
 		return 0;
