@@ -112,7 +112,7 @@ target_include_directories(engine PUBLIC "${CMAKE_SOURCE_DIR}/vendor/stb")
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND WIN32)
 	target_include_directories(engine PRIVATE "${CMAKE_SOURCE_DIR}/vendor/glfw-3.3.4.bin.WIN64/include")
 	target_link_directories(engine PRIVATE "${CMAKE_SOURCE_DIR}/vendor/glfw-3.3.4.bin.WIN64/lib-vc2019")
-	target_link_libraries(engine glfw3)
+	target_link_libraries(engine glfw3_mt)
 endif()
 
 if (CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -137,3 +137,8 @@ if (MSVC AND WIN32)
 endif()
 
 target_link_libraries(engine bullet)
+
+set_target_properties(engine PROPERTIES
+    MSVC_RUNTIME_LIBRARY 
+        "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>"
+)

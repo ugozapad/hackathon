@@ -109,28 +109,28 @@ namespace engine
 		GraphicsDevice::getInstance()->clear(/*ClearRenderTarget |*/ ClearDepth);
 
 		World* world = Engine::ms_world.get();
-		if (world)
-		{
-			std::list<std::shared_ptr<Node>>& nodes = world->getNodeList();
-			typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
-			for (NodeIt it = nodes.begin(); it != nodes.end(); ++it)
-			{
-				Node* node = (*it).get();
-				if (node)
-				{
-					if (node->getComponentByType<SkyboxComponent>())
-					{
-						GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
-						if (graphicsComponent)
-						{
-							// let's render our piece of shit.
-							RenderContext& renderCtx = RenderContext::getContext();
-							renderCtx.model = node->getTranslation();
-							RenderContext::setContext(renderCtx);
 
-							graphicsComponent->render();
-						}
-					}
+		auto skyboxNode = std::find_if(world->getNodeList().begin(), world->getNodeList().end(),
+			[](const std::shared_ptr<Node>& node)
+			{
+				return node->getComponentByType<SkyboxComponent>();
+			}
+		);
+
+		if (skyboxNode != world->getNodeList().end())
+		{
+			Node* node = skyboxNode->get();
+			if (node->getComponentByType<SkyboxComponent>())
+			{
+				GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+				if (graphicsComponent)
+				{
+					// let's render our piece of shit.
+					RenderContext& renderCtx = RenderContext::getContext();
+					renderCtx.model = node->getTranslation();
+					RenderContext::setContext(renderCtx);
+
+					graphicsComponent->render();
 				}
 			}
 		}
@@ -145,7 +145,7 @@ namespace engine
 				if (node)
 				{
 					GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
-					if (graphicsComponent && ! node->getComponentByType<SkyboxComponent>())
+					if (graphicsComponent && !node->getComponentByType<SkyboxComponent>())
 					{
 						// let's render our piece of shit.
 
