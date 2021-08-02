@@ -16,6 +16,7 @@ namespace engine
 
 		virtual void onNodeSet(Node* node);
 		virtual void update(float dt);
+		virtual void updateCamera(float dt);
 	};
 }
 

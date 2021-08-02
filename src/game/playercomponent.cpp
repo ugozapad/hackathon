@@ -32,10 +32,21 @@ namespace engine
 
 	void PlayerComponent::update(float dt)
 	{
-		Camera* cam = CameraProxy::getInstance();
-		InputManager* input = InputManager::getInstance();
+		
+		
 		glm::vec3 pos = m_node->getPosition();
 		
+		updateCamera(dt);
+		
+		m_node->setPosition(pos);
+		
+	}
+
+	void PlayerComponent::updateCamera(float dt)
+	{
+		glm::vec3 pos = m_node->getPosition();
+		InputManager* input = InputManager::getInstance();
+		Camera* cam = CameraProxy::getInstance();
 		float camSpeed = 10.0f * dt;
 		glm::vec2 mousePos = InputManager::getInstance()->getCursorPos();
 
@@ -77,14 +88,12 @@ namespace engine
 		front.y = sin(glm::radians(-pitch));
 		front.z = sin(glm::radians(yaw)) * cos(glm::radians(-pitch));
 		cam->m_direction = glm::normalize(front);
-		
+
 
 
 
 
 		cam->m_position = pos;
-		m_node->setPosition(pos);
-		
 	}
 
 }
