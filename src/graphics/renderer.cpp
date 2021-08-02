@@ -77,7 +77,7 @@ namespace engine
 
 		ScreenQuad::shutdown();
 
-		//ShaderManager::getInstance()->shutdown();
+		ShaderManager::getInstance()->shutdown();
 	}
 
 	void Renderer::renderView(View* view)
