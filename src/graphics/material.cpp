@@ -183,6 +183,17 @@ namespace engine
 				token = strtok(NULL, tokenizerStr);
 				continue;
 			}
+			else if (strcmp(token, "skipmips") == 0)
+			{
+				char* skipmipsValue = strtok(NULL, tokenizerStr);
+				if (strcmp(skipmipsValue, "true") == 0)
+					m_skipmips = true;
+				else if (strcmp(skipmipsValue, "false") == 0)
+					m_skipmips = false;
+
+				token = strtok(NULL, tokenizerStr);
+				continue;
+			}
 			else if (strcmp(token, "selfillum") == 0)
 			{
 				char* selfillumValue = strtok(NULL, tokenizerStr);
@@ -231,6 +242,13 @@ namespace engine
 
 		m_albedoTexture = contentManager->loadTexture(m_albedoTextureName);
 
+		if (m_albedoTexture && !m_skipmips)
+		{
+			GraphicsDevice::instance()->setTexture2D(0, m_albedoTexture->getHWTexture());
+			m_albedoTexture->gen_mipmaps();
+			GraphicsDevice::instance()->setTexture2D(0, 0);
+		}
+
 		if (!m_normalTextureName.empty())
 			m_normalTexture = contentManager->loadTexture(m_normalTextureName);
 
@@ -265,6 +283,17 @@ namespace engine
 		{
 			m_albedoTexture->setWrapS(TextureWrap::Repeat);
 			m_albedoTexture->setWrapT(TextureWrap::Repeat);
+		}
+
+		if (m_skipmips)
+		{
+			m_albedoTexture->setMin(TextureFilter::Linear);
+			m_albedoTexture->setMag(TextureFilter::Linear);
+		}
+		else
+		{
+			m_albedoTexture->setMin(TextureFilter::LinearMipmapLinear);
+			m_albedoTexture->setMag(TextureFilter::Linear);
 		}
 
 		m_shader->setInteger("u_albedoTexture", 0);

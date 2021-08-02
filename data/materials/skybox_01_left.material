@@ -3,4 +3,5 @@ material "left"
 	shader diffuse
 	albedo { clampedge "sky_l1escape6_lf.tga" }
 	depth_write false
+	skipmips true
 }

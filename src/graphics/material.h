@@ -51,6 +51,7 @@ namespace engine
 		std::string m_detailTextureName;
 
 		bool m_depthWrite;
+		bool m_skipmips;
 		bool m_selfillum;
 		bool m_clampToEdge;
 	};

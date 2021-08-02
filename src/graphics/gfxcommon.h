@@ -17,12 +17,15 @@ namespace engine
 		RGBA16,
 		RGB32,
 		RGBA32,
+		DEPTH24,
+		DEPTH32,
 
 		// Float
 		RGB16F,
 		RGBA16F,
 		RGB32F,
 		RGBA32F,
+		DEPTH32F
 	};
 
 	enum class BufferMapping

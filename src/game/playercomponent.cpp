@@ -34,7 +34,10 @@ namespace engine
 		InputManager* input = InputManager::getInstance();
 		glm::vec3 pos = m_node->getPosition();
 
-		
+		if (input->getKey(GLFW_KEY_W))
+			pos.x += 10.0f * dt;
+		if (input->getKey(GLFW_KEY_S))
+			pos.x -= 10.0f * dt;
 
 		m_node->setPosition(pos);
 	}

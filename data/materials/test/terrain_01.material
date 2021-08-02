@@ -1,5 +1,5 @@
 material "test/terrain_01"
 {
 	shader diffuse
-	albedo "notexture.png"
+	albedo "test/grnd_sand.tga"
 }
