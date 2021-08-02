@@ -114,7 +114,6 @@ namespace engine
 
 	void Image::save(const std::string& filename)
 	{
-
 		std::shared_ptr<FileStream> stream = std::make_shared<FileStream>(filename, "w");
 		stbi_flip_vertically_on_write(m_flip);
 
