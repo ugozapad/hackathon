@@ -15,11 +15,15 @@ namespace engine
 		Matrix4x4,
 	};
 
+	class Shader;
+
 	class ShaderConstantManager : public Singleton<ShaderConstantManager>
 	{
 	private:
 		static ShaderConstantManager ms_instance;
 
+	public:
+		void applyDefaultContants(Shader* shader);
 	};
 }
 

@@ -5,6 +5,7 @@
 #include "graphics/shadermanager.h"
 #include "graphics/graphicsdevice.h"
 #include "graphics/rendercontext.h"
+#include "graphics/shaderconstantmanager.h"
 
 #include "file/filedevice.h"
 
@@ -287,6 +288,10 @@ namespace engine
 
 		m_shader->setInteger("u_selfillum", m_selfillum);
 
+		// Apply default shader constants
+		ShaderConstantManager::getInstance()->applyDefaultContants(m_shader);
+
+#if 0
 		// apply constants here !!!
 		RenderContext& renderContext = RenderContext::getContext();
 		m_shader->setMatrix("u_model", renderContext.model);
@@ -299,6 +304,7 @@ namespace engine
 
 		m_shader->setMatrix("u_mvp", mvp);
 		m_shader->setMatrix("u_modelViewProjection", mvp);
+#endif
 	}
 
 	TextureMap* Material::getTexture(MAT_TEX tex)
