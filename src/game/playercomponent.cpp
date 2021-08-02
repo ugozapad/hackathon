@@ -32,19 +32,12 @@ namespace engine
 
 	void PlayerComponent::update(float dt)
 	{
-		
-		
-		glm::vec3 pos = m_node->getPosition();
-		
 		updateCamera(dt);
-		
-		m_node->setPosition(pos);
-		
 	}
 
 	void PlayerComponent::updateCamera(float dt)
 	{
-		glm::vec3 pos = m_node->getPosition();
+		glm::vec3 pos = this->m_node->getPosition();
 		InputManager* input = InputManager::getInstance();
 		Camera* cam = CameraProxy::getInstance();
 		float camSpeed = 10.0f * dt;
@@ -82,18 +75,14 @@ namespace engine
 		if (input->getKey(GLFW_KEY_Z))
 			pos.y -= camSpeed;
 
-
 		glm::vec3 front;
 		front.x = cos(glm::radians(yaw)) * cos(glm::radians(-pitch));
 		front.y = sin(glm::radians(-pitch));
 		front.z = sin(glm::radians(yaw)) * cos(glm::radians(-pitch));
 		cam->m_direction = glm::normalize(front);
 
-
-
-
-
 		cam->m_position = pos;
+		m_node->setPosition(pos);
 	}
 
 }
