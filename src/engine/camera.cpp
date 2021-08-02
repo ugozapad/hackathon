@@ -13,7 +13,7 @@ namespace engine
 
 	glm::mat4 Camera::get_view_matrix()
 	{
-		return glm::lookAt(m_position, m_direction, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(m_position, m_position + m_direction, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 }
