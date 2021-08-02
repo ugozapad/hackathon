@@ -11,12 +11,17 @@ namespace engine
 		static InputManager ms_inputManager;
 
 	public:
+		// ACTIONS
 		void keyboardAction(uint32_t keyId, bool state);
+		void cursorPosAction(float x, float y);
 
+		// GETTERS
 		bool getKey(uint32_t keyid);
+		glm::vec2 getCursorPos() { return m_cursorPos; }
 
 	private:
 		bool m_keys[420];
+		glm::vec2 m_cursorPos;
 	};
 }
 

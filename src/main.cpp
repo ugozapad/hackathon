@@ -68,9 +68,15 @@ namespace engine
 		InputManager::getInstance()->keyboardAction(key, action);
 	}
 
+	void glfwMouseCursorPosCallback(GLFWwindow* window, double x, double y)
+	{
+		InputManager::getInstance()->cursorPosAction((float)x, (float)y);
+	}
+
 	void initInputCallbacks(GLFWwindow* window)
 	{
 		glfwSetKeyCallback(window, glfwKeyboardCallback);
+		glfwSetCursorPosCallback(window, glfwMouseCursorPosCallback);
 	}
 
 	void createEngineView()
