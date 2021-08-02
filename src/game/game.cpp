@@ -3,7 +3,7 @@
 
 #include "game/playercomponent.h"
 #include "game/skyboxcomponent.h"
-#include "game/cameralogic.h"
+//#include "game/cameralogic.h"
 
 namespace engine
 {
@@ -11,6 +11,6 @@ namespace engine
 	{
 		PlayerComponent::registerObject();
 		SkyboxComponent::registerObject();
-		CameraLogicComponent::registerObject();
+		//CameraLogicComponent::registerObject();
 	}
 }

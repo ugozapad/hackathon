@@ -30,7 +30,7 @@
 #include "game/gamestate.h"
 #include "game/playercomponent.h"
 #include "game/skyboxcomponent.h"
-#include "game/cameralogic.h"
+//#include "game/cameralogic.h"
 
 #include <GLFW/glfw3.h>
 
@@ -236,7 +236,7 @@ namespace engine
 		// Add player
 		auto playerNode = Engine::ms_world->createNodePtr();
 		playerNode->createComponentByType<PlayerComponent>();
-		playerNode->createComponentByType<CameraLogicComponent>();
+		//playerNode->createComponentByType<CameraLogicComponent>();
 
 		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
 		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
