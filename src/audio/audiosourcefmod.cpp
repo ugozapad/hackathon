@@ -12,28 +12,35 @@ namespace engine
 		assert(system);
 		m_system = system;
 
-		//File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
-		//assert(file->isValid());
+		File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
+		assert(file->isValid());
 
-		//file->seek(FileSeek::End, 0);
-		//size_t size = file->tell();
-		//file->seek(FileSeek::Begin, 0);
+		file->seek(FileSeek::End, 0);
+		size_t size = file->tell();
+		file->seek(FileSeek::Begin, 0);
 
-		//char* data = (char*)malloc(size * sizeof(char));
-		//file->read(data, size);
+		char* data = (char*)malloc(size * sizeof(char));
+		file->read(data, size);
 
-		//FileDevice::instance()->closeFile(file);
+		FileDevice::instance()->closeFile(file);
 
-		std::string realFilename = FileDevice::instance()->getDefaultPath();
-		realFilename += filename;
+		//std::string realFilename = FileDevice::instance()->getDefaultPath();
+		//realFilename += filename;
 
-		FMOD_RESULT result = m_system->createSound(realFilename.c_str(), FMOD_DEFAULT, 0, &m_sound);
+		//FMOD_RESULT result = m_system->createSound(realFilename.c_str(), FMOD_DEFAULT, 0, &m_sound);
+
+		FMOD_CREATESOUNDEXINFO exinfo;
+		memset(&exinfo, 0, sizeof(exinfo));
+		exinfo.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+		exinfo.length = size;
+
+		FMOD_RESULT result = m_system->createSound(data, FMOD_OPENMEMORY, &exinfo, &m_sound);
 		if (result != FMOD_OK)
 		{
 			Core::error("[audio]: failed to create sound! FMOD ERROR: %s", getStringFromFMODResult(result).c_str());
 		}
 
-	/*	free(data);*/
+		free(data);
 	}
 
 	AudioSourceFMOD::~AudioSourceFMOD()
