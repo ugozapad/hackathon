@@ -4,6 +4,7 @@
 #include "engine/node.h"
 #include "engine/inputmanager.h"
 
+#include "engine/camera.h"
 #include "game/gamestate.h"
 
 namespace engine
@@ -31,24 +32,56 @@ namespace engine
 
 	void PlayerComponent::update(float dt)
 	{
+		updateCamera(dt);
+	}
+
+	void PlayerComponent::updateCamera(float dt)
+	{
+		glm::vec3 pos = this->m_node->getPosition();
 		InputManager* input = InputManager::getInstance();
-		glm::vec3 pos = m_node->getPosition();
+		Camera* cam = CameraProxy::getInstance();
+		float camSpeed = 10.0f * dt;
+		glm::vec2 mousePos = InputManager::getInstance()->getCursorPos();
 
-		//if (input->getKey(GLFW_KEY_W))
-		//	pos.z -= 10.0f * dt;
-		//if (input->getKey(GLFW_KEY_S))
-		//	pos.z += 10.0f * dt;
+		float xoffset = mousePos.x;
+		float yoffset = mousePos.y;
 
-		//if (input->getKey(GLFW_KEY_A))
-		//	pos.x -= 10.0f * dt;
-		//if (input->getKey(GLFW_KEY_D))
-		//	pos.x += 10.0f * dt;
+		xoffset *= 0.1f;
+		yoffset *= 0.1f;
 
-		//if (input->getKey(GLFW_KEY_Q))
-		//	pos.y += 10.0f * dt;
-		//if (input->getKey(GLFW_KEY_Z))
-		//	pos.y -= 10.0f * dt;
+		float yaw = -90.0f;
+		float pitch = 0.0f;
 
+		yaw += xoffset;
+		pitch += yoffset;
+
+		if (pitch > 89.0f)
+			pitch = 89.0f;
+		if (pitch < -89.0f)
+			pitch = -89.0f;
+
+		if (input->getKey(GLFW_KEY_W))
+			pos += camSpeed * cam->m_direction;
+		if (input->getKey(GLFW_KEY_S))
+			pos -= camSpeed * cam->m_direction;
+
+		if (input->getKey(GLFW_KEY_A))
+			pos -= glm::normalize(glm::cross(cam->m_direction, glm::vec3(0.0f, 1.0f, 0.0f))) * camSpeed;
+		if (input->getKey(GLFW_KEY_D))
+			pos += glm::normalize(glm::cross(cam->m_direction, glm::vec3(0.0f, 1.0f, 0.0f))) * camSpeed;
+
+		if (input->getKey(GLFW_KEY_Q))
+			pos.y += camSpeed;
+		if (input->getKey(GLFW_KEY_Z))
+			pos.y -= camSpeed;
+
+		glm::vec3 front;
+		front.x = cos(glm::radians(yaw)) * cos(glm::radians(-pitch));
+		front.y = sin(glm::radians(-pitch));
+		front.z = sin(glm::radians(yaw)) * cos(glm::radians(-pitch));
+		cam->m_direction = glm::normalize(front);
+
+		cam->m_position = pos;
 		m_node->setPosition(pos);
 	}
 

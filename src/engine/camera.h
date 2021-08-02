@@ -21,8 +21,8 @@ namespace engine
 		View* m_view;
 
 	public:
-		glm::vec3 m_position = glm::vec3(0.0);
-		glm::vec3 m_direction = glm::vec3(0.0);
+		glm::vec3 m_position = glm::vec3(0.0, 0.0, 1.0);
+		glm::vec3 m_direction = glm::vec3(0.0, 0.0, -1.0);
 		float yaw = 0.0f;
 		float pitch = 0.0f;
 	};

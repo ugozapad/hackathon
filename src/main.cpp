@@ -170,7 +170,7 @@ namespace engine
 #endif
 		
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-
+		
 		// initialize engine context
 		std::shared_ptr<Context> content = std::make_shared<Context>();
 
@@ -179,7 +179,7 @@ namespace engine
 
 		// create engine view
 		createEngineView();
-
+		glfwSetInputMode(g_engineWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		// initialize input callbacks
 		initInputCallbacks(g_engineWindow);
 
