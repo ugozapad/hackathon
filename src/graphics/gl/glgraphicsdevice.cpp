@@ -66,8 +66,7 @@ namespace engine
 
 		if (!gladLoadGL())
 		{
-			spdlog::error("!!! Failed to initialize OpenGL");
-			std::terminate();
+			Core::error("!!! Failed to initialize OpenGL");
 		}
 
 		initGlDebug();
@@ -222,14 +221,12 @@ namespace engine
 
 	void GLGraphicsDevice::setTexture2D(int slot, GrTexture2D* texture)
 	{
-		if (!texture) {
-			spdlog::error("GraphicsDevice::setTexture2D: Texture is null pointer.");
-			std::terminate();
-		}
+		//if (!texture) {
+		//	Core::error("GraphicsDevice::setTexture2D: Texture is null pointer.");
+		//}
 
 		if (slot > GL_TEXTURE31) {
-			spdlog::error("GraphicsDevice::setTexture2D: Reach maxmimum value of slot position. {} (max {})", slot, 31);
-			std::terminate();
+			Core::error("GraphicsDevice::setTexture2D: Reach maxmimum value of slot position. %i (max %i)", slot, 31);
 		}
 
 		glActiveTexture(GL_TEXTURE0 + slot);
@@ -252,8 +249,7 @@ namespace engine
 	{
 		if (!viewport)
 		{
-			spdlog::error("GLGraphicsDevice::setViewport: viewport is null ptr");
-			std::terminate();
+			Core::error("GLGraphicsDevice::setViewport: viewport is null pointer");
 		}
 
 		glViewport(viewport->m_x, viewport->m_y, viewport->m_width, viewport->m_height);
