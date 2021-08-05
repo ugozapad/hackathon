@@ -100,7 +100,10 @@ namespace engine
 		int width = g_graphicsOptions.m_width, height = g_graphicsOptions.m_height;
 		bool fullscreen = g_graphicsOptions.m_fullscreen;
 		std::string title = "engine";
-		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), fullscreen ? glfwGetPrimaryMonitor() : nullptr, nullptr);
+		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+
+		if (fullscreen)
+			glfwSetWindowMonitor(g_engineWindow, glfwGetPrimaryMonitor(), 0, 0, width, height, g_graphicsOptions.m_refreshRate);
 
 		spdlog::info("Created window '{0}' [{1}x{2}] fullscreen:{3}", title.c_str(), width, height, fullscreen);
 

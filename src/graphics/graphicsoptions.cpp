@@ -18,6 +18,7 @@ namespace engine
 		m_width = settingsFile.GetValueI("DisplaySettings", "Width", 800);
 		m_height = settingsFile.GetValueI("DisplaySettings", "Height", 600);
 		m_fullscreen = settingsFile.GetValueB("DisplaySettings", "Fullscreen", false);
+		m_refreshRate = settingsFile.SetValueI("DisplaySettings", "RefreshRate", 60);
 
 		m_anisotropicQuality = settingsFile.GetValueI("GraphicsSettings", "AnisotropicQuality");
 		m_shadowsQuality = settingsFile.GetValueI("GraphicsSettings", "ShadowsQuality");
@@ -34,6 +35,7 @@ namespace engine
 		settingsFile.SetValueI("DisplaySettings", "Width", m_width);
 		settingsFile.SetValueI("DisplaySettings", "Height", m_height);
 		settingsFile.SetValueB("DisplaySettings", "Fullscreen", m_fullscreen);
+		settingsFile.SetValueI("DisplaySettings", "RefreshRate", m_refreshRate);
 
 		settingsFile.SetValueI("GraphicsSettings", "AnisotropicQuality", m_anisotropicQuality);
 		settingsFile.SetValueI("GraphicsSettings", "ShadowsQuality", m_shadowsQuality);
@@ -48,6 +50,7 @@ namespace engine
 
 		m_width = videoMode->width;
 		m_height = videoMode->height;
+		m_refreshRate = videoMode->refreshRate;
 		m_fullscreen = true;
 
 		m_anisotropicQuality = 4;

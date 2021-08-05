@@ -13,6 +13,7 @@ namespace engine
 
 	public:
 		int m_width, m_height;
+		int m_refreshRate;
 		bool m_fullscreen;
 
 		int m_anisotropicQuality;
