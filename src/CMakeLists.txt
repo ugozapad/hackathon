@@ -67,6 +67,13 @@ file(GLOB AUDIO_SRC
 )
 source_group("src\\audio" FILES ${AUDIO_SRC})
 
+file(GLOB PHYSICS_SRC
+	"${CMAKE_CURRENT_SOURCE_DIR}/physics/*.h"
+	"${CMAKE_CURRENT_SOURCE_DIR}/physics/*.cpp"
+	"${CMAKE_CURRENT_SOURCE_DIR}/physics/*.c"
+)
+source_group("src\\physics" FILES ${PHYSICS_SRC})
+
 file(GLOB GAME_SRC
 	"${CMAKE_CURRENT_SOURCE_DIR}/game/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/game/*.cpp"
@@ -85,6 +92,7 @@ add_executable(engine
 	${GRAPHICS_GL_SRC}
 	${GRAPHICS_IM3D_SRC}
 	${AUDIO_SRC}
+	${PHYSICS_SRC}
 	${GAME_SRC}
 )
 

@@ -38,7 +38,18 @@ namespace engine
 
 			while (g_needToHarakiriThreads.load() == 0)
 			{
-				
+				std::vector<EngineTask> tasks = taskManager->m_tasks;
+				EngineTask* task;
+
+				if (!tasks.empty())
+				{
+					task = &tasks.back();
+					
+					std::function<void()>& taskFunc = task->get();
+					taskFunc();
+
+					tasks.pop_back();
+				}
 
 				std::this_thread::sleep_for(std::chrono::milliseconds(1));
 			}
@@ -54,9 +65,14 @@ namespace engine
 	static std::vector<TaskThread*> g_threads;
 
 
-	EngineTask::EngineTask(std::function<void()>& function)
-	{
+	//EngineTask::EngineTask(std::function<void()>& function)
+	//{
 
+	//}
+
+	EngineTask::EngineTask(std::function<void()> function)
+	{
+		m_function = function;
 	}
 
 	TaskManager TaskManager::ms_instance;

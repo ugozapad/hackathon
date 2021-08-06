@@ -2,18 +2,10 @@
 #define WORLD_H
 
 #include "engine/node.h"
+#include "physics/physicsworld.h"
 
 namespace engine
 {
-
-class Entity;
-
-struct WorldNode
-{
-	Entity* m_Entity;
-	WorldNode* m_Root;
-	WorldNode* m_Next;
-};
 
 // Entity container, world and other stuff.
 class World : public Object
@@ -26,7 +18,7 @@ public:
 	World();
 	~World();
 
-	void updatePhysicWorld();
+	void updatePhysicsWorld();
 	void updateLogicWorld();
 	void updateGraphicWorld();
 
@@ -35,9 +27,13 @@ public:
 
 	std::list<std::shared_ptr<Node>>& getNodeList() { return m_nodes; }
 
+	PhysicsWorld* getPhysicsWorld() { return m_physicsWorld; }
+
 private:
 	typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
 	std::list<std::shared_ptr<Node>> m_nodes;
+
+	PhysicsWorld* m_physicsWorld;
 };
 
 } // namespace sword

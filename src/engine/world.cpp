@@ -16,15 +16,18 @@ namespace engine
 
 	World::World()
 	{
+		m_physicsWorld = mem_new<PhysicsWorld>(*g_sysAllocator);
 	}
 
 	World::~World()
 	{
+		mem_delete(*g_sysAllocator, m_physicsWorld);
 	}
 
-	void World::updatePhysicWorld()
+	void World::updatePhysicsWorld()
 	{
-
+		float delta = Timer::getInstance()->getDelta();
+		m_physicsWorld->step(delta);
 	}
 
 	void World::updateLogicWorld()

@@ -58,7 +58,7 @@ namespace engine
 	{
 		if (ms_world)
 		{
-			ms_world->updatePhysicWorld();
+			ms_world->updatePhysicsWorld();
 			ms_world->updateLogicWorld();
 		}
 	}

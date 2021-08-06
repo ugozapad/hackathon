@@ -6,11 +6,24 @@ namespace engine
 	class EngineTask
 	{
 	public:
-		EngineTask(std::function<void()>& function);
+		EngineTask(std::function<void()> function);
+
+		void operator()() 
+		{
+			m_function(); 
+		}
+
+		std::function<void()>& get() { return m_function; }
+
+	private:
+		std::function<void()> m_function;
 	};
+
+	class TaskThread;
 
 	class TaskManager : public Singleton<TaskManager>
 	{
+		friend class TaskThread;
 	private:
 		static TaskManager ms_instance;
 
