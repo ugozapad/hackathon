@@ -29,6 +29,12 @@ namespace engine
 
 		void load(const std::shared_ptr<DataStream>& dataStream) override;
 
+		void parse(char* buf, int size);
+
+	private:
+		const char* parseTextureStage(char* buf);
+	public:
+
 		void createHwTextures();
 
 		void bind();

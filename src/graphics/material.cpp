@@ -7,6 +7,8 @@
 #include "graphics/rendercontext.h"
 #include "graphics/shaderconstantmanager.h"
 
+#include "common/parse.h"
+
 #include "file/filedevice.h"
 
 #include "engine/camera.h"
@@ -34,7 +36,7 @@ namespace engine
 		materiaName += ".material";
 
 		File* file = FileDevice::instance()->openFile(materiaName, FileAccess::Write);
-	
+
 		char buffer[256];
 		int len = sprintf(buffer, "material \"%s\"\n", name);
 		file->write(buffer, len);
@@ -113,14 +115,165 @@ namespace engine
 		dataStream->read((void*)data, length);
 		data[length] = '\0';
 
+		parse(data, length);
+
+		delete[] data;
+	}
+
+#if 0
 		const char* albedoTextureName = NULL;
 		const char* normalTextureName = NULL;
 		const char* detailTextureName = NULL;
 		const char* shaderName = NULL;
 		bool disableMipMapping = false;
 
-		const char* tokenizerStr = "{},\"\n\r\t ";
-		char* token = strtok(data, tokenizerStr);
+		const char* tokenizerStr = ",\"\n\r\t ";
+		char* token = strtok(buf, tokenizerStr);
+
+		bool hasMaterialOnBegin = (strcmp(token, "material") == 0);
+		if (!hasMaterialOnBegin)
+			Core::error("Material::parse: no \"material\" key in material %s", m_filename.c_str());
+
+		char* materialName = strtok(NULL, tokenizerStr);
+		m_materialName = strdup(materialName);
+		token = strtok(NULL, tokenizerStr);
+
+		while (1)
+		{
+			token = strtok(NULL, tokenizerStr);
+
+			if (!token)
+				break;
+
+			if (!token[0])
+			{
+				Core::error("Material::parse: no concluding '}' in material %s\n", m_filename.c_str());
+			}
+
+			if (token[0] == '{' /*|| token[0] == '}'*/)
+				continue;
+
+			if (strcmp(token, "shader") == 0)
+			{
+				char* shader = strtok(NULL, tokenizerStr);
+				m_shader = getEngineShaderFromMaterialName(shader);
+				shaderName = strdup(shader);
+				continue;
+			}
+			else if (strcmp(token, "albedo") == 0)
+			{
+				char* albedoName = 0;
+				char* nextTextureTok = strtok(NULL, tokenizerStr);
+
+				if (nextTextureTok[0] == '{')
+				{
+					nextTextureTok = strtok(NULL, tokenizerStr);
+
+					if (nextTextureTok && strcmp(nextTextureTok, "skipmips") == 0)
+					{
+						disableMipMapping = true;
+						albedoName = strtok(NULL, tokenizerStr);
+					}
+					else if (nextTextureTok && strcmp(nextTextureTok, "clampedge") == 0)
+					{
+						m_clampToEdge = true;
+						albedoName = strtok(NULL, tokenizerStr);
+					}
+					else
+					{
+						nextTextureTok = strtok(NULL, tokenizerStr);
+					}
+				}
+				else // using albedo texture filename without any parameter
+				{
+					albedoTextureName = strdup(nextTextureTok);
+				}
+
+				if (!albedoTextureName)
+					albedoTextureName = strdup(albedoName);
+
+				continue;
+			}
+			else if (strcmp(token, "normalmap") == 0)
+			{
+				char* normalname = strtok(NULL, tokenizerStr);
+				normalTextureName = strdup(normalname);
+				continue;
+			}
+			else if (strcmp(token, "detail") == 0)
+			{
+				char* detailname = strtok(NULL, tokenizerStr);
+				detailTextureName = strdup(detailname);
+				continue;
+			}
+			else if (strcmp(token, "depth_write") == 0)
+			{
+				char* depthWriteValue = strtok(NULL, tokenizerStr);
+
+				if (strcmp(depthWriteValue, "true") == 0)
+					m_depthWrite = true;
+				else if (strcmp(depthWriteValue, "false") == 0)
+					m_depthWrite = false;
+
+				continue;
+			}
+			else if (strcmp(token, "skipmips") == 0)
+			{
+				char* skipmipsValue = strtok(NULL, tokenizerStr);
+				if (strcmp(skipmipsValue, "true") == 0)
+					m_skipmips = true;
+				else if (strcmp(skipmipsValue, "false") == 0)
+					m_skipmips = false;
+
+				continue;
+			}
+			else if (strcmp(token, "selfillum") == 0)
+			{
+				char* selfillumValue = strtok(NULL, tokenizerStr);
+
+				if (strcmp(selfillumValue, "true") == 0)
+					m_selfillum = true;
+				else if (strcmp(selfillumValue, "false") == 0)
+					m_selfillum = false;
+
+				continue;
+			}
+			else
+			{
+				Core::error("Material::parse: unknown material parameter '%s' in '%s'\n", token, m_filename.c_str());
+			}
+		}
+
+		//TextureCreationDesc desc;
+		//desc.m_mipmapping = !disableMipMapping;
+
+		m_albedoTextureName += "textures/";
+		m_albedoTextureName += albedoTextureName;
+
+		if (normalTextureName)
+		{
+			m_normalTextureName += "textures/";
+			m_normalTextureName += normalTextureName;
+		}
+
+		if (detailTextureName)
+		{
+			m_detailTextureName += "textures/";
+			m_detailTextureName += detailTextureName;
+		}
+#endif
+	const char* tokenizerStr = "{},\"\n\r\t ";
+
+	void Material::parse(char* buf, int size)
+	{
+		const char* albedoTextureName = NULL;
+		const char* normalTextureName = NULL;
+		const char* detailTextureName = NULL;
+		const char* shaderName = NULL;
+		bool disableMipMapping = false;
+
+
+		char* token = strtok(buf, tokenizerStr);
 		while (token)
 		{
 			if (strcmp(token, "material") == 0)
@@ -140,29 +293,16 @@ namespace engine
 			}
 			else if (strcmp(token, "albedo") == 0)
 			{
-				char* albedoName = 0;
-				char* nextTextureTok = strtok(NULL, tokenizerStr);
-				if (nextTextureTok && strcmp(nextTextureTok, "skipmips") == 0)
-				{
-					disableMipMapping = true;
-					albedoName = strtok(NULL, tokenizerStr);
-				}
-				else if (nextTextureTok && strcmp(nextTextureTok, "clampedge") == 0)
-				{
-					m_clampToEdge = true;
-					albedoName = strtok(NULL, tokenizerStr);
-				}
-				else
-					albedoName = nextTextureTok;
-
-				albedoTextureName = strdup(albedoName);
+				//albedoTextureName = strdup(albedoName);
+				albedoTextureName = parseTextureStage(token);
 				token = strtok(NULL, tokenizerStr);
 				continue;
 			}
 			else if (strcmp(token, "normalmap") == 0)
 			{
-				char* normalname = strtok(NULL, tokenizerStr);
-				normalTextureName = strdup(normalname);
+				//char* normalname = strtok(NULL, tokenizerStr);
+				//normalTextureName = strdup(normalname);
+				normalTextureName = parseTextureStage(token);
 				token = strtok(NULL, tokenizerStr);
 				continue;
 			}
@@ -217,8 +357,6 @@ namespace engine
 			token = strtok(NULL, tokenizerStr);
 		}
 
-		delete[] data;
-
 		//TextureCreationDesc desc;
 		//desc.m_mipmapping = !disableMipMapping;
 
@@ -230,12 +368,34 @@ namespace engine
 			m_normalTextureName += "textures/";
 			m_normalTextureName += normalTextureName;
 		}
-			
+
 		if (detailTextureName)
 		{
 			m_detailTextureName += "textures/";
 			m_detailTextureName += detailTextureName;
 		}
+	}
+
+	const char* Material::parseTextureStage(char* buf)
+	{
+		char* albedoName = 0;
+		char* nextTextureTok = strtok(NULL, tokenizerStr);
+		if (nextTextureTok && strcmp(nextTextureTok, "skipmips") == 0)
+		{
+			m_skipmips = true;
+			albedoName = strtok(NULL, tokenizerStr);
+		}
+		else if (nextTextureTok && strcmp(nextTextureTok, "clampedge") == 0)
+		{
+			m_clampToEdge = true;
+			albedoName = strtok(NULL, tokenizerStr);
+		}
+		else
+		{
+			albedoName = nextTextureTok;
+		}
+
+		return strdup(albedoName);
 	}
 
 	void Material::createHwTextures()
@@ -250,7 +410,7 @@ namespace engine
 			m_albedoTexture->gen_mipmaps();
 			GraphicsDevice::instance()->setTexture2D(0, 0);
 		}
-
+		
 		if (!m_normalTextureName.empty())
 			m_normalTexture = contentManager->loadTexture(m_normalTextureName);
 
@@ -261,7 +421,7 @@ namespace engine
 	void Material::bind()
 	{
 		GraphicsDevice* device = GraphicsDevice::getInstance();
-		
+
 		device->depthTest(true);
 
 		if (!m_depthWrite)
