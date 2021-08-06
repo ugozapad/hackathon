@@ -5,6 +5,13 @@
 
 namespace engine
 {
+
+	MallocAllocator::MallocAllocator() :
+		AllocatorBase(0, 0)
+	{
+
+	}
+
 	void* MallocAllocator::allocate(size_t size, size_t align)
 	{
 		return _aligned_malloc(size, align);

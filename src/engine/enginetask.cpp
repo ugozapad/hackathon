@@ -9,7 +9,6 @@
 namespace engine
 {
 	static std::atomic<int> g_needToHarakiriThreads = 0;
-	static MallocAllocator g_threadAllocator;
 
 	struct TaskThreadData
 	{

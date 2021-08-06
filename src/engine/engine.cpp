@@ -42,6 +42,9 @@ namespace engine
 		TaskManager::getInstance()->destroyTaskWorkers();
 
 		ContentManager::getInstance()->shutdown();
+
+		if (ms_world)
+			ms_world.reset();
 	}
 
 	void Engine::loadWorld(const std::string& filename)

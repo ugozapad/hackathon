@@ -32,13 +32,14 @@
 #include "game/skyboxcomponent.h"
 //#include "game/cameralogic.h"
 
+#include "common/freelistallocator.h"
+
 #include <GLFW/glfw3.h>
 
 #include <io.h>
 
 namespace engine
 {
-	static MallocAllocator g_allocator;
 	static GLFWwindow* g_engineWindow;
 	static View* g_engineView;
 
@@ -124,8 +125,19 @@ namespace engine
 
 	int main(int argc, char* argv[])
 	{
+		// allocate fixed size memory for engine
+		//size_t memory_size = 1024ULL * 1024 * 1024; //1GB
+		//void* allocatedMemory = malloc(memory_size);
+
+		// create and initialize system allocator
+		//FreeListAllocator* freeListAllocator = new (allocatedMemory)FreeListAllocator(memory_size - sizeof(FreeListAllocator), pointer_help::add(allocatedMemory, sizeof(FreeListAllocator)));
+
 		// set system allocator
-		g_sysAllocator = &g_allocator;
+		//g_sysAllocator = freeListAllocator;
+
+		// set system allocator
+		static MallocAllocator s_mallocAllocator;
+		g_sysAllocator = &s_mallocAllocator;
 
 		// initializing logger
 		Logger::init();
@@ -205,15 +217,6 @@ namespace engine
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
 
-		// #HACK: render loading screen
-		{
-			std::shared_ptr<TextureMap> loadTex = contentManager->loadTexture("textures/load.bmp");
-		
-			graphicsDevice->clear(ClearRenderTarget);
-			ScreenQuad::render(loadTex->getHWTexture());
-			graphicsDevice->swapBuffers();
-		}
-
 		// game init
 		registerGameClasses();
 
@@ -243,8 +246,6 @@ namespace engine
 
 		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
 		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
-
-		std::shared_ptr<TextureMap> logoTexture = ContentManager::getInstance()->loadTexture("textures/logo.bmp");
 
 		GameState* gameState = GameState::getInstance();
 
@@ -281,11 +282,7 @@ namespace engine
 
 			graphicsDevice->clear(/*ClearRenderTarget |*/ ClearDepth);
 
-			bool showIntro = false;
-			if (showIntro)
-				ScreenQuad::render(logoTexture->getHWTexture());
-			else
-				Renderer::getInstance()->renderView(g_engineView);
+			Renderer::getInstance()->renderView(g_engineView);
 
 			graphicsDevice->swapBuffers();
 
@@ -306,6 +303,11 @@ namespace engine
 		g_graphicsOptions.saveSettings("engine.ini");
 
 		mem_delete(*g_sysAllocator, g_engineView);
+
+		g_sysAllocator = nullptr;
+
+		//freeListAllocator->~FreeListAllocator();
+		//free(allocatedMemory);
 
 		glfwTerminate();
 

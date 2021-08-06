@@ -73,6 +73,11 @@ namespace engine
 		g_harakiriContentThread.store(1);
 		g_contentThread.stopThread();
 
+		typedef std::map<std::string, std::shared_ptr<Content>>::iterator ContentIt;
+		for (auto it : m_content)
+			if (it.second)
+				it.second.reset();
+
 		m_content.clear();
 	}
 

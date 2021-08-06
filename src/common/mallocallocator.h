@@ -8,6 +8,8 @@ namespace engine
 	class MallocAllocator : public AllocatorBase
 	{
 	public:
+		MallocAllocator();
+
 		void* allocate(size_t size, size_t align) override;
 		void free(void* ptr) override;
 	};
