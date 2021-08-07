@@ -9,6 +9,8 @@ namespace engine
 
 	void PhysicsManager::init()
 	{
+		registerPhysicsClasses();
+
 		// Initialize physics allocator
 		PhysicsAllocator::init();
 	}
@@ -18,5 +20,11 @@ namespace engine
 		// Shutdown physics allocator
 		PhysicsAllocator::shutdown();
 	}
+}
 
+#include "physics/physicscomponent.h"
+
+void engine::PhysicsManager::registerPhysicsClasses()
+{
+	engine::PhysicsComponent::registerObject();
 }

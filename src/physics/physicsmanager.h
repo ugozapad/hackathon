@@ -11,6 +11,9 @@ namespace engine
 	public:
 		void init();
 		void shutdown();
+
+	private:
+		void registerPhysicsClasses();
 	};
 }
 

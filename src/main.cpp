@@ -100,7 +100,7 @@ namespace engine
 		// create window
 		int width = g_graphicsOptions.m_width, height = g_graphicsOptions.m_height;
 		bool fullscreen = g_graphicsOptions.m_fullscreen;
-		std::string title = "engine";
+		std::string title = "Engine";
 		g_engineWindow = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
 		if (fullscreen)
