@@ -9,6 +9,8 @@
 
 #include "engine/content/contentmanager.h"
 
+#include "physics/physicsmanager.h"
+
 namespace engine
 {
 	std::shared_ptr<World> Engine::ms_world;
@@ -35,10 +37,14 @@ namespace engine
 		ContentManager::getInstance()->init();
 
 		TaskManager::getInstance()->createTaskWorkers();
+
+		PhysicsManager::getInstance()->init();
 	}
 
 	void Engine::shutdown()
 	{
+		PhysicsManager::getInstance()->shutdown();
+
 		TaskManager::getInstance()->destroyTaskWorkers();
 
 		ContentManager::getInstance()->shutdown();
