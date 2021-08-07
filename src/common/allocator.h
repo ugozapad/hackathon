@@ -2,6 +2,7 @@
 #define ALLOCATOR_H
 
 #include <new>
+#include "core/debug.h"
 
 namespace engine
 {
@@ -18,7 +19,7 @@ namespace engine
 
 		virtual ~AllocatorBase()
 		{
-			assert(m_numAllocations == 0 && m_usedMemory == 0);
+			ASSERT(m_numAllocations == 0 && m_usedMemory == 0);
 			m_start = nullptr; m_size                       = 0;
 		}
 

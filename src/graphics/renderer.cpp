@@ -108,7 +108,7 @@ namespace engine
 		GraphicsDevice::getInstance()->setFramebuffer(deferredFramebuffer);
 		GraphicsDevice::getInstance()->clear(/*ClearRenderTarget |*/ ClearDepth);
 
-		World* world = Engine::ms_world.get();
+		World* world = Engine::ms_world;
 
 		auto skyboxNode = std::find_if(world->getNodeList().begin(), world->getNodeList().end(),
 			[](const std::shared_ptr<Node>& node)
@@ -208,6 +208,34 @@ namespace engine
 		FileDevice::instance()->setDefaultPath(defpath);
 
 		delete[] screenBuffer;
+	}
+
+	void Renderer::endFrame()
+	{
+		resetDeviceState();
+
+		// swap buffers
+		GraphicsDevice::instance()->swapBuffers();
+	}
+
+	void Renderer::resetDeviceState()
+	{
+		// #TODO: !!!
+		
+		// enable depth test and disable depth mask
+		//GraphicsDevice::instance()->depthMask(false);
+		//GraphicsDevice::instance()->depthTest(true);
+
+		// unbind all texture slots
+		for (int i = 0; i < 12; i++)
+			GraphicsDevice::getInstance()->setTexture2D(i, nullptr);
+
+		// undind vb and ib
+		GraphicsDevice::getInstance()->setVertexBuffer(nullptr);
+		GraphicsDevice::getInstance()->setIndexBuffer(nullptr);
+
+		// unbind framebuffer
+		GraphicsDevice::getInstance()->setFramebuffer(nullptr);
 	}
 
 }

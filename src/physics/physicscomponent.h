@@ -3,6 +3,8 @@
 
 #include "engine/components/component.h"
 
+#include "physics/physicsbody.h"
+
 namespace engine
 {
 	class PhysicsComponent : public Component
@@ -14,6 +16,10 @@ namespace engine
 
 		static void registerObject();
 
+		void createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f));
+
+	private:
+		PhysicsBody* m_physicsBody;
 	};
 }
 

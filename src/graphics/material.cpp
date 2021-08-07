@@ -422,6 +422,10 @@ namespace engine
 	{
 		GraphicsDevice* device = GraphicsDevice::getInstance();
 
+		// reset all
+		device->depthMask(false);
+		device->depthTest(true);
+
 		device->depthTest(true);
 
 		if (!m_depthWrite)

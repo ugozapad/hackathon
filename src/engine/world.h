@@ -18,6 +18,8 @@ public:
 	World();
 	~World();
 
+	void release();
+
 	void updatePhysicsWorld();
 	void updateLogicWorld();
 	void updateGraphicWorld();

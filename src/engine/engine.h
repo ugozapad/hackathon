@@ -18,7 +18,7 @@ namespace engine
 		static void update();
 
 	public:
-		static std::shared_ptr<World> ms_world;
+		static World* ms_world;
 	};
 }
 

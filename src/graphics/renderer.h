@@ -24,6 +24,10 @@ namespace engine
 
 		void makeScreenshot();
 
+		void endFrame();
+
+		void resetDeviceState();
+
 	private:
 		View* m_view;
 	};

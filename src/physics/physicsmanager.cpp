@@ -20,6 +20,20 @@ namespace engine
 		// Shutdown physics allocator
 		PhysicsAllocator::shutdown();
 	}
+
+	PhysicsBody* PhysicsManager::createPhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/)
+	{
+		// #TODO: HAVE NO SUCH TIME TO FIX MEMORY LEAK
+		//return mem_new<PhysicsBody>(*PhysicsAllocator::ms_physicsAllocator, shapeType, position);
+		return new PhysicsBody(shapeType, position);
+	}
+
+	void PhysicsManager::destroyPhysicsBody(PhysicsBody* physicsBody)
+	{
+		// #TODO: HAVE NO SUCH TIME TO FIX MEMORY LEAK
+		//mem_delete(*PhysicsAllocator::ms_physicsAllocator, physicsBody);
+		delete physicsBody;
+	}
 }
 
 #include "physics/physicscomponent.h"

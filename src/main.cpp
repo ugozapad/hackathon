@@ -26,6 +26,8 @@
 #include "audio/audiomanager.h"
 #include "audio/audiosource.h"
 
+#include "physics/physicscomponent.h"
+
 #include "game/game.h"
 #include "game/gamestate.h"
 #include "game/playercomponent.h"
@@ -247,6 +249,16 @@ namespace engine
 		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
 		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
 
+		// add physics mesh
+		auto physicsTestStuffNode = Engine::ms_world->createNodePtr();
+		physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
+
+		auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<GraphicsComponent>();
+		physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
+
+		auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
+		physComponent->createShape(PhysicsBody::ShapeType::Box);
+
 		GameState* gameState = GameState::getInstance();
 
 		while (!glfwWindowShouldClose(g_engineWindow))
@@ -284,10 +296,12 @@ namespace engine
 
 			Renderer::getInstance()->renderView(g_engineView);
 
-			graphicsDevice->swapBuffers();
+			Renderer::getInstance()->endFrame();
 
 			Timer::getInstance()->update();
 		}
+
+		physComponent.reset();
 
 		spdlog::info("Exiting engine ...");
 

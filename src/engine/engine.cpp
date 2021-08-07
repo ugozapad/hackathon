@@ -13,7 +13,7 @@
 
 namespace engine
 {
-	std::shared_ptr<World> Engine::ms_world;
+	World* Engine::ms_world;
 
 	void registerEngineObjects()
 	{
@@ -43,14 +43,18 @@ namespace engine
 
 	void Engine::shutdown()
 	{
+		if (ms_world)
+		{
+			ms_world->release();
+			mem_delete(*g_sysAllocator, ms_world);
+		}
+			
+
 		PhysicsManager::getInstance()->shutdown();
 
 		TaskManager::getInstance()->destroyTaskWorkers();
 
 		ContentManager::getInstance()->shutdown();
-
-		if (ms_world)
-			ms_world.reset();
 	}
 
 	void Engine::loadWorld(const std::string& filename)
@@ -60,7 +64,8 @@ namespace engine
 
 	void Engine::loadEmptyWorld()
 	{
-		ms_world = Context::getInstance()->createObject<World>();
+		//ms_world = Context::getInstance()->createObject<World>();
+		ms_world = mem_new<World>(*g_sysAllocator);
 	}
 
 	void Engine::update()

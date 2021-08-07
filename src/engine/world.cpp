@@ -24,6 +24,11 @@ namespace engine
 		mem_delete(*g_sysAllocator, m_physicsWorld);
 	}
 
+	void World::release()
+	{
+		m_nodes.clear();
+	}
+
 	void World::updatePhysicsWorld()
 	{
 		float delta = Timer::getInstance()->getDelta();
