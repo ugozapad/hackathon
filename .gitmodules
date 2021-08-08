@@ -13,3 +13,6 @@
 [submodule "vendor/bullet"]
 	path = vendor/bullet
 	url = https://github.com/ugozapad/bullet.git
+[submodule "vendor/ozz-animation"]
+	path = vendor/ozz-animation
+	url = https://github.com/guillaumeblanc/ozz-animation.git
