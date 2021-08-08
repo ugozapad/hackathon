@@ -14,9 +14,11 @@
 namespace engine
 {
 
+	void testOzz();
 
 	class Animator
 	{
+		friend void testOzz();
 	public:
 
 	private:

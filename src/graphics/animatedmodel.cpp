@@ -105,6 +105,10 @@ namespace engine
 		std::shared_ptr<DataStream> stream = std::make_shared<DataStream>();
 		OzzStream ozzStream(stream);
 		ozz::io::IArchive archive(&ozzStream);
+
+		Animator animator;
+		archive >> animator.m_skeleton;
+
 	}
 
 }
