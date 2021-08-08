@@ -2,6 +2,7 @@
 #define PHYSICSWORLD_H
 
 #include "btBulletDynamicsCommon.h"
+#include "physicsbody.h"
 
 namespace engine
 {
@@ -21,6 +22,7 @@ namespace engine
 		btBroadphaseInterface* m_overlappingPairCache;
 		btSequentialImpulseConstraintSolver* m_solver;
 		btDiscreteDynamicsWorld* m_world;
+		PhysicsBody* m_body;
 	};
 }
 
