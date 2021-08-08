@@ -22,7 +22,7 @@ namespace engine
 		btBroadphaseInterface* m_overlappingPairCache;
 		btSequentialImpulseConstraintSolver* m_solver;
 		btDiscreteDynamicsWorld* m_world;
-		PhysicsBody* m_body;
+		btRigidBody* m_body;
 	};
 }
 
