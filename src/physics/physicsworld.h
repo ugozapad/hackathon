@@ -14,6 +14,8 @@ namespace engine
 
 		void step(float delta);
 
+		void addRigidBody(PhysicsBody* body);
+
 		btDiscreteDynamicsWorld* getWorld() { return m_world; }
 
 	private:
@@ -22,7 +24,7 @@ namespace engine
 		btBroadphaseInterface* m_overlappingPairCache;
 		btSequentialImpulseConstraintSolver* m_solver;
 		btDiscreteDynamicsWorld* m_world;
-		btRigidBody* m_body;
+		
 	};
 }
 

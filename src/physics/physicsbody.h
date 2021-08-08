@@ -30,7 +30,7 @@ namespace engine
 		~PhysicsBody();
 
 
-	private:
+	
 		btRigidBody* m_btRigidBody;
 	};
 }
