@@ -80,6 +80,11 @@ namespace engine
 		ShaderManager::getInstance()->shutdown();
 	}
 
+	void Renderer::beginFrame()
+	{
+		GraphicsDevice::getInstance()->clear(/*ClearRenderTarget |*/ ClearDepth);
+	}
+
 	void Renderer::renderView(View* view)
 	{
 		// make context current

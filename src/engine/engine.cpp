@@ -36,7 +36,7 @@ namespace engine
 
 		ContentManager::getInstance()->init();
 
-		TaskManager::getInstance()->createTaskWorkers();
+		//TaskManager::getInstance()->createTaskWorkers();
 
 		PhysicsManager::getInstance()->init();
 	}
@@ -49,10 +49,9 @@ namespace engine
 			mem_delete(*g_sysAllocator, ms_world);
 		}
 			
-
 		PhysicsManager::getInstance()->shutdown();
 
-		TaskManager::getInstance()->destroyTaskWorkers();
+		//TaskManager::getInstance()->destroyTaskWorkers();
 
 		ContentManager::getInstance()->shutdown();
 	}

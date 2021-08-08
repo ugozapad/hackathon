@@ -20,6 +20,8 @@ namespace engine
 		void init(View* view);
 		void shutdown();
 
+		void beginFrame();
+
 		void renderView(View* view);
 
 		void makeScreenshot();

@@ -150,3 +150,5 @@ set_target_properties(engine PROPERTIES
     MSVC_RUNTIME_LIBRARY 
         "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>"
 )
+
+target_link_libraries(engine ozz_animation)

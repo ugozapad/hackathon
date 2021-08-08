@@ -175,7 +175,7 @@ namespace engine
 		// init glfw
 		glfwInit();
 
-		spdlog::info("GLFW is initialized!");
+		spdlog::info("GLFW is initialized");
 
 		// set window hints
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -292,10 +292,9 @@ namespace engine
 			// sound
 			AudioManager::getInstance()->update();
 
-			graphicsDevice->clear(/*ClearRenderTarget |*/ ClearDepth);
-
+			
+			Renderer::getInstance()->beginFrame();
 			Renderer::getInstance()->renderView(g_engineView);
-
 			Renderer::getInstance()->endFrame();
 
 			Timer::getInstance()->update();

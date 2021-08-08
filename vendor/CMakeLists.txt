@@ -6,3 +6,5 @@ set_target_properties(bullet PROPERTIES
     MSVC_RUNTIME_LIBRARY 
         "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>"
 )
+
+add_subdirectory(ozz-animation)
