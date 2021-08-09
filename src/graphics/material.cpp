@@ -78,6 +78,7 @@ namespace engine
 		m_depthWrite = true;
 		m_selfillum = false;
 		m_clampToEdge = false;
+		m_skipmips = false;
 	}
 
 	Material::Material(const std::string& filename) : Content(filename)
@@ -91,6 +92,7 @@ namespace engine
 		m_depthWrite = true;
 		m_selfillum = false;
 		m_clampToEdge = false;
+		m_skipmips = false;
 	}
 
 	Material::~Material()
@@ -453,7 +455,7 @@ namespace engine
 
 		if (m_skipmips)
 		{
-			m_albedoTexture->setMin(TextureFilter::Linear);
+			m_albedoTexture->setMin(TextureFilter::Nearest);
 			m_albedoTexture->setMag(TextureFilter::Linear);
 		}
 		else
