@@ -32,6 +32,7 @@
 #include "game/gamestate.h"
 #include "game/playercomponent.h"
 #include "game/skyboxcomponent.h"
+#include "game/weaponcomponent.h"
 //#include "game/cameralogic.h"
 
 #include "common/freelistallocator.h"
@@ -251,6 +252,9 @@ namespace engine
 		// Add player
 		auto playerNode = Engine::ms_world->createNodePtr();
 		playerNode->createComponentByType<PlayerComponent>();
+		auto weapon = playerNode->createComponentByType<WeaponComponent>();
+		auto weaponMesh = playerNode->createComponentByType<GraphicsComponent>();
+		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
 		//playerNode->createComponentByType<CameraLogicComponent>();
 
 		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
