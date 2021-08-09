@@ -1,0 +1,5 @@
+material "test_level/bricks/brick_01.010"
+{
+	shader diffuse
+	albedo "test/bricks/tiled-brick-texture-1.jpg"
+}

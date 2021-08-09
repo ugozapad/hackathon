@@ -1,0 +1,5 @@
+material "test_level/wood/door"
+{
+	shader diffuse
+	albedo "test/wood/door.jpg"
+}

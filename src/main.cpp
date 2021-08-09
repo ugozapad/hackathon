@@ -228,9 +228,7 @@ namespace engine
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
 		auto levelMesh = levelNode->createComponentByType<GraphicsComponent>();
-	
-
-		levelMesh->addModel(contentManager->loadModel("models/level/test.dae"));
+		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
 			p.y = -1.0f;

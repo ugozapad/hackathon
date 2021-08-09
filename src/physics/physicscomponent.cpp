@@ -50,7 +50,7 @@ namespace engine
 	void PhysicsComponent::update(float delta)
 	{
 		// hack 
-		m_node->setPosition(getPhysicsBody()->getPosition());
+		//m_node->setPosition(getPhysicsBody()->getPosition());
 	}
 
 }
