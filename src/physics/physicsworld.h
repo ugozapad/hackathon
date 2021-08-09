@@ -17,6 +17,8 @@ namespace engine
 
 		void step(float delta);
 
+		void addRigidBody(PhysicsBody* body);
+
 		btDiscreteDynamicsWorld* getWorld() { return m_world; }
 
 	private:

@@ -16,6 +16,7 @@ namespace engine
 			m_solver, 
 			m_collisionConfiguration);
 
+		m_world->addRigidBody(m_body);
 	}
 
 	PhysicsWorld::~PhysicsWorld()
@@ -46,5 +47,10 @@ namespace engine
 	{
 		if (m_world)
 			m_world->stepSimulation(delta);
+	}
+
+	void PhysicsWorld::addRigidBody(PhysicsBody* body)
+	{
+		m_world->addRigidBody(body->m_btRigidBody);
 	}
 }
