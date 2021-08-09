@@ -15,8 +15,6 @@ namespace engine
 			m_overlappingPairCache,
 			m_solver, 
 			m_collisionConfiguration);
-
-		m_world->addRigidBody(m_body);
 	}
 
 	PhysicsWorld::~PhysicsWorld()
