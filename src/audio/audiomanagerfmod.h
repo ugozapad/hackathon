@@ -20,6 +20,8 @@ namespace engine
 
 		virtual AudioSource* createSource(const std::string& filename);
 		virtual void deleteSource(AudioSource* source);
+
+		FMOD::System* getFMOD() { return m_fmodSystem; }
 	
 	private:
 		FMOD::System* m_fmodSystem;

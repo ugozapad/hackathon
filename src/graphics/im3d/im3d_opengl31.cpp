@@ -33,7 +33,7 @@ static Shader* g_im3dShaderPoints;
 bool Im3d_Init()
 {
  // OpenGL uniform buffers require 16 byte alignment for structs - set IM3D_VERTEX_ALIGNMENT in im3d_config.h
-	IM3D_ASSERT(sizeof(Im3d::VertexData) % 16 == 0);
+	ASSERT(sizeof(Im3d::VertexData) % 16 == 0);
 
 	{	GLuint vs = LoadCompileShader(GL_VERTEX_SHADER,   "im3d.glsl", "VERTEX_SHADER\0POINTS\0");
 		GLuint fs = LoadCompileShader(GL_FRAGMENT_SHADER, "im3d.glsl", "FRAGMENT_SHADER\0POINTS\0");
@@ -254,7 +254,7 @@ void Im3d_EndFrame()
 				//glAssert(glEnable(GL_CULL_FACE)); // culling valid for triangles, but optional
 				break;
 			default:
-				IM3D_ASSERT(false);
+				ASSERT(false);
 				return;
 		};
 	

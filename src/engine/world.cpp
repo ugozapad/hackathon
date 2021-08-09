@@ -32,7 +32,7 @@ namespace engine
 	void World::updatePhysicsWorld()
 	{
 		float delta = Timer::getInstance()->getDelta();
-		m_physicsWorld->step(delta);
+		m_physicsWorld->step(1.0f / 24.0f);
 	}
 
 	void World::updateLogicWorld()

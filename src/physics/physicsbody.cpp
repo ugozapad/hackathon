@@ -31,6 +31,10 @@ namespace engine
 		info.m_friction = btScalar(0.5);
 		info.m_rollingFriction = btScalar(0.3);
 		info.m_restitution = 0.5f;
+		
+		btTransform& t = info.m_startWorldTransform;
+		t.setIdentity();
+		t.setOrigin(btVector3(position.x, position.y, position.z));
 
 		m_btRigidBody = new btRigidBody(info);
 		m_btRigidBody->forceActivationState(DISABLE_DEACTIVATION);
@@ -41,4 +45,12 @@ namespace engine
 	{
 
 	}
+
+	glm::vec3 PhysicsBody::getPosition()
+	{
+		btTransform t = m_btRigidBody->getWorldTransform();
+		btVector3 p = t.getOrigin();
+		return glm::vec3(p.x(), p.y(), p.z());
+	}
+
 }

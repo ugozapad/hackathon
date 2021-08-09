@@ -1145,7 +1145,7 @@ bool Im3d::GizmoScale(Id _id, float _scale_[3])
 }
 bool Im3d::Gizmo(Id _id, float _transform_[4*4])
 {
-	IM3D_ASSERT(_transform_);
+	ASSERT(_transform_);
 
 	Context& ctx = GetContext();
  	Mat4* outMat4 = (Mat4*)_transform_;
@@ -1301,15 +1301,15 @@ void AppData::setCullFrustum(const Mat4& _viewProj, bool _ndcZNegativeOneToOne)
 
 static void* AlignedMalloc(size_t _size, size_t _align)
 {
-	IM3D_ASSERT(_size > 0);
-	IM3D_ASSERT(_align > 0);
+	ASSERT(_size > 0);
+	ASSERT(_align > 0);
 	size_t grow = (_align - 1) + sizeof(void*);
 	size_t mem = (size_t)IM3D_MALLOC(_size + grow);
 	if (mem)
 	{
 		size_t ret = (mem + grow) & (~(_align - 1));
-		IM3D_ASSERT(ret % _align == 0); // aligned correctly
-		IM3D_ASSERT(ret >= mem + sizeof(void*)); // header large enough to store a ptr
+		ASSERT(ret % _align == 0); // aligned correctly
+		ASSERT(ret >= mem + sizeof(void*)); // header large enough to store a ptr
 		*((void**)(ret - sizeof(void*))) = (void*)mem;
 		return (void*)ret;
 	}
@@ -1368,7 +1368,7 @@ void Vector<T>::reserve(U32 _capacity)
 template <typename T>
 void Vector<T>::resize(U32 _size, const T& _val)
 {
-	IM3D_ASSERT(_size >= m_size); // only support growing the vector
+	ASSERT(_size >= m_size); // only support growing the vector
 	reserve(_size);
 	while (m_size < _size)
 	{
@@ -1380,7 +1380,7 @@ void Vector<T>::resize(U32 _size, const T& _val)
 template <typename T>
 void Vector<T>::resize(U32 _size)
 {
-	IM3D_ASSERT(_size >= m_size); // only support growing the vector
+	ASSERT(_size >= m_size); // only support growing the vector
 	reserve(_size);
 	m_size = _size;
 }
@@ -1418,8 +1418,8 @@ IM3D_THREAD_LOCAL Context* Im3d::internal::g_CurrentContext = &g_DefaultContext;
 
 void Context::begin(PrimitiveMode _mode)
 {
-	IM3D_ASSERT(!m_endFrameCalled); // Begin*() called after EndFrame() but before NewFrame(), or forgot to call NewFrame()
-	IM3D_ASSERT(m_primMode == PrimitiveMode_None); // forgot to call End()
+	ASSERT(!m_endFrameCalled); // Begin*() called after EndFrame() but before NewFrame(), or forgot to call NewFrame()
+	ASSERT(m_primMode == PrimitiveMode_None); // forgot to call End()
 	m_primMode = _mode;
 	m_vertCountThisPrim = 0;
 	switch (m_primMode)
@@ -1444,7 +1444,7 @@ void Context::begin(PrimitiveMode _mode)
 
 void Context::end()
 {
-	IM3D_ASSERT(m_primMode != PrimitiveMode_None); // End() called without Begin*()
+	ASSERT(m_primMode != PrimitiveMode_None); // End() called without Begin*()
 	if (m_vertCountThisPrim > 0)
 	{
 		VertexList* vertexList = getCurrentVertexList();
@@ -1453,21 +1453,21 @@ void Context::end()
 			case PrimitiveMode_Points:
 				break;
 			case PrimitiveMode_Lines:
-				IM3D_ASSERT(m_vertCountThisPrim % 2 == 0);
+				ASSERT(m_vertCountThisPrim % 2 == 0);
 				break;
 			case PrimitiveMode_LineStrip:
-				IM3D_ASSERT(m_vertCountThisPrim > 1);
+				ASSERT(m_vertCountThisPrim > 1);
 				break;
 			case PrimitiveMode_LineLoop:
-				IM3D_ASSERT(m_vertCountThisPrim > 1);
+				ASSERT(m_vertCountThisPrim > 1);
 				vertexList->push_back(vertexList->back());
 				vertexList->push_back((*vertexList)[m_firstVertThisPrim]);
 				break;
 			case PrimitiveMode_Triangles:
-				IM3D_ASSERT(m_vertCountThisPrim % 3 == 0);
+				ASSERT(m_vertCountThisPrim % 3 == 0);
 				break;
 			case PrimitiveMode_TriangleStrip:
-				IM3D_ASSERT(m_vertCountThisPrim >= 3);
+				ASSERT(m_vertCountThisPrim >= 3);
 				break;
 			default:
 				break;
@@ -1503,7 +1503,7 @@ void Context::end()
 
 void Context::vertex(const Vec3& _position, float _size, Color _color)
 {
-	IM3D_ASSERT(m_primMode != PrimitiveMode_None); // Vertex() called without Begin*()
+	ASSERT(m_primMode != PrimitiveMode_None); // Vertex() called without Begin*()
 
 	VertexData vd(_position, _size, _color);
 	if (m_matrixStack.size() > 1) // optim, skip the matrix multiplication when the stack size is 1
@@ -1652,19 +1652,19 @@ void Context::text(const Vec3& _position, float _size, Color _color, TextFlags _
 void Context::reset()
 {
  // all state stacks should be default here, else there was a mismatched Push*()/Pop*()
-	IM3D_ASSERT(m_colorStack.size() == 1);
-	IM3D_ASSERT(m_alphaStack.size() == 1);
-	IM3D_ASSERT(m_sizeStack.size() == 1);
-	IM3D_ASSERT(m_enableSortingStack.size() == 1);
-	IM3D_ASSERT(m_layerIdStack.size() == 1);
-	IM3D_ASSERT(m_matrixStack.size() == 1);
-	IM3D_ASSERT(m_idStack.size() == 1);
+	ASSERT(m_colorStack.size() == 1);
+	ASSERT(m_alphaStack.size() == 1);
+	ASSERT(m_sizeStack.size() == 1);
+	ASSERT(m_enableSortingStack.size() == 1);
+	ASSERT(m_layerIdStack.size() == 1);
+	ASSERT(m_matrixStack.size() == 1);
+	ASSERT(m_idStack.size() == 1);
 
-	IM3D_ASSERT(m_primMode == PrimitiveMode_None);
+	ASSERT(m_primMode == PrimitiveMode_None);
 	m_primMode = PrimitiveMode_None;
 	m_primType = DrawPrimitive_Count;
 
-	IM3D_ASSERT(m_vertexData[0].size() == m_vertexData[1].size());
+	ASSERT(m_vertexData[0].size() == m_vertexData[1].size());
 	for (U32 i = 0; i < m_vertexData[0].size(); ++i)
 	{
 		m_vertexData[0][i]->clear();
@@ -1728,7 +1728,7 @@ void Context::reset()
 
 void Context::merge(const Context& _src)
 {
-	IM3D_ASSERT(!m_endFrameCalled && !_src.m_endFrameCalled); // call MergeContexts() before calling EndFrame()
+	ASSERT(!m_endFrameCalled && !_src.m_endFrameCalled); // call MergeContexts() before calling EndFrame()
 
  // layer IDs
 	for (Id id : _src.m_layerIdMap)
@@ -1746,7 +1746,7 @@ void Context::merge(const Context& _src)
 		 // for each layer in _src, find the matching layer in this
 			const Id layerId = _src.m_layerIdMap[j / DrawPrimitive_Count];
 			const int layerIndex = findLayerIndex(layerId);
-			IM3D_ASSERT(layerIndex >= 0);
+			ASSERT(layerIndex >= 0);
 			U32 k = j % DrawPrimitive_Count;
 			m_vertexData[i][layerIndex * DrawPrimitive_Count + k]->append(*vertexData[j]);
 		}
@@ -1757,7 +1757,7 @@ void Context::merge(const Context& _src)
 	{
 		const Id layerId = _src.m_layerIdMap[i];
 		const int layerIndex = findLayerIndex(layerId);
-		IM3D_ASSERT(layerIndex >= 0);
+		ASSERT(layerIndex >= 0);
 
 		const U32 textBufferOffset = m_textBuffer.size();
 		m_textBuffer.append(_src.m_textBuffer);
@@ -1772,7 +1772,7 @@ void Context::merge(const Context& _src)
 
 void Context::endFrame()
 {
-	IM3D_ASSERT(!m_endFrameCalled); // EndFrame() was called multiple times for this frame
+	ASSERT(!m_endFrameCalled); // EndFrame() was called multiple times for this frame
 	m_endFrameCalled = true;
 
  // draw unsorted primitives first
@@ -1813,7 +1813,7 @@ void Context::draw()
 		endFrame();
 	}
 
-	IM3D_ASSERT(m_appData.drawCallback);
+	ASSERT(m_appData.drawCallback);
 	for (auto& drawList : m_drawLists)
 	{
 		m_appData.drawCallback(drawList);
@@ -1822,26 +1822,26 @@ void Context::draw()
 
 void Context::pushEnableSorting(bool _enable)
 {
-	IM3D_ASSERT(m_primMode == PrimitiveMode_None); // can't change sort mode mid-primitive
+	ASSERT(m_primMode == PrimitiveMode_None); // can't change sort mode mid-primitive
 	m_vertexDataIndex = _enable ? 1 : 0;
 	m_enableSortingStack.push_back(_enable);
 }
 void Context::popEnableSorting()
 {
-	IM3D_ASSERT(m_primMode == PrimitiveMode_None); // can't change sort mode mid-primitive
+	ASSERT(m_primMode == PrimitiveMode_None); // can't change sort mode mid-primitive
 	m_enableSortingStack.pop_back();
 	m_vertexDataIndex = m_enableSortingStack.back() ? 1 : 0;
 }
 void Context::setEnableSorting(bool _enable)
 {
-	IM3D_ASSERT(m_primMode == PrimitiveMode_None); // can't change sort mode mid-primitive
+	ASSERT(m_primMode == PrimitiveMode_None); // can't change sort mode mid-primitive
 	m_vertexDataIndex = _enable ? 1 : 0;
 	m_enableSortingStack.back() = _enable;
 }
 
 void Context::pushLayerId(Id _layer)
 {
-	IM3D_ASSERT(m_primMode == PrimitiveMode_None); // can't change layer mid-primitive
+	ASSERT(m_primMode == PrimitiveMode_None); // can't change layer mid-primitive
 	int idx = findLayerIndex(_layer);
 	if (idx == -1) // not found, push new layer
 	{
@@ -1862,7 +1862,7 @@ void Context::pushLayerId(Id _layer)
 }
 void Context::popLayerId()
 {
-	IM3D_ASSERT(m_layerIdStack.size() > 1);
+	ASSERT(m_layerIdStack.size() > 1);
 	m_layerIdStack.pop_back();
 	m_layerIndex = findLayerIndex(m_layerIdStack.back());
 }
@@ -1987,7 +1987,7 @@ void Context::sort()
 				for (VertexData* v = vertexData.begin(); v != vertexData.end(); )
 				{
 					sortData[i].push_back(SortData(0.0f, v));
-					IM3D_ASSERT(v < vertexData.end());
+					ASSERT(v < vertexData.end());
 					for (int j = 0; j < VertsPerDrawPrimitive[i]; ++j, ++v)
 					{
 					 // sort key is the primitive midpoint distance to view origin
@@ -3172,7 +3172,7 @@ bool Im3d::Intersects(const Ray& _ray, const Capsule& _capsule)
 }
 bool Im3d::Intersect(const Ray& _ray, const Capsule& _capsule, float& t0_, float& t1_)
 {
-	//IM3D_ASSERT(false); // \todo implement
+	//ASSERT(false); // \todo implement
 	t0_ = t1_ = 0.0f;
 	return Intersects(_ray, _capsule);
 }

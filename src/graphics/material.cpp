@@ -483,8 +483,8 @@ namespace engine
 
 		m_shader->setInteger("u_selfillum", m_selfillum);
 
-		// Apply default shader constants
-		ShaderConstantManager::getInstance()->applyDefaultContants(m_shader);
+		// Set default shader constants
+		ShaderConstantManager::getInstance()->setDefaultContants(m_shader);
 
 #if 0
 		// apply constants here !!!

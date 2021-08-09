@@ -26,6 +26,11 @@
 
 #include "file/filedevice.h"
 
+extern bool Im3d_Init();
+extern void Im3d_Shutdown();
+extern void Im3d_NewFrame();
+extern void Im3d_EndFrame();
+
 namespace engine
 {
 	Renderer* Renderer::ms_instance;
@@ -64,11 +69,15 @@ namespace engine
 
 		PostProcessingRenderer::getInstance()->init(view);
 
+		Im3d_Init();
+
 		//ShadowsRenderer::getInstance()->init();
 	}
 
 	void Renderer::shutdown()
 	{
+		Im3d_Shutdown();
+
 		//ShadowsRenderer::getInstance()->shutdown();
 
 		PostProcessingRenderer::getInstance()->shutdown();

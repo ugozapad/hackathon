@@ -124,7 +124,7 @@ static const char* StripPath(const char* _path)
 				glAssert(glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &maxUniformBlockSize));
 				if (maxUniformBlockSize < (64*1024))
 				{
-					IM3D_ASSERT(false);
+					ASSERT(false);
 					fprintf(stderr, "GL_MAX_UNIFORM_BLOCK_SIZE is less than 64kb (%dkb)", maxUniformBlockSize / 1024);
 					return false;
 				}
@@ -224,6 +224,9 @@ static void AppendLine(const char* _str, Vector<char>& _out_)
 	Append(_str, _out_);
 	_out_.push_back('\n');
 }
+
+#include "file/filedevice.h"
+
 static bool LoadShader(const char* _path, const char* _defines, Vector<char>& _out_)
 {
 	fprintf(stdout, "Loading shader: '%s'", StripPath(_path));
@@ -236,12 +239,13 @@ static bool LoadShader(const char* _path, const char* _defines, Vector<char>& _o
 			Append("#define ", _out_);
 			AppendLine(_defines, _out_);
 			_defines = strchr(_defines, 0);
-			IM3D_ASSERT(_defines);
+			ASSERT(_defines);
 			++_defines;
 		}
 	}
 	fprintf(stdout, "\n");
 	
+#if 0
 	FILE* fin = fopen(_path, "rb");
 	if (!fin)
 	{
@@ -262,6 +266,29 @@ static bool LoadShader(const char* _path, const char* _defines, Vector<char>& _o
 	}
 	fclose(fin);
 	_out_.push_back('\0');
+#else
+	using namespace engine;
+
+	std::string filename;
+	filename += "shaders/";
+	filename += _path;
+
+	File* fin = FileDevice::instance ()->openFile(filename, FileAccess::Read);
+	if (!fin->isValid())
+	{
+		fprintf(stderr, "Error opening '%s'\n", _path);
+		return false;
+	}
+	fin->seek(FileSeek::End, 0); // not portable but should work almost everywhere
+	long fsize = fin->tell();
+	fin->seek(FileSeek::Begin, 0);
+
+	int srcbeg = _out_.size();
+	_out_.resize(srcbeg + fsize, '\0');
+	fin->read(_out_.data() + srcbeg, fsize);
+	FileDevice::instance()->closeFile(fin);
+	_out_.push_back('\0');
+#endif
 
 	return true;
 }
@@ -307,7 +334,7 @@ static bool LoadShader(const char* _path, const char* _defines, Vector<char>& _o
 	
 	bool Im3d::LinkShaderProgram(GLuint _handle)
 	{
-		IM3D_ASSERT(_handle != 0);
+		ASSERT(_handle != 0);
 	
 		glAssert(glLinkProgram(_handle));
 		GLint linkStatus = GL_FALSE;
@@ -634,6 +661,8 @@ static bool LoadShader(const char* _path, const char* _defines, Vector<char>& _o
 	
 #endif // graphics
 
+#include "core/debug.h"
+
 /******************************************************************************/
 void Im3d::Assert(const char* _e, const char* _file, int _line, const char* _msg, ...)
 {
@@ -651,7 +680,12 @@ void Im3d::Assert(const char* _e, const char* _file, int _line, const char* _msg
 	{
 		buf[0] = '\0';
 	}
-	fprintf(stderr, "Assert (%s, line %d)\n\t'%s' %s", StripPath(_file), _line, _e ? _e : "", buf);
+
+	char buffer[1024];
+	sprintf(buffer, "Assert (%s, line %d)\n\t'%s' %s", StripPath(_file), _line, _e ? _e : "", buf);
+
+	engine:: Debug::AssertionFailedBackend(buffer);
+	//fprintf(stderr, );
 }
 
 void Im3d::RandSeed(int _seed)

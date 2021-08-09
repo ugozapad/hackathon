@@ -17,6 +17,9 @@ namespace engine
 		void play() override;
 		void stop() override;
 
+		FMOD::Sound* getSound() { return m_sound; }
+		FMOD::Channel* getSoundChannel() { return m_soundChannel; }
+
 	private:
 		FMOD::System* m_system;
 		FMOD::Sound* m_sound;

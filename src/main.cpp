@@ -223,16 +223,23 @@ namespace engine
 		registerGameClasses();
 
 		Engine::loadEmptyWorld();
+		Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
 
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
 		auto levelMesh = levelNode->createComponentByType<GraphicsComponent>();
+	
+
 		levelMesh->addModel(contentManager->loadModel("models/level/test.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
 			p.y = -1.0f;
 			levelNode->setPosition(p);
 		}
+
+		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
+		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition());
+		levelCollision->setStatic(true);
 
 		// add skybox to world
 		auto skyboxNode = Engine::ms_world->createNodePtr();
@@ -257,7 +264,7 @@ namespace engine
 		physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
-		physComponent->createShape(PhysicsBody::ShapeType::Box);
+		physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition());
 
 		GameState* gameState = GameState::getInstance();
 
@@ -288,6 +295,9 @@ namespace engine
 
 			// run engine frame
 			Engine::update();
+
+			// hack 
+			physicsTestStuffNode->setPosition(physComponent->getPhysicsBody()->getPosition());
 
 			// sound
 			AudioManager::getInstance()->update();

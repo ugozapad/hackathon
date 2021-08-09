@@ -13,9 +13,9 @@
 	#define IM3D_API
 #endif
 
-#ifndef IM3D_ASSERT
+#ifndef ASSERT
 	#include <cassert>
-	#define IM3D_ASSERT(e) assert(e)
+	#define ASSERT(e) assert(e)
 #endif
 
 #ifndef IM3D_VERTEX_ALIGNMENT
@@ -543,14 +543,14 @@ struct Vector
 	            Vector()                             {}
 	            ~Vector();
 
-	T&          operator[](U32 _i)                   { IM3D_ASSERT(_i < m_size); return m_data[_i]; }
-	const T&    operator[](U32 _i) const             { IM3D_ASSERT(_i < m_size); return m_data[_i]; }
+	T&          operator[](U32 _i)                   { ASSERT(_i < m_size); return m_data[_i]; }
+	const T&    operator[](U32 _i) const             { ASSERT(_i < m_size); return m_data[_i]; }
 	T*          data()                               { return m_data; }
 	const T*    data() const                         { return m_data; }
 
 	T&          push_back()                          { if (m_size == m_capacity) { reserve(m_capacity + m_capacity / 2); } return m_data[m_size++]; }
 	void        push_back(const T& _v)               { T tmp = _v; if (m_size == m_capacity) { reserve(m_capacity + m_capacity / 2); } m_data[m_size++] = tmp; }
-	void        pop_back()                           { IM3D_ASSERT(m_size > 0); --m_size; }
+	void        pop_back()                           { ASSERT(m_size > 0); --m_size; }
 	void        append(const T* _v, U32 _count);
 	void        append(const Vector<T>& _other)      { append(_other.data(), _other.size()); }
 
@@ -558,10 +558,10 @@ struct Vector
 	const T*    begin() const                        { return m_data; }
 	T*          end()                                { return m_data + m_size; }
 	const T*    end() const                          { return m_data + m_size; }
-	T&          front()                              { IM3D_ASSERT(m_size > 0); return m_data[0]; }
-	const T&    front() const                        { IM3D_ASSERT(m_size > 0); return m_data[0]; }
-	T&          back()                               { IM3D_ASSERT(m_size > 0); return m_data[m_size - 1]; }
-	const T&    back() const                         { IM3D_ASSERT(m_size > 0); return m_data[m_size - 1]; }
+	T&          front()                              { ASSERT(m_size > 0); return m_data[0]; }
+	const T&    front() const                        { ASSERT(m_size > 0); return m_data[0]; }
+	T&          back()                               { ASSERT(m_size > 0); return m_data[m_size - 1]; }
+	const T&    back() const                         { ASSERT(m_size > 0); return m_data[m_size - 1]; }
 
 	U32         size() const                         { return m_size; }
 	U32         capacity() const                     { return m_capacity; }
@@ -629,17 +629,17 @@ struct IM3D_API Context
 	void                setColor(Color _color)           { m_colorStack.back() = _color;   }
 	Color               getColor() const                 { return m_colorStack.back();     }
 	void                pushColor(Color _color)          { m_colorStack.push_back(_color); }
-	void                popColor()                       { IM3D_ASSERT(m_colorStack.size() > 1); m_colorStack.pop_back(); }
+	void                popColor()                       { ASSERT(m_colorStack.size() > 1); m_colorStack.pop_back(); }
 
 	void                setAlpha(float _alpha)           { m_alphaStack.back() = _alpha;   }
 	float               getAlpha() const                 { return m_alphaStack.back();     }
 	void                pushAlpha(float _alpha)          { m_alphaStack.push_back(_alpha); }
-	void                popAlpha()                       { IM3D_ASSERT(m_alphaStack.size() > 1); m_alphaStack.pop_back(); }
+	void                popAlpha()                       { ASSERT(m_alphaStack.size() > 1); m_alphaStack.pop_back(); }
 
 	void                setSize(float _size)             { m_sizeStack.back() = _size;     }
 	float               getSize() const                  { return m_sizeStack.back();      }
 	void                pushSize(float _size)            { m_sizeStack.push_back(_size);   }
-	void                popSize()                        { IM3D_ASSERT(m_sizeStack.size() > 1); m_sizeStack.pop_back(); }
+	void                popSize()                        { ASSERT(m_sizeStack.size() > 1); m_sizeStack.pop_back(); }
 
 	void                setEnableSorting(bool _enable);
 	bool                getEnableSorting() const         { return m_enableSortingStack.back(); }
@@ -653,12 +653,12 @@ struct IM3D_API Context
 	void                setMatrix(const Mat4& _mat4)     { m_matrixStack.back() = _mat4;   }
 	const Mat4&         getMatrix() const                { return m_matrixStack.back();    }
 	void                pushMatrix(const Mat4& _mat4)    { m_matrixStack.push_back(_mat4); }
-	void                popMatrix()                      { IM3D_ASSERT(m_matrixStack.size() > 1); m_matrixStack.pop_back(); }
+	void                popMatrix()                      { ASSERT(m_matrixStack.size() > 1); m_matrixStack.pop_back(); }
 
 	void                setId(Id _id)                    { m_idStack.back() = _id;   }
 	Id                  getId() const                    { return m_idStack.back();  }
 	void                pushId(Id _id)                   { m_idStack.push_back(_id); }
-	void                popId()                          { IM3D_ASSERT(m_idStack.size() > 1); m_idStack.pop_back(); }
+	void                popId()                          { ASSERT(m_idStack.size() > 1); m_idStack.pop_back(); }
 
 	AppData&            getAppData()                     { return m_appData; }
 

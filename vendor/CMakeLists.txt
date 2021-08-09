@@ -8,6 +8,11 @@ set_target_properties(bullet PROPERTIES
 )
 
 set(ozz_build_msvc_rt_dll OFF CACHE BOOL "" FORCE)
+set(ozz_build_samples OFF CACHE BOOL "" FORCE)
+set(ozz_build_howtos OFF CACHE BOOL "" FORCE)
+set(ozz_build_tests OFF CACHE BOOL "" FORCE)
+set(ozz_build_tools OFF CACHE BOOL "" FORCE)
+set(ozz_build_fbx OFF CACHE BOOL "" FORCE)
 #set(ozz_build_msvc_rt_dll OFF)
 
 add_subdirectory(ozz-animation)

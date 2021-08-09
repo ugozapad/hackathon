@@ -18,8 +18,17 @@ namespace engine
 
 		void createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f));
 
+		virtual void onNodeSet(Node* node);
+
+		PhysicsBody* getPhysicsBody() { return m_physicsBody; }
+
+		void setStatic(bool value);
+
+		bool getStatic() { return m_isStatic; }
+
 	private:
 		PhysicsBody* m_physicsBody;
+		bool m_isStatic;
 	};
 }
 

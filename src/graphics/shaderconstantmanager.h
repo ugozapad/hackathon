@@ -23,7 +23,10 @@ namespace engine
 		static ShaderConstantManager ms_instance;
 
 	public:
-		void applyDefaultContants(Shader* shader);
+		void setDefaultContants(Shader* shader);
+
+		void setGraphicsConstants(Shader* shader);
+		void setEngineConstants(Shader* shader);
 	};
 }
 

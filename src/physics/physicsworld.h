@@ -2,15 +2,18 @@
 #define PHYSICSWORLD_H
 
 #include "btBulletDynamicsCommon.h"
-#include "physicsbody.h"
 
 namespace engine
 {
+	class PhysicsBody;
+
 	class PhysicsWorld
 	{
 	public:
 		PhysicsWorld();
 		~PhysicsWorld();
+
+		void addBodyToWorld(PhysicsBody* body);
 
 		void step(float delta);
 
@@ -22,7 +25,6 @@ namespace engine
 		btBroadphaseInterface* m_overlappingPairCache;
 		btSequentialImpulseConstraintSolver* m_solver;
 		btDiscreteDynamicsWorld* m_world;
-		btRigidBody* m_body;
 	};
 }
 

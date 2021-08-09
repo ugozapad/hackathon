@@ -1,7 +1,7 @@
 #pragma once
 
 // User-defined assertion handler (default is cassert assert()).
-//#define IM3D_ASSERT(e) assert(e)
+//#define ASSERT(e) assert(e)
 
 // User-defined malloc/free. Define both or neither (default is cstdlib malloc()/free()).
 //#define IM3D_MALLOC(size) malloc(size)
@@ -17,7 +17,7 @@
 //#define IM3D_MATRIX_ROW_MAJOR 1
 
 // Force vertex data alignment (default is 4 bytes).
-//#define IM3D_VERTEX_ALIGNMENT 4
+#define IM3D_VERTEX_ALIGNMENT 16
 
 // Enable internal culling for primitives (everything drawn between Begin*()/End()). The application must set a culling frustum via AppData.
 //#define IM3D_CULL_PRIMITIVES 1
