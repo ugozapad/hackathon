@@ -47,4 +47,10 @@ namespace engine
 		m_physicsBody->getBody()->setCollisionFlags(value ? btCollisionObject::CF_STATIC_OBJECT : btCollisionObject::CF_DYNAMIC_OBJECT);
 	}
 
+	void PhysicsComponent::update(float delta)
+	{
+		// hack 
+		m_node->setPosition(getPhysicsBody()->getPosition());
+	}
+
 }

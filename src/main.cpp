@@ -296,13 +296,9 @@ namespace engine
 			// run engine frame
 			Engine::update();
 
-			// hack 
-			physicsTestStuffNode->setPosition(physComponent->getPhysicsBody()->getPosition());
-
 			// sound
 			AudioManager::getInstance()->update();
 
-			
 			Renderer::getInstance()->beginFrame();
 			Renderer::getInstance()->renderView(g_engineView);
 			Renderer::getInstance()->endFrame();

@@ -1,15 +1,15 @@
 #ifndef PHYSICSCOMPONENT_H
 #define PHYSICSCOMPONENT_H
 
-#include "engine/components/component.h"
+#include "engine/components/logiccomponent.h"
 
 #include "physics/physicsbody.h"
 
 namespace engine
 {
-	class PhysicsComponent : public Component
+	class PhysicsComponent : public LogicComponent
 	{
-		ImplementObject(PhysicsComponent, Component);
+		ImplementObject(PhysicsComponent, LogicComponent);
 	public:
 		PhysicsComponent();
 		virtual ~PhysicsComponent();
@@ -25,6 +25,9 @@ namespace engine
 		void setStatic(bool value);
 
 		bool getStatic() { return m_isStatic; }
+
+
+		void update(float delta) override;
 
 	private:
 		PhysicsBody* m_physicsBody;

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "audio/audiomanagerfmod.h"
 #include "audio/audiosourcefmod.h"
+#include "audio/musicmanager.h"
 
 namespace engine
 {
@@ -28,10 +29,13 @@ namespace engine
 		m_fmodSystem->init(32, FMOD_INIT_NORMAL, nullptr);
 		spdlog::info("[audio]: fmod initialized");
 
+		MusicManager::getInstance()->init();
 	}
 
 	void AudioManagerFMOD::shutdown()
 	{
+		MusicManager::getInstance()->shutdown();
+
 		m_fmodSystem->close();
 		m_fmodSystem->release();
 		m_fmodSystem = nullptr;

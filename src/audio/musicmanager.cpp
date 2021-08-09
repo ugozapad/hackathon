@@ -11,6 +11,8 @@ namespace engine
 	{
 		ASSERT(reinterpret_cast<AudioManagerFMOD*>(AudioManager::getInstance())->getFMOD());
 		reinterpret_cast<AudioManagerFMOD*>(AudioManager::getInstance())->getFMOD()->createChannelGroup("Music channel group", &m_musicChannel);
+
+		m_musicChannel->setVolume(0.6f);
 	}
 
 	void MusicManager::shutdown()
@@ -33,5 +35,12 @@ namespace engine
 			AudioManager::getInstance()->deleteSource(m_musicSource);
 
 		m_musicSource = AudioManager::getInstance()->createSource(filename);
+
+		// #HACK: HACK HACK HACK
+		reinterpret_cast<AudioSourceFMOD*>(m_musicSource)->play();
+		reinterpret_cast<AudioSourceFMOD*>(m_musicSource)->stop();
+
+		reinterpret_cast<AudioSourceFMOD*>(m_musicSource)->getSoundChannel()->setChannelGroup(m_musicChannel);
+		reinterpret_cast<AudioSourceFMOD*>(m_musicSource)->play();
 	}
 }
