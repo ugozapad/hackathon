@@ -21,11 +21,11 @@ namespace engine
 		PhysicsAllocator::shutdown();
 	}
 
-	PhysicsBody* PhysicsManager::createPhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/)
+	PhysicsBody* PhysicsManager::createPhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass)
 	{
 		// #TODO: HAVE NO SUCH TIME TO FIX MEMORY LEAK
 		//return mem_new<PhysicsBody>(*PhysicsAllocator::ms_physicsAllocator, shapeType, position);
-		return new PhysicsBody(shapeType, position);
+		return new PhysicsBody(shapeType, position, mass);
 	}
 
 	void PhysicsManager::destroyPhysicsBody(PhysicsBody* physicsBody)
