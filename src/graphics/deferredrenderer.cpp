@@ -6,7 +6,7 @@
 #include "graphics/screenquad.h"
 #include "graphics/shadermanager.h"
 #include "graphics/shader.h"
-
+#include "graphics/light.h"
 #include "engine/camera.h"
 
 namespace engine
@@ -182,7 +182,24 @@ namespace engine
 
 	void DeferredRenderer::lightPhase(std::vector<LightComponent*>& lights)
 	{
-		
+		return;
+
+		typedef std::vector<LightComponent*>::iterator LT;
+		LT I = lights.begin();
+		LT E = lights.end();
+
+		for (; I != E;)
+		{
+			LightRenderData lightData;
+			(*I)->getRenderData(&lightData);
+
+			m_lightPassShader->setVec3("Light.pos", lightData.m_pos);
+			m_lightPassShader->setVec3("Light.dir", lightData.m_dir);
+			m_lightPassShader->setVec3("Light.color", lightData.m_color);
+			m_lightPassShader->setVec3("Light.ambient", lightData.m_ambientColor);
+			m_lightPassShader->setVec3("Light.specular", lightData.m_specularColor);
+			m_lightPassShader->setFloat("Light.shininess", lightData.m_shininess);
+		}
 	}
 }
 

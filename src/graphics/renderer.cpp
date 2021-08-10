@@ -26,6 +26,9 @@
 
 #include "file/filedevice.h"
 
+#include "graphics/lightcontroller.h"
+#include "graphics/light.h"
+
 extern bool Im3d_Init();
 extern void Im3d_Shutdown();
 extern void Im3d_NewFrame();
@@ -174,6 +177,10 @@ namespace engine
 		}
 
 		GraphicsDevice::getInstance()->setFramebuffer(PostProcessingRenderer::getInstance()->getFramebuffer());
+
+		// let's sort the fucking lights
+		std::vector<LightComponent*> lights = LightController::getInstance()->getLights();
+		g_deferredRenderer.lightPhase(lights);
 
 		g_deferredRenderer.drawNoLight();
 

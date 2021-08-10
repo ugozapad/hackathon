@@ -37,6 +37,8 @@
 
 #include "common/freelistallocator.h"
 
+#include "graphics/light.h"
+
 #include <GLFW/glfw3.h>
 
 #include <io.h>
@@ -235,6 +237,10 @@ namespace engine
 			p.y = -1.0f;
 			levelNode->setPosition(p);
 		}
+
+		// add test light
+		auto testLevelLight = Engine::ms_world->createNodePtr();
+		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
 		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition());
