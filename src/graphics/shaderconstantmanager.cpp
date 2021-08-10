@@ -43,4 +43,9 @@ namespace engine
 		shader->setVec3("u_viewDir", CameraProxy::getInstance()->m_direction);
 	}
 
+	void ShaderConstantManager::setGraphicsConstantsFromRenderContext(Shader* shader)
+	{
+
+	}
+
 }

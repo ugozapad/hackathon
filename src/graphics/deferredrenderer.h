@@ -40,7 +40,9 @@ namespace engine
 	private:
 		GrTexture2D* m_textures[3];
 		GrFramebuffer* m_framebuffer;
+		GrVertexBuffer* m_lightSphereBuffer;
 		Shader* m_lightPassShader;
+		int m_sphereVerticesCount;
 
 	};
 

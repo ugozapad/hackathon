@@ -4,6 +4,8 @@
 #include <new>
 #include "core/debug.h"
 
+#include <stdint.h>
+
 namespace engine
 {
 	class AllocatorBase

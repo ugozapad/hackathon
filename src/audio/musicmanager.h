@@ -16,6 +16,8 @@ namespace engine
 
 		void play(const std::string& filename, bool looped = false);
 
+		bool isPlaying();
+
 	private:
 		FMOD::ChannelGroup* m_musicChannel;
 		AudioSource* m_musicSource;

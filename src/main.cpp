@@ -37,6 +37,10 @@
 
 #include "common/freelistallocator.h"
 
+#include "graphics/light.h"
+
+#include "audio/musicmanager.h"
+
 #include <GLFW/glfw3.h>
 
 #include <io.h>
@@ -236,6 +240,34 @@ namespace engine
 			levelNode->setPosition(p);
 		}
 
+		//{
+		//	for (int y = 0; y < 50; y++)
+		//	{
+		//		static float offsety = 0.0f;
+		//		static float offset = 0.0f;
+		//		for (int x = 0; x < 50; x++)
+		//		{
+		//			
+
+		//			auto node = Engine::ms_world->createNodePtr();
+		//			node->setPosition(glm::vec3(offset, 0.0f, offsety));
+		//			auto nodeVisual = node->createComponentByType<GraphicsComponent>();
+		//			nodeVisual->addModel(contentManager->loadModel("models/test1.dae"));
+
+		//			offset += 5.0f;
+
+		//		}
+
+		//		offset = 0.0f;
+		//		offsety += 5.0f;
+		//	}
+
+		//}
+
+		// add test light
+		auto testLevelLight = Engine::ms_world->createNodePtr();
+		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
+
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
 		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f);
 		levelCollision->setStatic(true);
@@ -269,6 +301,8 @@ namespace engine
 		physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);
 
 		GameState* gameState = GameState::getInstance();
+
+		//MusicManager::getInstance()->play("sounds/music/temp_01.mp3", true);
 
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{

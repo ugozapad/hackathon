@@ -6,15 +6,18 @@
 #include "graphics/screenquad.h"
 #include "graphics/shadermanager.h"
 #include "graphics/shader.h"
-
+#include "graphics/light.h"
+#include "graphics/model.h"
 #include "engine/camera.h"
+#include "graphics/rendercontext.h"
+#include "graphics/shaderconstantmanager.h"
 
 namespace engine
 {
 	DeferredRenderer g_deferredRenderer;
 
 	void DeferredRenderer::init(View* view)
-{
+	{
 		int width = view->m_width, height = view->m_height;
 
 		// create position texture
@@ -63,6 +66,18 @@ namespace engine
 		// create light pass shader.
 		m_lightPassShader = ShaderManager::getInstance()->createShader("def_light");
 		//m_lightPassShader = ShaderManager::getInstance()->createShader("lighting", "quad", "");
+
+		////////////////////
+		// load light sphere
+		VertexDeclaration pos;
+		pos.name = "position";
+		pos.size = 3;
+		pos.type = VertexDeclaration::Float;
+
+		std::vector<VertexDeclaration> decls;
+		decls.push_back(pos);
+
+		m_lightSphereBuffer = createVBFromModel(decls.data(), decls.size(), "models/sphere.dae", &m_sphereVerticesCount);
 	}
 
 	void DeferredRenderer::shutdown()
@@ -70,6 +85,8 @@ namespace engine
 		//m_framebuffer->setColorTexture(0, 0);
 		//m_framebuffer->setColorTexture(1, 0);
 		//m_framebuffer->setColorTexture(2, 0);
+
+		GraphicsDevice::instance()->deleteVertexBuffer(m_lightSphereBuffer);
 
 		GraphicsDevice::instance()->deleteFramebuffer(m_framebuffer);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[2]);
@@ -82,10 +99,10 @@ namespace engine
 		return m_textures[index];
 	}
 
-//#include "engine/camera.h"
-//#include "engine/entity.h"
-//#include "render/render.h"
-//#include "game/light.h"
+	//#include "engine/camera.h"
+	//#include "engine/entity.h"
+	//#include "render/render.h"
+	//#include "game/light.h"
 
 	void DeferredRenderer::drawGeometry(Camera* camera, Entity* entity)
 	{
@@ -178,11 +195,40 @@ namespace engine
 		m_lightPassShader->setVec3("u_lightPos", lightPos);
 
 		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
+
+
+
 	}
 
 	void DeferredRenderer::lightPhase(std::vector<LightComponent*>& lights)
 	{
-		
+		//typedef std::vector<LightComponent*>::iterator LT;
+		//LT I = lights.begin();
+		//LT E = lights.end();
+
+		for (int i = 0; i < lights.size(); i++)
+		{
+			LightRenderData lightData;
+			lights[i]->getRenderData(&lightData);
+
+			m_lightPassShader->setVec3("Light.pos", lightData.m_pos);
+			m_lightPassShader->setVec3("Light.dir", lightData.m_dir);
+			m_lightPassShader->setVec3("Light.color", lightData.m_color);
+			m_lightPassShader->setVec3("Light.ambient", lightData.m_ambientColor);
+			m_lightPassShader->setVec3("Light.specular", lightData.m_specularColor);
+			m_lightPassShader->setFloat("Light.shininess", lightData.m_shininess);
+
+			glm::mat4 model = glm::identity<glm::mat4>();
+			model = glm::translate(model, lightData.m_pos);
+
+			RenderContext& ctx = RenderContext::getContext();
+			ctx.model = model;
+
+			ShaderConstantManager::getInstance()->setGraphicsConstants(m_lightPassShader);
+
+			GraphicsDevice::instance()->setVertexBuffer(m_lightSphereBuffer);
+			GraphicsDevice::instance()->drawArray(PrimitiveMode::Triangles, 0, m_sphereVerticesCount);
+		}
 	}
 }
 
