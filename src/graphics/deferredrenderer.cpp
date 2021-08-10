@@ -21,21 +21,21 @@ namespace engine
 		TextureCreationDesc positionDesc = { 0 };
 		positionDesc.m_width = width;
 		positionDesc.m_height = height;
-		positionDesc.m_format = ImageFormat::RGBA32F;
+		positionDesc.m_format = ImageFormat::RGBA16F;
 		m_textures[RT_POS] = GraphicsDevice::instance()->createTexture2D(positionDesc);
 
 		// create normal texture
 		TextureCreationDesc normalDesc = { 0 };
 		positionDesc.m_width = width;
 		positionDesc.m_height = height;
-		positionDesc.m_format = ImageFormat::RGBA32F;
+		positionDesc.m_format = ImageFormat::RGBA16F;
 		m_textures[RT_NORMAL] = GraphicsDevice::instance()->createTexture2D(positionDesc);
 
 		// create color texture
 		TextureCreationDesc colorDesc = { 0 };
 		colorDesc.m_width = width;
 		colorDesc.m_height = height;
-		colorDesc.m_format = ImageFormat::RGBA32;
+		colorDesc.m_format = ImageFormat::RGBA16;
 		m_textures[RT_COLOR] = GraphicsDevice::instance()->createTexture2D(positionDesc);
 
 		// create frame buffer
@@ -161,14 +161,14 @@ namespace engine
 
 		m_lightPassShader->bind();
 
-		graphicsDevice->setTexture2D(0, m_textures[RT_POS]);
-		m_lightPassShader->setInteger("u_positionTexture", 0);
+		graphicsDevice->setTexture2D(6, m_textures[RT_POS]);
+		m_lightPassShader->setInteger("u_gbuf_positionTexture", 6);
 
-		graphicsDevice->setTexture2D(1, m_textures[RT_NORMAL]);
-		m_lightPassShader->setInteger("u_normalTexture", 1);
+		graphicsDevice->setTexture2D(7, m_textures[RT_NORMAL]);
+		m_lightPassShader->setInteger("u_gbuf_normalTexture", 7);
 
-		graphicsDevice->setTexture2D(2, m_textures[RT_COLOR]);
-		m_lightPassShader->setInteger("u_colorTexture", 2);
+		graphicsDevice->setTexture2D(8, m_textures[RT_COLOR]);
+		m_lightPassShader->setInteger("u_gbuf_colorTexture", 8);
 
 		Camera* camera = CameraProxy::getInstance();
 		m_lightPassShader->setVec3("u_viewPos", camera->getPosition());

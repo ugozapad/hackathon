@@ -6,6 +6,7 @@
 
 #include "engine/components/component.h"
 #include "graphics/graphicscomponent.h"
+#include "graphics/light.h"
 
 #include "engine/content/contentmanager.h"
 
@@ -25,6 +26,7 @@ namespace engine
 	void registerGraphicsObjects()
 	{
 		GraphicsComponent::registerObject();
+		LightComponent::registerObject();
 	}
 
 	void Engine::init()

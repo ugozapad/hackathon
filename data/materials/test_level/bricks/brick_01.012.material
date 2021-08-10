@@ -2,4 +2,5 @@ material "test_level/bricks/brick_01.012"
 {
 	shader diffuse
 	albedo "test/bricks/tiled-brick-texture-1.jpg"
+	normalmap "test/bricks/birck_01_nrml.png"
 }

@@ -7,13 +7,14 @@ out vec3 Pos;
 out vec3 Normal;
 out vec2 TexCoord;
 
+uniform mat4 u_mv;
 uniform mat4 u_mvp;
 
 void main()
 {
 	gl_Position = u_mvp * vec4(position, 1.0);
 	Pos = position;
-	Normal = normal;
+	Normal = normalize(normal);
 	
 	TexCoord = texcoord0;
 }
