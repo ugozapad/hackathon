@@ -1,7 +1,7 @@
 material "front"
 {
 	shader diffuse
-	albedo { clampedge "sky_l1escape6_fr.tga" }
+	albedo { clampedge "skybox/sky_night_fr.tga" }
 	depth_write false
 	skipmips true
 	selfillum true

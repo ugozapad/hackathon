@@ -140,7 +140,8 @@ namespace engine
 		else if (mode == PrimitiveMode::TriangleStrip)
 			primMode = GL_TRIANGLE_STRIP;
 
-		glDrawElements(primMode, count, GL_UNSIGNED_BYTE, NULL);
+		//glDrawElements(primMode, count, GL_UNSIGNED_BYTE, NULL);
+		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
 	}
 
 	void GLGraphicsDevice::depthTest(bool value)

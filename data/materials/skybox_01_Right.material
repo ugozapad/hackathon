@@ -1,7 +1,7 @@
 material "Right"
 {
 	shader diffuse
-	albedo { clampedge "sky_l1escape6_rt.tga" }
+	albedo { clampedge "skybox/sky_night_rt.tga" }
 	depth_write false
 	skipmips true
 	selfillum true

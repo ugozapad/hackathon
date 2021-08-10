@@ -318,11 +318,12 @@ namespace engine
 			submesh->m_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(vertexBufferDesc);
 			submesh->m_vertices.clear();
 
-			BufferCreationDesc indexBufferDesc = { 0 };
-			indexBufferDesc.m_data = submesh->m_indecies.data();
-			indexBufferDesc.m_dataSize = submesh->m_indecies.size() * sizeof(uint32_t);
-			indexBufferDesc.m_access = BufferAccess::Static;
-			submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(indexBufferDesc);
+			//BufferCreationDesc indexBufferDesc = { 0 };
+			//indexBufferDesc.m_data = submesh->m_indecies.data();
+			//indexBufferDesc.m_dataSize = submesh->m_indecies.size() * sizeof(uint32_t);
+			//indexBufferDesc.m_access = BufferAccess::Static;
+			//submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(indexBufferDesc);
+			submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(submesh->m_indecies.data(), submesh->m_indeciesCount * sizeof(uint32_t), BufferAccess::Static);
 			submesh->m_indecies.clear();
 
 			submesh->m_material = ContentManager::getInstance()->loadMaterial(submesh->m_materialName);
@@ -396,11 +397,12 @@ namespace engine
 		RenderContext::setContext(localCtx);
 
 		GraphicsDevice::getInstance()->setVertexBuffer(m_vertexBuffer);
-		GraphicsDevice::getInstance()->setIndexBuffer(m_indexBuffer);
-
 		m_material->bind();
 
-		GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, m_verticesCount);
+		GraphicsDevice::getInstance()->setIndexBuffer(m_indexBuffer);
+
+		//GraphicsDevice::getInstance()->drawArray(PrimitiveMode::Triangles, 0, m_verticesCount);
+		GraphicsDevice::getInstance()->drawElements(PrimitiveMode::Triangles, m_indeciesCount);
 
 		// return what have been
 		RenderContext::setContext(savedCtx);

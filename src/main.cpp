@@ -190,9 +190,9 @@ namespace engine
 #ifdef __APPLE__
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
-		
+
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-		
+
 		// initialize engine context
 		std::shared_ptr<Context> content = std::make_shared<Context>();
 
@@ -241,13 +241,13 @@ namespace engine
 		}
 
 		//{
-		//	for (int y = 0; y < 50; y++)
+		//	for (int y = 0; y < 20; y++)
 		//	{
 		//		static float offsety = 0.0f;
 		//		static float offset = 0.0f;
-		//		for (int x = 0; x < 50; x++)
+		//		for (int x = 0; x < 20; x++)
 		//		{
-		//			
+
 
 		//			auto node = Engine::ms_world->createNodePtr();
 		//			node->setPosition(glm::vec3(offset, 0.0f, offsety));
