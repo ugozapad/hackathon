@@ -40,4 +40,10 @@ namespace engine
 		reinterpret_cast<AudioSourceFMOD*>(m_musicSource)->play(m_musicChannel);
 
 	}
+
+	bool MusicManager::isPlaying()
+	{
+		return (m_musicSource ? m_musicSource->isPlaying() : false);
+	}
+
 }
