@@ -65,6 +65,7 @@ namespace engine
 	{
 	public:
 		ModelBase(const std::string& name);
+		~ModelBase();
 
 		virtual void load(const std::shared_ptr<DataStream>& dataStream);
 

@@ -52,6 +52,8 @@ namespace engine
 	void TextureMap::createHWTexture()
 	{
 		m_texture2D = GraphicsDevice::getInstance()->createTexture2D(m_texdesc);
+		Image::freeImageData(m_texdesc.m_data);
+		m_texdesc.m_data = nullptr;
 	}
 
 	void TextureMap::load(const std::shared_ptr<DataStream>& dataStream)

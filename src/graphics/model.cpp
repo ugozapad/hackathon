@@ -257,6 +257,11 @@ namespace engine
 
 	}
 
+	ModelBase::~ModelBase()
+	{
+	//	destroy();
+	}
+
 	void ModelBase::load(const std::string& filename)
 	{
 		m_filename = filename;
@@ -318,12 +323,12 @@ namespace engine
 			submesh->m_vertexBuffer = GraphicsDevice::getInstance()->createVertexBuffer(vertexBufferDesc);
 			submesh->m_vertices.clear();
 
-			//BufferCreationDesc indexBufferDesc = { 0 };
-			//indexBufferDesc.m_data = submesh->m_indecies.data();
-			//indexBufferDesc.m_dataSize = submesh->m_indecies.size() * sizeof(uint32_t);
-			//indexBufferDesc.m_access = BufferAccess::Static;
-			//submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(indexBufferDesc);
-			submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(submesh->m_indecies.data(), submesh->m_indeciesCount * sizeof(uint32_t), BufferAccess::Static);
+			BufferCreationDesc indexBufferDesc = { 0 };
+			indexBufferDesc.m_data = submesh->m_indecies.data();
+			indexBufferDesc.m_dataSize = submesh->m_indecies.size() * sizeof(uint32_t);
+			indexBufferDesc.m_access = BufferAccess::Static;
+			submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(indexBufferDesc);
+			//submesh->m_indexBuffer = GraphicsDevice::getInstance()->createIndexBuffer(submesh->m_indecies.data(), submesh->m_indeciesCount * sizeof(uint32_t), BufferAccess::Static);
 			submesh->m_indecies.clear();
 
 			submesh->m_material = ContentManager::getInstance()->loadMaterial(submesh->m_materialName);
