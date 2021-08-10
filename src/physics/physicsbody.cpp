@@ -3,7 +3,7 @@
 
 namespace engine
 {
-	PhysicsBody::PhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/)
+	PhysicsBody::PhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass)
 	{
 		btCollisionShape* shape = nullptr;
 
@@ -24,11 +24,10 @@ namespace engine
 		}
 
 		btVector3 localInertia(0, 0, 0);
-		float mass = 1.0f;
 		shape->calculateLocalInertia(mass, localInertia);
 
 		btRigidBody::btRigidBodyConstructionInfo info(btScalar(0.3), nullptr, shape, localInertia);
-		info.m_friction = btScalar(0.5);
+		info.m_friction = btScalar(0.0);
 		info.m_rollingFriction = btScalar(0.3);
 		info.m_restitution = 0.5f;
 		

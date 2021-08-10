@@ -233,7 +233,7 @@ namespace engine
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
 		auto levelMesh = levelNode->createComponentByType<GraphicsComponent>();
-		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
+		levelMesh->addModel(contentManager->loadModel("models/levels/test.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
 			p.y = -1.0f;
@@ -269,7 +269,7 @@ namespace engine
 		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
-		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition());
+		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f);
 		levelCollision->setStatic(true);
 
 		// add skybox to world
@@ -298,7 +298,7 @@ namespace engine
 		physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
-		physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition());
+		physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);
 
 		GameState* gameState = GameState::getInstance();
 

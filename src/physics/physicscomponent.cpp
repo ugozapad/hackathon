@@ -26,11 +26,11 @@ namespace engine
 		Context::getInstance()->registerObject<PhysicsComponent>();
 	}
 
-	void PhysicsComponent::createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/)
+	void PhysicsComponent::createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass)
 	{
 		ASSERT(!m_physicsBody && "Failed to create second shape!");
 
-		m_physicsBody = PhysicsManager::getInstance()->createPhysicsBody(shapeType, position);
+		m_physicsBody = PhysicsManager::getInstance()->createPhysicsBody(shapeType, position, mass);
 
 		// #HACK: HACK HACK HACK
 		Engine::ms_world->getPhysicsWorld()->addBodyToWorld(m_physicsBody);
@@ -50,7 +50,7 @@ namespace engine
 	void PhysicsComponent::update(float delta)
 	{
 		// hack 
-		//m_node->setPosition(getPhysicsBody()->getPosition());
+		m_node->setPosition(getPhysicsBody()->getPosition());
 	}
 
 }
