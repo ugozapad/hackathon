@@ -10,12 +10,14 @@ namespace engine
 	class ResourceManager
 	{
 	public:
-		std::shared_ptr<TextureMap> loadTextureMap(const std::string& name);
-		std::shared_ptr<ModelBase> loadMesh(const std::string& name);
-		std::shared_ptr<Material> loadMaterial(const std::string& name);
+		TextureMap* loadTexture(const std::string& name);
+		ModelBase* loadMesh(const std::string& name);
+		Material* loadMaterial(const std::string& name);
 
 	private:
-		std::unordered_map<std::string, std::shared_ptr<TextureMap>> m_textures;
+		std::unordered_map<std::string, TextureMap*> m_textures;
+		std::unordered_map<std::string, ModelBase*> m_models;
+		std::unordered_map<std::string, Material*> m_materials;
 	};
 
 	extern ResourceManager g_resourceManager;

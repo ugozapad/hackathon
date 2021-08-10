@@ -19,7 +19,7 @@ namespace engine
 
 	TextureMap::TextureMap()
 	{
-
+		memset(&m_texdesc, 0, sizeof(m_texdesc));
 	}
 
 	TextureMap::~TextureMap()
