@@ -3,6 +3,8 @@
 
 #include "engine/content/content.h"
 
+#include "graphics/shader.h"
+
 namespace engine
 {
 	struct Vertex
@@ -20,6 +22,8 @@ namespace engine
 	class GrVertexBuffer;
 	class GrIndexBuffer;
 	class Material;
+
+	GrVertexBuffer* createVBFromModel(VertexDeclaration* meshDecs, int countOfVertexDecls,const std::string& filename, int* verticesCount);
 
 	class SubMesh
 	{

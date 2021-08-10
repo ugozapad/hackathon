@@ -2,6 +2,7 @@
 #include "model.h"
 
 #include "file/filedevice.h"
+#include "file/filestream.h"
 
 #include "engine/content/contentmanager.h"
 
@@ -266,8 +267,7 @@ namespace engine
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
-			spdlog::error("Failed to load model. {}", importer.GetErrorString());
-			std::terminate();
+			Core::error("Failed to load model. %s", importer.GetErrorString());
 		}
 
 		assert(scene);
@@ -284,8 +284,7 @@ namespace engine
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
-			spdlog::error("Failed to load model. {}", importer.GetErrorString());
-			std::terminate();
+			Core::error("Failed to load model. %s", importer.GetErrorString());
 		}
 
 		assert(scene);
@@ -406,4 +405,77 @@ namespace engine
 		// return what have been
 		RenderContext::setContext(savedCtx);
 	}
+
+	bool hasVxDeclsArrPos(VertexDeclaration* meshDecs, int countOfVertexDecls)
+	{
+		for (int i = 0; i < countOfVertexDecls; i++)
+			if (meshDecs[i].name == "position")
+				return true;
+
+		return false;
+	}
+
+	GrVertexBuffer* dumbShitProccessNode(VertexDeclaration* meshDecs, int countOfVertexDecls, aiNode* node, const aiScene* scene, int* vertCount)
+	{
+		ASSERT(vertCount);
+
+		for (uint32_t i = 0; i < node->mNumMeshes; i++)
+		{
+			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+
+			// create vertex buffer
+
+			std::vector<Vertex> vertices;
+			for (uint32_t i = 0; i < mesh->mNumVertices; i++)
+			{
+				Vertex vertex;
+
+				if (hasVxDeclsArrPos(meshDecs, countOfVertexDecls))
+					vertex.m_position = glm::vec3(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+
+				vertices.push_back(vertex);
+			}
+
+			BufferCreationDesc desc;
+			memset(&desc, 0, sizeof(desc));
+			desc.m_access = BufferAccess::Static;
+			desc.m_data = vertices.data();
+			desc.m_dataSize = vertices.size();
+
+			*vertCount = desc.m_dataSize;
+
+			return GraphicsDevice::instance()->createVertexBuffer(desc);
+		}
+
+		for (uint32_t i = 0; i < node->mNumChildren; i++)
+		{
+			return dumbShitProccessNode(meshDecs, countOfVertexDecls, node->mChildren[i], scene, vertCount);
+		}
+	}
+
+	GrVertexBuffer* createVBFromModel(VertexDeclaration* meshDecs, int countOfVertexDecls, const std::string& filename, int* verticesCount)
+	{
+		ASSERT(meshDecs);
+		ASSERT(countOfVertexDecls >= 0);
+		ASSERT(!filename.empty());
+		ASSERT(verticesCount);
+
+		std::shared_ptr<DataStream> dataStream = std::make_shared<FileStream>(filename, "rb");
+		AssImpIOSystem* assimpIoSystem = new AssImpIOSystem(dataStream);
+
+		Assimp::Importer importer;
+		importer.SetIOHandler(assimpIoSystem);
+		const aiScene* scene = importer.ReadFile(filename.c_str(), aiProcess_Triangulate /*| aiProcess_TransformUVCoords | aiProcess_FlipUVs*/);
+
+		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		{
+			Core::error("Failed to load model. %s", importer.GetErrorString());
+		}
+
+		assert(scene);
+
+		GrVertexBuffer* vxbuf = dumbShitProccessNode(meshDecs, countOfVertexDecls, scene->mRootNode, scene, verticesCount);
+		return vxbuf;
+	}
+
 }

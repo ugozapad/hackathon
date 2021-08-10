@@ -72,14 +72,14 @@ namespace engine
 
 		PostProcessingRenderer::getInstance()->init(view);
 
-		Im3d_Init();
+		//Im3d_Init();
 
 		//ShadowsRenderer::getInstance()->init();
 	}
 
 	void Renderer::shutdown()
 	{
-		Im3d_Shutdown();
+		//Im3d_Shutdown();
 
 		//ShadowsRenderer::getInstance()->shutdown();
 

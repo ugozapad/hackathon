@@ -7,6 +7,7 @@
 #include "graphics/shadermanager.h"
 #include "graphics/shader.h"
 #include "graphics/light.h"
+#include "graphics/model.h"
 #include "engine/camera.h"
 
 namespace engine
@@ -14,7 +15,7 @@ namespace engine
 	DeferredRenderer g_deferredRenderer;
 
 	void DeferredRenderer::init(View* view)
-{
+	{
 		int width = view->m_width, height = view->m_height;
 
 		// create position texture
@@ -63,6 +64,18 @@ namespace engine
 		// create light pass shader.
 		m_lightPassShader = ShaderManager::getInstance()->createShader("def_light");
 		//m_lightPassShader = ShaderManager::getInstance()->createShader("lighting", "quad", "");
+
+		////////////////////
+		// load light sphere
+		VertexDeclaration pos;
+		pos.name = "position";
+		pos.size = 3;
+		pos.type = VertexDeclaration::Float;
+
+		std::vector<VertexDeclaration> decls;
+		decls.push_back(pos);
+
+		m_lightSphereBuffer = createVBFromModel(decls.data(), decls.size(), "models/sphere.dae", &m_sphereVerticesCount);
 	}
 
 	void DeferredRenderer::shutdown()
@@ -70,6 +83,8 @@ namespace engine
 		//m_framebuffer->setColorTexture(0, 0);
 		//m_framebuffer->setColorTexture(1, 0);
 		//m_framebuffer->setColorTexture(2, 0);
+
+		GraphicsDevice::instance()->deleteVertexBuffer(m_lightSphereBuffer);
 
 		GraphicsDevice::instance()->deleteFramebuffer(m_framebuffer);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[2]);
@@ -82,10 +97,10 @@ namespace engine
 		return m_textures[index];
 	}
 
-//#include "engine/camera.h"
-//#include "engine/entity.h"
-//#include "render/render.h"
-//#include "game/light.h"
+	//#include "engine/camera.h"
+	//#include "engine/entity.h"
+	//#include "render/render.h"
+	//#include "game/light.h"
 
 	void DeferredRenderer::drawGeometry(Camera* camera, Entity* entity)
 	{
@@ -178,6 +193,9 @@ namespace engine
 		m_lightPassShader->setVec3("u_lightPos", lightPos);
 
 		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
+
+
+
 	}
 
 	void DeferredRenderer::lightPhase(std::vector<LightComponent*>& lights)
