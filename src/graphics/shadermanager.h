@@ -15,6 +15,7 @@ namespace engine
 		void shutdown();
 
 		Shader* createShader(const std::string& name);
+		Shader* createShader(const std::string& name, const std::string& vsfilename, const std::string& fsfilename);
 
 		void reloadShaders();
 

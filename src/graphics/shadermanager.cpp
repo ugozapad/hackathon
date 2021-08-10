@@ -125,6 +125,30 @@ namespace engine
 		return (*shaderAtTable).second;
 	}
 
+	Shader* ShaderManager::createShader(const std::string& name, const std::string& vsfilename, const std::string& fsfilename)
+	{
+		auto shaderAtTable = m_shaders.find(name);
+		if (shaderAtTable == m_shaders.end())
+		{
+			std::string vsname;
+			vsname += "shaders/";
+			vsname += vsname;
+			vsname += ".vsh";
+
+			std::string fsname;
+
+			fsname += "shaders/";
+			fsname += fsname;
+			fsname += ".fsh";
+
+			Shader* shader = mem_new<Shader>(*g_sysAllocator, name, vsname, fsname);
+			m_shaders.emplace(name, shader);
+			return shader;
+		}
+
+		return (*shaderAtTable).second;
+	}
+
 	void ShaderManager::reloadShaders()
 	{
 		for (auto it : m_shaders)

@@ -9,9 +9,12 @@ namespace engine
 		TypeInfo(const char* name, const TypeInfo* baseInfo);
 		~TypeInfo();
 
+		std::size_t getStringHash() { return m_stringHash; }
+
 	public:
 		const char* m_name;
 		const TypeInfo* m_baseInfo;
+		std::size_t m_stringHash;
 	};
 
 #define ImplementRootObject(typeName) \
@@ -35,7 +38,7 @@ namespace engine
 		bool isA()
 		{
 			for (const TypeInfo* typeInfo = getTypeInfo(); typeInfo != nullptr; typeInfo = typeInfo->m_baseInfo)
-				if (typeInfo == T::getStaticTypeInfo())
+				if (typeInfo->m_stringHash == T::getStaticTypeInfo()->m_stringHash)
 					return true;
 
 			return false;
@@ -44,7 +47,7 @@ namespace engine
 		bool isA(const TypeInfo* classTypeInfo)
 		{
 			for (const TypeInfo* typeInfo = getTypeInfo(); typeInfo != nullptr; typeInfo = typeInfo->m_baseInfo)
-				if (typeInfo == classTypeInfo)
+				if (typeInfo->m_stringHash == classTypeInfo->m_stringHash)
 					return true;
 
 			return false;

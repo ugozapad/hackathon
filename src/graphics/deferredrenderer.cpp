@@ -62,6 +62,7 @@ namespace engine
 
 		// create light pass shader.
 		m_lightPassShader = ShaderManager::getInstance()->createShader("def_light");
+		//m_lightPassShader = ShaderManager::getInstance()->createShader("lighting", "quad", "");
 	}
 
 	void DeferredRenderer::shutdown()
@@ -179,5 +180,9 @@ namespace engine
 		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
 	}
 
+	void DeferredRenderer::lightPhase(std::vector<LightComponent*>& lights)
+	{
+		
+	}
 }
 

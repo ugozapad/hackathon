@@ -7,6 +7,7 @@ namespace engine
 	{
 		m_name = name;
 		m_baseInfo = baseInfo;
+		m_stringHash = std::hash<std::string>{}(name);
 	}
 
 	TypeInfo::~TypeInfo()

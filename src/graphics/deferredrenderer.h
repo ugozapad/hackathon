@@ -11,6 +11,7 @@ namespace engine
 	class Entity;
 	class Light;
 	class View;
+	class LightComponent;
 
 	class DeferredRenderer
 	{
@@ -33,6 +34,8 @@ namespace engine
 		void drawLight(Camera* camera, Light** lights, size_t size);
 		void drawNoLight(Camera* camera);
 		void drawNoLight();
+
+		void lightPhase(std::vector<LightComponent*>& lights);
 
 	private:
 		GrTexture2D* m_textures[3];
