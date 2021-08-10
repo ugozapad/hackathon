@@ -176,6 +176,10 @@ namespace engine
 			}
 		}
 
+		// reset device states
+		resetDeviceState();
+
+
 		GraphicsDevice::getInstance()->setFramebuffer(PostProcessingRenderer::getInstance()->getFramebuffer());
 
 		// let's sort the fucking lights

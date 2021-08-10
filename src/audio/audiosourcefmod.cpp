@@ -88,6 +88,36 @@ namespace engine
 		}
 	}
 
+	void AudioSourceFMOD::play(FMOD::ChannelGroup* channelGroup)
+	{
+		assert(channelGroup);
+		assert(m_system);
+		assert(m_sound);
+
+		FMOD_RESULT result = FMOD_OK;
+
+		if (!m_soundChannel)
+		{
+			result = m_system->playSound(m_sound, channelGroup, false, &m_soundChannel);
+			if (result != FMOD_OK)
+			{
+				Core::error("[audio]: failed to play sound! [audio]: FMOD ERROR: %s", getStringFromFMODResult(result));
+			}
+		}
+
+		if (m_soundChannel)
+		{
+			if (isPlaying())
+				stop();
+
+			result = m_system->playSound(m_sound, channelGroup, false, &m_soundChannel);
+			if (result != FMOD_OK)
+			{
+				Core::error("[audio]: failed to play sound![audio]: FMOD ERROR: %s", getStringFromFMODResult(result));
+			}
+		}
+	}
+
 	void AudioSourceFMOD::stop()
 	{
 		if (!m_soundChannel)

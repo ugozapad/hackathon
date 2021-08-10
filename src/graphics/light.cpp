@@ -8,6 +8,11 @@ namespace engine
 {
 	LightComponent::LightComponent()
 	{
+		m_color = glm::vec3(1.0);
+		m_ambientColor = glm::vec3(0.2);
+		m_specularColor = glm::vec3(1.0);
+		m_shininess = 1.0f;
+
 		LightController::getInstance()->addLight(this);
 	}
 

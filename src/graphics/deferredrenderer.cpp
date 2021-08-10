@@ -9,6 +9,8 @@
 #include "graphics/light.h"
 #include "graphics/model.h"
 #include "engine/camera.h"
+#include "graphics/rendercontext.h"
+#include "graphics/shaderconstantmanager.h"
 
 namespace engine
 {
@@ -200,16 +202,14 @@ namespace engine
 
 	void DeferredRenderer::lightPhase(std::vector<LightComponent*>& lights)
 	{
-		return;
+		//typedef std::vector<LightComponent*>::iterator LT;
+		//LT I = lights.begin();
+		//LT E = lights.end();
 
-		typedef std::vector<LightComponent*>::iterator LT;
-		LT I = lights.begin();
-		LT E = lights.end();
-
-		for (; I != E;)
+		for (int i = 0; i < lights.size(); i++)
 		{
 			LightRenderData lightData;
-			(*I)->getRenderData(&lightData);
+			lights[i]->getRenderData(&lightData);
 
 			m_lightPassShader->setVec3("Light.pos", lightData.m_pos);
 			m_lightPassShader->setVec3("Light.dir", lightData.m_dir);
@@ -217,6 +217,17 @@ namespace engine
 			m_lightPassShader->setVec3("Light.ambient", lightData.m_ambientColor);
 			m_lightPassShader->setVec3("Light.specular", lightData.m_specularColor);
 			m_lightPassShader->setFloat("Light.shininess", lightData.m_shininess);
+
+			glm::mat4 model = glm::identity<glm::mat4>();
+			model = glm::translate(model, lightData.m_pos);
+
+			RenderContext& ctx = RenderContext::getContext();
+			ctx.model = model;
+
+			ShaderConstantManager::getInstance()->setGraphicsConstants(m_lightPassShader);
+
+			GraphicsDevice::instance()->setVertexBuffer(m_lightSphereBuffer);
+			GraphicsDevice::instance()->drawArray(PrimitiveMode::Triangles, 0, m_sphereVerticesCount);
 		}
 	}
 }

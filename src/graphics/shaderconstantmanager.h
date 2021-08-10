@@ -1,6 +1,8 @@
 #ifndef SHADERCONSTANTMANAGER_H
 #define SHADERCONSTANTMANAGER_H
 
+#include "graphics/rendercontext.h"
+
 namespace engine
 {
 	enum class ShaderConstantType
@@ -27,6 +29,9 @@ namespace engine
 
 		void setGraphicsConstants(Shader* shader);
 		void setEngineConstants(Shader* shader);
+
+		// helpers
+		void setGraphicsConstantsFromRenderContext(Shader* shader);
 	};
 }
 
