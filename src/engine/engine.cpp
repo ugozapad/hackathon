@@ -5,7 +5,7 @@
 #include "engine/world.h"
 
 #include "engine/components/component.h"
-#include "graphics/graphicscomponent.h"
+#include "graphics/staticmeshcomponent.h"
 #include "graphics/light.h"
 
 #include "engine/content/contentmanager.h"
@@ -25,7 +25,8 @@ namespace engine
 
 	void registerGraphicsObjects()
 	{
-		GraphicsComponent::registerObject();
+		DrawableComponent::registerObject();
+		StaticMeshComponent::registerObject();
 		LightComponent::registerObject();
 	}
 

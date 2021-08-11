@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "graphics/light.h"
-#include "graphics/lightcontroller.h"
+#include "graphics/lightmanager.h"
 
 #include "engine/node.h"
 
@@ -13,12 +13,12 @@ namespace engine
 		m_specularColor = glm::vec3(1.0);
 		m_shininess = 1.0f;
 
-		LightController::getInstance()->addLight(this);
+		LightManager::getInstance()->addLight(this);
 	}
 
 	LightComponent::~LightComponent()
 	{
-		LightController::getInstance()->removeLight(this);
+		LightManager::getInstance()->removeLight(this);
 	}
 
 	void LightComponent::registerObject()

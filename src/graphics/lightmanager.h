@@ -5,9 +5,9 @@ namespace engine
 {
 	class LightComponent;
 
-	class LightController : public Singleton<LightController>
+	class LightManager : public Singleton<LightManager>
 	{
-		static LightController ms_instance;
+		static LightManager ms_instance;
 	public:
 		void addLight(LightComponent* light);
 		void removeLight(LightComponent* light);

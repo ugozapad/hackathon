@@ -23,12 +23,12 @@ namespace engine
 
 	TextureMap* ResourceManager::loadTexture(const std::string& name)
 	{
-		auto texture = std::find(m_textures.begin(), m_textures.end(), name);
-		if (texture == m_textures.end())
-		{
-			auto handle = std::async(std::launch::async, loadTexture_impl, name);
-			
-		}
+		//auto texture = std::find(m_textures.begin(), m_textures.end(), name);
+		//if (texture == m_textures.end())
+		//{
+		//	auto handle = std::async(std::launch::async, loadTexture_impl, name);
+		//	
+		//}
 
 		return nullptr;
 	}

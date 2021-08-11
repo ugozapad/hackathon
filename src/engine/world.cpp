@@ -3,7 +3,7 @@
 
 #include "engine/components/logiccomponent.h"
 
-#include "graphics/graphicscomponent.h"
+#include "graphics/staticmeshcomponent.h"
 
 #include "core/timer.h"
 
@@ -45,7 +45,7 @@ namespace engine
 				for (Node::ComponentIt compIt = node->m_components.begin(); compIt != node->m_components.end(); ++compIt)
 				{
 					Component* component = compIt->get();
-					if (component && component->isA<LogicComponent>())
+					if (component && component->isActive() && component->isA<LogicComponent>())
 					{
 						reinterpret_cast<LogicComponent*>(component)->update(Timer::getInstance()->getDelta());
 					}
@@ -61,7 +61,7 @@ namespace engine
 			Node* node = (*it).get();
 			if (node)
 			{
-				GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+				StaticMeshComponent* graphicsComponent = node->getComponentByType<StaticMeshComponent>();
 				if (graphicsComponent)
 				{
 					graphicsComponent->render();

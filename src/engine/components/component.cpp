@@ -10,6 +10,7 @@ namespace engine
 
 	Component::Component()
 	{
+		setActive(true);
 	}
 
 	Component::~Component()

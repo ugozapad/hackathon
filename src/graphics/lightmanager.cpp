@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "graphics/lightcontroller.h"
+#include "graphics/lightmanager.h"
 #include "graphics/light.h"
 
 namespace engine
 {
-	LightController LightController::ms_instance;
+	LightManager LightManager::ms_instance;
 
-	void LightController::addLight(LightComponent* light)
+	void LightManager::addLight(LightComponent* light)
 	{
 		ASSERT(light);
 		m_lights.push_back(light);
 	}
 
-	void LightController::removeLight(LightComponent* light)
+	void LightManager::removeLight(LightComponent* light)
 	{
 		ASSERT(light);
 		

@@ -20,13 +20,13 @@
 #include "engine/engine.h"
 #include "engine/world.h"
 
-#include "graphics/graphicscomponent.h"
+#include "graphics/staticmeshcomponent.h"
 
 #include "game/skyboxcomponent.h"
 
 #include "file/filedevice.h"
 
-#include "graphics/lightcontroller.h"
+#include "graphics/lightmanager.h"
 #include "graphics/light.h"
 
 extern bool Im3d_Init();
@@ -139,7 +139,7 @@ namespace engine
 			Node* node = skyboxNode->get();
 			if (node->getComponentByType<SkyboxComponent>())
 			{
-				GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+				StaticMeshComponent* graphicsComponent = node->getComponentByType<StaticMeshComponent>();
 				if (graphicsComponent)
 				{
 					// let's render our piece of shit.
@@ -161,7 +161,7 @@ namespace engine
 				Node* node = (*it).get();
 				if (node)
 				{
-					GraphicsComponent* graphicsComponent = node->getComponentByType<GraphicsComponent>();
+					StaticMeshComponent* graphicsComponent = node->getComponentByType<StaticMeshComponent>();
 					if (graphicsComponent && !node->getComponentByType<SkyboxComponent>())
 					{
 						// let's render our piece of shit.
@@ -183,7 +183,7 @@ namespace engine
 		GraphicsDevice::getInstance()->setFramebuffer(PostProcessingRenderer::getInstance()->getFramebuffer());
 
 		// let's sort the fucking lights
-		std::vector<LightComponent*> lights = LightController::getInstance()->getLights();
+		std::vector<LightComponent*> lights = LightManager::getInstance()->getLights();
 		g_deferredRenderer.lightPhase(lights);
 
 		g_deferredRenderer.drawNoLight();

@@ -2,7 +2,7 @@
 #define LIGHT_H
 
 #include "engine/components/component.h"
-#include "lightcontroller.h"
+#include "lightmanager.h"
 
 namespace engine
 {
