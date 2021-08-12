@@ -229,7 +229,7 @@ namespace engine
 		registerGameClasses();
 
 		Engine::loadEmptyWorld();
-		Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
+	//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
 
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
@@ -270,7 +270,7 @@ namespace engine
 		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
-		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f);
+		levelCollision->createShape(PhysicsBody::ShapeType::Sphere, levelNode->getPosition(), 0.0f);
 		levelCollision->setStatic(true);
 
 		// add skybox to world
@@ -342,8 +342,6 @@ namespace engine
 
 			Timer::getInstance()->update();
 		}
-
-		physComponent.reset();
 
 		spdlog::info("Exiting engine ...");
 

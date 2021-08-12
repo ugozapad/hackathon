@@ -12,10 +12,12 @@ namespace engine
 		case ShapeType::Box:
 			shape = new btBoxShape(btVector3(1.0, 1.0, 1.0));
 			break;
-			//case ShapeType::Sphere:
-			//	break;
-			//case ShapeType::Cylinder:
-			//	break;
+		case ShapeType::Sphere:
+			shape = new btSphereShape(1.0f);
+			break;
+		case ShapeType::Cylinder:
+			shape = new btCylinderShape(btVector3(1.0, 1.0, 1.0));
+			break;
 			//case ShapeType::TriangleMesh:
 			//	break;
 
