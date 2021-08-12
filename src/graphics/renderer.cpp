@@ -255,9 +255,12 @@ namespace engine
 		for (int i = 0; i < 12; i++)
 			GraphicsDevice::getInstance()->setTexture2D(i, nullptr);
 
-		// undind vb and ib
+		// unbind vb and ib
 		GraphicsDevice::getInstance()->setVertexBuffer(nullptr);
 		GraphicsDevice::getInstance()->setIndexBuffer(nullptr);
+
+		// unbind shader : CRASH !! No active program.
+		//glUseProgram(0);
 
 		// unbind framebuffer
 		GraphicsDevice::getInstance()->setFramebuffer(nullptr);
