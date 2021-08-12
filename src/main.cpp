@@ -21,7 +21,8 @@
 #include "graphics/graphicsoptions.h"
 #include "graphics/screenquad.h"
 #include "graphics/shadermanager.h"
-#include "graphics/graphicscomponent.h"
+#include "graphics/drawablecomponent.h"
+#include "graphics/staticmeshcomponent.h"
 
 #include "audio/audiomanager.h"
 #include "audio/audiosource.h"
@@ -232,7 +233,7 @@ namespace engine
 
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
-		auto levelMesh = levelNode->createComponentByType<GraphicsComponent>();
+		auto levelMesh = levelNode->createComponentByType<StaticMeshComponent>();
 		levelMesh->addModel(contentManager->loadModel("models/levels/test.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
@@ -276,14 +277,14 @@ namespace engine
 		auto skyboxNode = Engine::ms_world->createNodePtr();
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
-		auto skyboxmesh = skyboxNode->createComponentByType<GraphicsComponent>();
+		auto skyboxmesh = skyboxNode->createComponentByType<StaticMeshComponent>();
 		skyboxmesh->addModel(contentManager->loadModel("models/skybox_1.dae"));
 
 		// Add player
 		auto playerNode = Engine::ms_world->createNodePtr();
 		playerNode->createComponentByType<PlayerComponent>();
 		auto weapon = playerNode->createComponentByType<WeaponComponent>();
-		auto weaponMesh = playerNode->createComponentByType<GraphicsComponent>();
+		auto weaponMesh = playerNode->createComponentByType<StaticMeshComponent>();
 		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
 		//playerNode->createComponentByType<CameraLogicComponent>();
 
@@ -294,7 +295,7 @@ namespace engine
 		auto physicsTestStuffNode = Engine::ms_world->createNodePtr();
 		physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
 
-		auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<GraphicsComponent>();
+		auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<StaticMeshComponent>();
 		physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
