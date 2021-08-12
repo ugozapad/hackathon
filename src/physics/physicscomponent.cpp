@@ -45,6 +45,7 @@ namespace engine
 	{
 		m_isStatic = value;
 		m_physicsBody->getBody()->setCollisionFlags(value ? btCollisionObject::CF_STATIC_OBJECT : btCollisionObject::CF_DYNAMIC_OBJECT);
+		m_physicsBody->setStatic(true);
 	}
 
 	void PhysicsComponent::update(float delta)

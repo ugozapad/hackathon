@@ -12,31 +12,41 @@ namespace engine
 		case ShapeType::Box:
 			shape = new btBoxShape(btVector3(1.0, 1.0, 1.0));
 			break;
-		//case ShapeType::Sphere:
-		//	break;
-		//case ShapeType::Cylinder:
-		//	break;
-		//case ShapeType::TriangleMesh:
-		//	break;
+			//case ShapeType::Sphere:
+			//	break;
+			//case ShapeType::Cylinder:
+			//	break;
+			//case ShapeType::TriangleMesh:
+			//	break;
 
 		default:
 			Core::error("PhysicsBody::PhysicsBody: unknowed shape type");
 		}
 
 		btVector3 localInertia(0, 0, 0);
-		shape->calculateLocalInertia(mass, localInertia);
 
-		btRigidBody::btRigidBodyConstructionInfo info(btScalar(0.3), nullptr, shape, localInertia);
-		info.m_friction = btScalar(0.0);
-		info.m_rollingFriction = btScalar(0.3);
-		info.m_restitution = 0.5f;
+		if (!m_isStatic)
+		{
+			
+			shape->calculateLocalInertia(mass, localInertia);
+		}
+
 		
-		btTransform& t = info.m_startWorldTransform;
+		
+		btTransform t;
 		t.setIdentity();
 		t.setOrigin(btVector3(position.x, position.y, position.z));
 
+		btDefaultMotionState* motionState = new btDefaultMotionState(t);
+
+		btRigidBody::btRigidBodyConstructionInfo info(mass, motionState, shape, localInertia);
+
+		
+		
 		m_btRigidBody = new btRigidBody(info);
-		m_btRigidBody->forceActivationState(DISABLE_DEACTIVATION);
+		
+		
+		//m_btRigidBody->forceActivationState(DISABLE_DEACTIVATION);
 
 	}
 
@@ -52,4 +62,5 @@ namespace engine
 		return glm::vec3(p.x(), p.y(), p.z());
 	}
 
+	
 }

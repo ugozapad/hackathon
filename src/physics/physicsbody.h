@@ -33,10 +33,13 @@ namespace engine
 
 		glm::vec3 getPosition();
 
+		void setStatic(bool val) { m_isStatic = val; }
+
 		btRigidBody* getBody() { return m_btRigidBody; }
 
 	private:
 		btRigidBody* m_btRigidBody;
+		bool m_isStatic;
 	};
 }
 
