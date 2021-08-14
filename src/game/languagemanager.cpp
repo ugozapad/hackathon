@@ -26,9 +26,33 @@ namespace engine
 		return Languages::English;
 	}
 
+	void setLocaleLang(Languages lang)
+	{
+		switch (lang)
+		{
+		case Languages::English:
+			setlocale(LC_ALL, NULL);
+			break;
+		case Languages::Russian:
+			setlocale(LC_ALL, "russian");
+			break;
+		default:
+			Core::error("setStdLang: setLocaleLang: Failed to set language to locale! Unknowed language id!");
+			break;
+		}
+	}
+
 	void LanguageManager::init()
 	{
 		Languages lang = getPreferedLanguage();
+		setLocaleLang(lang);
+
+		std::string filename;
+
+		if (lang == Languages::English)
+			filename = "lang_en.txt";
+		else if (lang == Languages::Russian)
+			filename = "lang_ru.txt";
 
 
 	}

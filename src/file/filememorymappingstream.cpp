@@ -1,11 +1,19 @@
 #include "pch.h"
 #include "file/filememorymappingstream.h"
+#include "file/filedevice.h"
 
 namespace engine
 {
 	FileMemoryMappingStream::FileMemoryMappingStream(const std::string& filename)
 	{
-		m_hFileHandle = CreateFileA(filename.c_str(), GENERIC_READ, 0, nullptr,
+		std::string realFileName = FileDevice::instance()->getDefaultPath();
+		realFileName += filename;
+
+		for (int i = 0; i < realFileName.size(); i++)
+			if (realFileName[i] == '/')
+				realFileName[i] = '\\';
+
+		m_hFileHandle = CreateFileA(realFileName.c_str(), GENERIC_READ, 0, nullptr,
 			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 		if (m_hFileHandle == INVALID_HANDLE_VALUE)

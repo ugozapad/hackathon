@@ -191,15 +191,6 @@ namespace engine
 		//ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 
-	bool fileExist(const std::string& filename)
-	{
-		File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
-		bool valid = file->isValid();
-		FileDevice::instance()->closeFile(file);
-
-		return valid;
-	}
-
 	void Renderer::makeScreenshot()
 	{
 		int width = m_view->m_width;

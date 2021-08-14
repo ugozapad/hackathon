@@ -2,6 +2,7 @@
 #include "engine/content/contentmanager.h"
 
 #include "file/filestream.h"
+#include "file/filesystem.h"
 
 #include "common/thread.h"
 
@@ -44,7 +45,8 @@ namespace engine
 						spdlog::info("[content]: load {}", contentName.c_str());
 
 						std::shared_ptr<Content>& content = m_contentManager->m_contentForLoad[i].second;
-						std::shared_ptr<DataStream> dataStream = std::make_shared<FileStream>(contentName, "r");
+						//std::shared_ptr<DataStream> dataStream = std::make_shared<FileStream>(contentName, "r");
+						std::shared_ptr<DataStream> dataStream = FileSystem::getInstance()->openReadFile(contentName);
 
 						content->load(dataStream);
 					}

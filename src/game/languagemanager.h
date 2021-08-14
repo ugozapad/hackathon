@@ -12,6 +12,9 @@ namespace engine
 
 		std::string getAsciiStr(const std::string& langStrName);
 		std::wstring getWideStr(const std::string& langStrName);
+
+	private:
+		//std::unordered_map<>
 	};
 }
 

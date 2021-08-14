@@ -23,10 +23,12 @@ namespace engine
 
 	void MemoryStream::read(void* buffer, size_t count)
 	{
-		assert(m_pos + count <= m_size);
+		// #TODO: STB ERROR!!!
+
+		//ASSERT(m_pos + count <= m_size);
 		memcpy(buffer, get_pointer(), count);
 		m_pos += count;
-		assert((m_pos <= m_size) && (m_pos >= 0));
+		//ASSERT((m_pos <= m_size) && (m_pos >= 0));
 	}
 
 	void MemoryStream::write(void* buffer, size_t count)
@@ -50,7 +52,8 @@ namespace engine
 			m_pos += offset;
 			break;
 		}
-		assert((m_pos <= m_size) && (m_pos >= 0));
+
+		ASSERT((m_pos <= m_size) && (m_pos >= 0));
 	}
 
 	long MemoryStream::tell()

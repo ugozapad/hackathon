@@ -26,7 +26,7 @@ namespace engine
 		std::shared_ptr<Material> loadMaterial(const std::string& materialName);
 
 	private:
-		std::map<std::string, std::shared_ptr<Content>> m_content;
+		std::unordered_map<std::string, std::shared_ptr<Content>> m_content;
 
 		std::vector<std::pair<std::string, std::shared_ptr<Content>>> m_contentForLoad;
 
