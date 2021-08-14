@@ -1,0 +1,5 @@
+material "test_level/bricks/brick_02"
+{
+	shader diffuse
+	albedo "test/bricks/bricks_02.jpg"
+}

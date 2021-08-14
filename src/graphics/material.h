@@ -39,6 +39,8 @@ namespace engine
 
 		void bind();
 
+		void resetAllStates();
+
 		std::string& getName() { return m_materialName; }
 		Shader* getShader() { return m_shader; }
 

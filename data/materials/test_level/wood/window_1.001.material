@@ -1,0 +1,5 @@
+material "test_level/wood/window_1.001"
+{
+	shader diffuse
+	albedo "notexture.png"
+}

@@ -29,6 +29,7 @@ namespace engine
 		void endFrame();
 
 		void resetDeviceState();
+		void resetTextureBindingsAfterModelRender();
 
 	private:
 		View* m_view;

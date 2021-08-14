@@ -267,10 +267,10 @@ namespace engine
 
 		// add test light
 		auto testLevelLight = Engine::ms_world->createNode();
-		//testLevelLight->setPosition(glm::vec3(10.0f, 5.0f, 1.0f));
+		testLevelLight->setPosition(glm::vec3(3, 2, 0.0f));
 		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
 	//	testLevelLightComponent->m_color = glm::vec3(1.0f, 0.0f, 0.0f);
-
+		testLevelLightComponent->m_color = glm::vec3(0.3f);
 
 		//{
 		//	auto light = Engine::ms_world->createNode();

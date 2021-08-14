@@ -1,0 +1,5 @@
+material "test_level/concrete/concrete_01.001"
+{
+	shader diffuse
+	albedo "notexture.png"
+}

@@ -256,4 +256,10 @@ namespace engine
 		GraphicsDevice::getInstance()->setFramebuffer(nullptr);
 	}
 
+	void Renderer::resetTextureBindingsAfterModelRender()
+	{
+		for (int i = 0; i < 6; i++)
+			GraphicsDevice::getInstance()->setTexture2D(i, nullptr);
+	}
+
 }

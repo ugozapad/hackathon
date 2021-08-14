@@ -2,5 +2,4 @@ material "test_level/wood/window_1"
 {
 	shader diffuse
 	albedo "test/wood/window_1.jpg"
-	normalmap "test/wood/window_1_nrml.png"
 }

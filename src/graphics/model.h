@@ -78,6 +78,8 @@ namespace engine
 
 		const std::string& getFileName() { return m_filename; }
 
+		
+
 	private:
 		std::vector<SubMesh*> m_subMeshes;
 	};

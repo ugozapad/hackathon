@@ -411,6 +411,9 @@ namespace engine
 
 		// return what have been
 		RenderContext::setContext(savedCtx);
+
+		// reset material bindings
+		m_material->resetAllStates();
 	}
 
 	bool hasVxDeclsArrPos(VertexDeclaration* meshDecs, int countOfVertexDecls)

@@ -11,7 +11,7 @@ namespace engine
 		m_color = glm::vec3(1.0);
 		m_ambientColor = glm::vec3(0.2);
 		m_specularColor = glm::vec3(1.0);
-		m_shininess = 1.0f;
+		m_shininess = 0.7f;
 
 		LightManager::getInstance()->addLight(this);
 	}

@@ -1,0 +1,5 @@
+material "test_level/house_01"
+{
+	shader diffuse
+	albedo "test/house_background_01.tga"
+}
