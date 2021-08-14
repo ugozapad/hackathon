@@ -33,6 +33,13 @@ Bullet
 Ozz Animation
 FMOD
 
+Фичи движка:
+
+Deferred Shading (два прохода)
+Физика на основа Bullet Physics
+Entity-Component игровая логика
+
+
 Требования:
 видеокарта с поддержкой OpenGL 3.3
 

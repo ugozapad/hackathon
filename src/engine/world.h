@@ -24,8 +24,8 @@ public:
 	void updateLogicWorld();
 	void updateGraphicWorld();
 
-	std::shared_ptr<Node> createNodePtr();
-	Node* createNode();
+	std::shared_ptr<Node> createNode();
+	Node* createNode_NoSharedPtr();
 
 	std::list<std::shared_ptr<Node>>& getNodeList() { return m_nodes; }
 

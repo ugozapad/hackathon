@@ -1,0 +1,16 @@
+// Английские строки для меню
+
+// Строки главного меню
+#STR_MENU_NEW_GAME "New game"
+#STR_MENU_SETTINGS "Settings"
+#STR_MENU_EXIT "Exit to Windows"
+
+// Строки для меню настроек
+#STR_MENU_SETTINGS "Settings"
+#STR_MENU_GRAPHICS_SETTINGS "Graphics Settings"
+#STR_MENU_SETTINGS_SCREEN_RESOLUTION "Screen resolution"
+#STR_MENU_SETTINGS_REFRESH_RATE_RESOLUTION "Screen refresh rate"
+#STR_MENU_SETTINGS_FULLSCREEN "Fullscreen"
+#STR_MENU_SETTINGS_SHADOWMAP_QUALITY "Shadows quality"
+#STR_MENU_SETTINGS_ANISOTROPIC_QUALITY "Anisotropic texture filtering quality"
+#STR_MENU_SETTINGS_ENGINE_RESTART "To apply the settings, you need to restart the application"

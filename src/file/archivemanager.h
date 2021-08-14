@@ -10,6 +10,7 @@ namespace engine
 
 	public:
 		void loadArchive(const std::string& filename);
+
 	};
 }
 

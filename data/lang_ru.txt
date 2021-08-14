@@ -1,0 +1,16 @@
+// Русские строки для меню
+
+// Строки главного меню
+#STR_MENU_NEW_GAME "Новая игра"
+#STR_MENU_SETTINGS "Настройки"
+#STR_MENU_EXIT "Выход"
+
+// Строки для меню настроек
+#STR_MENU_SETTINGS "Настройки"
+#STR_MENU_GRAPHICS_SETTINGS "Настройки графики"
+#STR_MENU_SETTINGS_SCREEN_RESOLUTION "Разрешение экрана"
+#STR_MENU_SETTINGS_REFRESH_RATE_RESOLUTION "Частота обновления"
+#STR_MENU_SETTINGS_FULLSCREEN "Полный экран"
+#STR_MENU_SETTINGS_SHADOWMAP_QUALITY "Качество теней"
+#STR_MENU_SETTINGS_ANISOTROPIC_QUALITY "Качество анизотропной фильтрации"
+#STR_MENU_SETTINGS_ENGINE_RESTART "Для применения настроек требуется перезапустить приложение"
