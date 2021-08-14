@@ -70,16 +70,16 @@ namespace engine
 		}
 	}
 
-	std::shared_ptr<Node> World::createNodePtr()
+	std::shared_ptr<Node> World::createNode()
 	{
 		std::shared_ptr<Node> node = Context::getInstance()->createObject<Node>();
 		m_nodes.push_back(node);
 		return node;
 	}
 
-	Node* World::createNode()
+	Node* World::createNode_NoSharedPtr()
 	{
-		return createNodePtr().get();
+		return createNode().get();
 	}
 
 }

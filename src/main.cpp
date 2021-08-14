@@ -158,7 +158,7 @@ namespace engine
 		if (strstr(buffer, "bin"))
 			FileDevice::instance()->setDefaultPath("../data/");
 
-		spdlog::info("current path:{}", buffer);
+		spdlog::info("current path: {}", buffer);
 
 		spdlog::info("working path: {}", FileDevice::instance()->getDefaultPath());
 
@@ -232,7 +232,7 @@ namespace engine
 	//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
 
 		// static mesh to level
-		auto levelNode = Engine::ms_world->createNodePtr();
+		auto levelNode = Engine::ms_world->createNode();
 		auto levelMesh = levelNode->createComponentByType<StaticMeshComponent>();
 		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
 		{
@@ -266,23 +266,39 @@ namespace engine
 		//}
 
 		// add test light
-		auto testLevelLight = Engine::ms_world->createNodePtr();
-		testLevelLight->setPosition(glm::vec3(10.0f, 5.0f, 1.0f));
+		auto testLevelLight = Engine::ms_world->createNode();
+		//testLevelLight->setPosition(glm::vec3(10.0f, 5.0f, 1.0f));
 		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
+	//	testLevelLightComponent->m_color = glm::vec3(1.0f, 0.0f, 0.0f);
+
+
+		//{
+		//	auto light = Engine::ms_world->createNode();
+		//	light->setPosition(glm::vec3(20.0f, 5.0f, 1.0f));
+		//	auto lightComponent = testLevelLight->createComponentByType<LightComponent>();
+		//	lightComponent->m_color = glm::vec3(0.0f, 1.0f, 0.0f);
+		//}
+
+		//{
+		//	auto light = Engine::ms_world->createNode();
+		//	light->setPosition(glm::vec3(10.0f, 5.0f, 10.0f));
+		//	auto lightComponent = testLevelLight->createComponentByType<LightComponent>();
+		//	lightComponent->m_color = glm::vec3(0.0f, 0.0f, 1.0f);
+		//}
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
 		levelCollision->createShape(PhysicsBody::ShapeType::Sphere, levelNode->getPosition(), 0.0f);
 		levelCollision->setStatic(true);
 
 		// add skybox to world
-		auto skyboxNode = Engine::ms_world->createNodePtr();
+		auto skyboxNode = Engine::ms_world->createNode();
 		skyboxNode->createComponentByType<SkyboxComponent>();
 
 		auto skyboxmesh = skyboxNode->createComponentByType<StaticMeshComponent>();
 		skyboxmesh->addModel(contentManager->loadModel("models/skybox_1.dae"));
 
 		// Add player
-		auto playerNode = Engine::ms_world->createNodePtr();
+		auto playerNode = Engine::ms_world->createNode();
 		playerNode->createComponentByType<PlayerComponent>();
 		auto weapon = playerNode->createComponentByType<WeaponComponent>();
 		auto weaponMesh = playerNode->createComponentByType<StaticMeshComponent>();
@@ -293,11 +309,11 @@ namespace engine
 		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		// add physics mesh
-		auto physicsTestStuffNode = Engine::ms_world->createNodePtr();
+		auto physicsTestStuffNode = Engine::ms_world->createNode();
 		physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
 
 		auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<StaticMeshComponent>();
-		physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
+		//physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
 		physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);

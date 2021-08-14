@@ -27,7 +27,9 @@ namespace engine
 
 		void getRenderData(LightRenderData* data);
 
-	private:
+	// #TODO: HACK HACK HACK
+	//private:
+	public:
 		glm::vec3 m_color;
 		glm::vec3 m_ambientColor;
 		glm::vec3 m_specularColor;
