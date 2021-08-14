@@ -26,11 +26,11 @@ namespace engine
 		Context::getInstance()->registerObject<PhysicsComponent>();
 	}
 
-	void PhysicsComponent::createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass)
+	void PhysicsComponent::createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass, btVector3 size, btScalar radius)
 	{
 		ASSERT(!m_physicsBody && "Failed to create second shape!");
 
-		m_physicsBody = PhysicsManager::getInstance()->createPhysicsBody(shapeType, position, mass);
+		m_physicsBody = PhysicsManager::getInstance()->createPhysicsBody(shapeType, position, mass, size, radius);
 
 		// #HACK: HACK HACK HACK
 		Engine::ms_world->getPhysicsWorld()->addBodyToWorld(m_physicsBody);

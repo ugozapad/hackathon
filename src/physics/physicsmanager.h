@@ -14,7 +14,7 @@ namespace engine
 		void init();
 		void shutdown();
 
-		PhysicsBody* createPhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), btScalar mass = 0.0f);
+		PhysicsBody* createPhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), btScalar mass = 0.0f, btVector3 size = btVector3(1.0f, 1.0f, 1.0f), btScalar radius = 1.0f);
 		void destroyPhysicsBody(PhysicsBody* physicsBody);
 
 	private:
