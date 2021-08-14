@@ -1,0 +1,5 @@
+material "test_level/concrete/concrete_01_1"
+{
+	shader diffuse
+	albedo "stucco_potolok_stucaturka.tga"
+}

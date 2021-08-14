@@ -1,0 +1,6 @@
+material "test_level/wood/old_planks"
+{
+	shader diffuse
+	albedo "test/wood/test_wood_plank_old.tga"
+	normalmap "test/wood/test_wood_plank_nm.tga"
+}

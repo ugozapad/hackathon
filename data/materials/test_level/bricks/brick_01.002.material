@@ -1,0 +1,5 @@
+material "test_level/bricks/brick_01.002"
+{
+	shader diffuse
+	albedo "notexture.png"
+}

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "graphics/staticmeshcomponent.h"
 
+#include "graphics/renderer.h"
+
 namespace engine
 {
 	void StaticMeshComponent::registerObject()
