@@ -11,6 +11,9 @@ namespace engine
 	class MemoryStream : public DataStream
 	{
 	public:
+		// Little hack
+		MemoryStream();
+
 		MemoryStream(void* data, size_t size);
 		~MemoryStream();
 
@@ -29,7 +32,7 @@ namespace engine
 
 		void* get_pointer();
 
-	private:
+	protected:
 		char* m_data;
 		size_t m_size;
 		size_t m_pos;

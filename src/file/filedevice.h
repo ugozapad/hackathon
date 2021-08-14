@@ -22,6 +22,15 @@ namespace engine
 	private:
 		std::string m_defaultPath;
 	};
+
+	inline bool fileExist(const std::string& filename)
+	{
+		File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
+		bool valid = file->isValid();
+		FileDevice::instance()->closeFile(file);
+
+		return valid;
+	}
 }
 
 #endif // !FILEDEVICE_H

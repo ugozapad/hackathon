@@ -10,6 +10,13 @@ namespace engine
 		m_pos = 0;
 	}
 
+	MemoryStream::MemoryStream()
+	{
+		m_data = nullptr;
+		m_size = 0;
+		m_pos = 0;
+	}
+
 	MemoryStream::~MemoryStream()
 	{
 	}
