@@ -3,7 +3,7 @@
 
 #include "engine/node.h"
 #include "engine/inputmanager.h"
-#include "physics/charactercontroller.h"
+#include "engine/engine.h"
 #include "engine/camera.h"
 #include "game/gamestate.h"
 
@@ -11,6 +11,24 @@ namespace engine
 {
 	PlayerComponent::PlayerComponent()
 	{
+		auto world = Engine::ms_world->getPhysicsWorld()->getWorld();
+		btTransform startTransform;
+		startTransform.setIdentity();
+		startTransform.setOrigin(btVector3(0, 10, 4));
+
+		btConvexShape* capsule = new btCapsuleShape(0.5, 1);
+		
+		m_ghostObject = new btPairCachingGhostObject();
+		m_ghostObject->setWorldTransform(startTransform);
+		world->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
+		m_ghostObject->setCollisionShape(capsule);
+		m_ghostObject->setCollisionFlags(btCollisionObject::CF_CHARACTER_OBJECT);
+		charcontroller = new btKinematicCharacterController(m_ghostObject, capsule, 0.05f);
+		charcontroller->setGravity(world->getGravity());
+
+		world->addCollisionObject(m_ghostObject, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::AllFilter);
+		world->addAction(charcontroller);
+		charcontroller->setMaxJumpHeight(1.5);
 
 	}
 
@@ -33,6 +51,7 @@ namespace engine
 	void PlayerComponent::update(float dt)
 	{
 		updateCamera(dt);
+		updatePhysics(dt);
 	}
 
 	void PlayerComponent::updateCamera(float dt)
@@ -42,7 +61,7 @@ namespace engine
 		Camera* cam = CameraProxy::getInstance();
 		float camSpeed = 10.0f * dt;
 		glm::vec2 mousePos = input->getCursorPos();
-
+		cam->m_position = pos;
 		float xoffset = mousePos.x;
 		float yoffset = mousePos.y;
 
@@ -81,8 +100,50 @@ namespace engine
 		front.z = sin(glm::radians(yaw)) * cos(glm::radians(-pitch));
 		cam->m_direction = glm::normalize(front);
 
-		cam->m_position = pos;
+		
 		m_node->setPosition(pos);
+	}
+
+	void PlayerComponent::updatePhysics(float dt)
+	{
+		btTransform t;
+		t = charcontroller->getGhostObject()->getWorldTransform();
+		InputManager* input = InputManager::getInstance();
+		btVector3 pos = t.getOrigin();
+		btQuaternion  quat = t.getRotation();
+		float angle = quat.getAngle();
+		btVector3 axis = quat.getAxis();
+		m_node->setPosition(glm::vec3(pos.getX(), pos.getY(), pos.getZ()));
+		glm::quat q = glm::angleAxis(float(angle * (180.0 / 3.14)), glm::vec3(axis.getX(), axis.getY(), axis.getZ()));
+		//getTransform()->SetRot(q);
+		/*glm::vec3 fb = getTransform()->getForward();
+		glm::vec3 rl = getTransform()->getRight();*/
+		Camera* cam = CameraProxy::getInstance();
+		glm::vec3 dir(0.0f);
+
+		if (input->getKey(GLFW_KEY_W))
+			dir += cam->m_direction;
+		if (input->getKey(GLFW_KEY_S))
+			dir -= cam->m_direction;
+
+		if (input->getKey(GLFW_KEY_A))
+			dir -= glm::normalize(glm::cross(cam->m_direction, glm::vec3(0.0f, 1.0f, 0.0f)));
+		if (input->getKey(GLFW_KEY_D))
+			dir += glm::normalize(glm::cross(cam->m_direction, glm::vec3(0.0f, 1.0f, 0.0f)));
+
+		if (input->getKey(GLFW_KEY_SPACE))
+			charcontroller->jump(btVector3(0.0f, 6.0f, 0.0f));
+
+		if (dir != glm::vec3(0, 0, 0) && (input->getKey(GLFW_KEY_W) || input->getKey(GLFW_KEY_S) || input->getKey(GLFW_KEY_A) || input->getKey(GLFW_KEY_D)))
+		{
+			if (charcontroller->onGround())
+				charcontroller->setWalkDirection(btVector3(dir.x, dir.y, dir.z).normalized() / 10);
+			else
+				charcontroller->setWalkDirection(btVector3(dir.x, dir.y, dir.z).normalized() / 30);
+		}
+
+		else
+			charcontroller->setWalkDirection(btVector3(0, 0, 0));
 	}
 
 }

@@ -287,7 +287,7 @@ namespace engine
 		//}
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
-		levelCollision->createShape(PhysicsBody::ShapeType::Sphere, levelNode->getPosition(), 0.0f);
+		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f, btVector3(30.f, 1.0f, 30.f));
 		levelCollision->setStatic(true);
 
 		// add skybox to world
@@ -309,14 +309,14 @@ namespace engine
 		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
 
 		// add physics mesh
-		auto physicsTestStuffNode = Engine::ms_world->createNode();
-		physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
+		//auto physicsTestStuffNode = Engine::ms_world->createNode();
+		//physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
 
-		auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<StaticMeshComponent>();
-		//physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
+		//auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<StaticMeshComponent>();
+		////physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
 
-		auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
-		physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);
+		//auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
+		//physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);
 
 		GameState* gameState = GameState::getInstance();
 
