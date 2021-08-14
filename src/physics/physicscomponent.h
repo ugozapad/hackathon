@@ -16,7 +16,7 @@ namespace engine
 
 		static void registerObject();
 
-		void createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), btScalar mass = 0.0f);
+		void createShape(PhysicsBody::ShapeType shapeType, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), btScalar mass = 0.0f, btVector3 size = btVector3(1.0f, 1.0f, 1.0f), btScalar radius = 1.0f);
 
 		virtual void onNodeSet(Node* node);
 

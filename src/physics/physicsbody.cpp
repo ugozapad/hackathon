@@ -3,21 +3,24 @@
 
 namespace engine
 {
-	PhysicsBody::PhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass)
+	PhysicsBody::PhysicsBody(PhysicsBody::ShapeType shapeType, glm::vec3 position /*= glm::vec3(0.0f, 0.0f, 0.0f)*/, btScalar mass, btVector3 size, btScalar radius)
 	{
 		btCollisionShape* shape = nullptr;
 
 		switch (shapeType)
 		{
 		case ShapeType::Box:
-			shape = new btBoxShape(btVector3(1.0, 1.0, 1.0));
+			shape = new btBoxShape(size);
 			break;
-			//case ShapeType::Sphere:
-			//	break;
-			//case ShapeType::Cylinder:
-			//	break;
-			//case ShapeType::TriangleMesh:
-			//	break;
+		case ShapeType::Sphere:
+			shape = new btSphereShape(radius);
+			break;
+		case ShapeType::Cylinder:
+			shape = new btCylinderShape(size / 2);
+			break;
+		/*case ShapeType::TriangleMesh:
+			shape = new btBvhTriangleMeshShape()
+			break;*/
 
 		default:
 			Core::error("PhysicsBody::PhysicsBody: unknowed shape type");
