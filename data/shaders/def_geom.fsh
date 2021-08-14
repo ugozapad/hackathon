@@ -12,15 +12,16 @@ uniform sampler2D u_albedoTexture;
 uniform sampler2D u_normalTexture;
 uniform bool u_selfillum;
 
-uniform mat4 u_mv;
-uniform mat4 u_mvp;
+uniform mat4 u_model;
+uniform mat4 u_view;
 
 vec3 calcNormal(vec3 normal, vec2 text_coord)
 {
     vec3 newNormal = normal;
     newNormal = texture(u_normalTexture, text_coord).rgb;
-    newNormal = normalize(newNormal * 2 - 1) * 2.0;
-	newNormal = normalize(u_mv * vec4(newNormal, 0.0)).xyz;
+	newNormal = 2.0 * newNormal;
+    newNormal = normalize(newNormal * 2 - 1);
+	//newNormal = normalize( u_view * u_model * vec4(newNormal, 0.0)).xyz;
     return newNormal;
 }
 
@@ -34,8 +35,8 @@ void main()
 	n = normalize(n * 2.0 - 1.0);
 	
 	//gbuffer_normal = normalize(n);
-	//gbuffer_normal = normalize( calcNormal( Normal, TexCoord ) );
-	gbuffer_normal = Normal;
+	gbuffer_normal = normalize(calcNormal( Normal, TexCoord ));
+	//gbuffer_normal = Normal;
 	
 	// little hack for skybox lighting
 	if (u_selfillum)

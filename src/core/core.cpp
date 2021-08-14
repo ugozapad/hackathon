@@ -34,10 +34,12 @@ namespace engine
 		spdlog::error("{}", buf);
 		error_backend(buf);
 
-#if defined(DEBUG) || defined(_DEBUG)
-		std::terminate();
-#else
-		exit(1);
-#endif
+//#if defined(DEBUG) || defined(_DEBUG)
+//		std::terminate();
+//#else
+//		exit(1);
+//#endif
+
+		ExitProcess(1);
 	}
 }

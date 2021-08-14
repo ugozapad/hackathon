@@ -234,7 +234,7 @@ namespace engine
 		// static mesh to level
 		auto levelNode = Engine::ms_world->createNodePtr();
 		auto levelMesh = levelNode->createComponentByType<StaticMeshComponent>();
-		levelMesh->addModel(contentManager->loadModel("models/levels/test.dae"));
+		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
 		{
 			glm::vec3 p = levelNode->getPosition();
 			p.y = -1.0f;
@@ -267,6 +267,7 @@ namespace engine
 
 		// add test light
 		auto testLevelLight = Engine::ms_world->createNodePtr();
+		testLevelLight->setPosition(glm::vec3(10.0f, 5.0f, 1.0f));
 		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();

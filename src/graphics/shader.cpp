@@ -32,7 +32,7 @@ namespace engine
 		if (!success)
 		{
 			glGetShaderInfoLog(shader, 512, NULL, infoLog);
-			spdlog::error("Failed to compile shader {}\n{}", filename.c_str(), infoLog);
+			Core::error("Failed to compile shader %s\n%s", filename.c_str(), infoLog);
 		}
 
 		spdlog::info("created shader from file {}", filename.c_str());
@@ -86,7 +86,7 @@ namespace engine
 		if (!success)
 		{
 			glGetProgramInfoLog(m_program, 512, NULL, infoLog);
-			spdlog::error("Failed to link program {}", infoLog);
+			Core::error("Failed to link program %s", infoLog);
 			return false;
 		}
 

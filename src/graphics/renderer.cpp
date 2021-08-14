@@ -177,16 +177,13 @@ namespace engine
 		}
 
 		// reset device states
-		resetDeviceState();
-
+		//resetDeviceState();
 
 		GraphicsDevice::getInstance()->setFramebuffer(PostProcessingRenderer::getInstance()->getFramebuffer());
 
 		// let's sort the fucking lights
 		std::vector<LightComponent*> lights = LightManager::getInstance()->getLights();
 		g_deferredRenderer.lightPhase(lights);
-
-		g_deferredRenderer.drawNoLight();
 
 		GraphicsDevice::getInstance()->setFramebuffer(0);
 
