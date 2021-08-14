@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "graphics/view.h"
+#include "graphics/camerafrustum.h"
 
 namespace engine
 {
@@ -15,8 +16,11 @@ namespace engine
 
 		void update();
 
+		CameraFrustum& get_frustum() { return m_frustum; }
+
 	private:
 		glm::mat4 get_view_matrix();
+		CameraFrustum m_frustum;
 
 		View* m_view;
 

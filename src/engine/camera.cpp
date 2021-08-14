@@ -9,6 +9,8 @@ namespace engine
 	{
 		m_view->m_view = get_view_matrix();
 		m_view->updateInternalValues();	
+
+		m_frustum.update(m_view->m_projection * m_view->m_view);
 	}
 
 	glm::mat4 Camera::get_view_matrix()

@@ -37,8 +37,8 @@ namespace engine
 				(type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR ** " : ""),
 				type, severity, message);
 
-		//if (type == GL_DEBUG_TYPE_ERROR)
-		//	DebugBreak();
+		if (type == GL_DEBUG_TYPE_ERROR)
+			DebugBreak();
 	}
 
 	void initGlDebug()

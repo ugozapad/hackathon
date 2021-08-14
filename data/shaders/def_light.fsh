@@ -16,6 +16,11 @@ uniform vec3 u_viewPos;
 // hardcoded but good
 vec3 g_ambientLightColor = vec3(0.2, 0.2, 0.2);
 
+struct Light
+{
+	vec3 pos;
+};
+
 vec3 calculatePointLight()
 {
 	return g_ambientLightColor;
