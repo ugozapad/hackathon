@@ -3,7 +3,7 @@
 
 #include "engine/node.h"
 #include "engine/inputmanager.h"
-
+#include "physics/kinematiccharactercontroller.h"
 #include "engine/camera.h"
 #include "game/gamestate.h"
 
