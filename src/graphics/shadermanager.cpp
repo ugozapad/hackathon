@@ -76,7 +76,7 @@ namespace engine
 		}
 
 		{
-			Shader* shader = createShader("pp_test");
+			Shader* shader = createShader("gamma_correction");
 
 			VertexDeclaration position;
 			position.name = "position";

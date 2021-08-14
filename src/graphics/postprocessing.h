@@ -17,13 +17,13 @@ namespace engine
 		void init(View* view);
 		void shutdown();
 
-		void test();
+		void gammaCorrection();
 
 		GrFramebuffer* getFramebuffer() { return m_framebuffer; }
 		
 	private:
 		Shader* m_fadeInOutShader;
-		Shader* m_testPp;
+		Shader* m_gammaCorrectionShader;
 		GrFramebuffer* m_framebuffer;
 		GrTexture2D* m_colorTexture;
 	};

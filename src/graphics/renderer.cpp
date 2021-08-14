@@ -123,7 +123,9 @@ namespace engine
 		assert(deferredFramebuffer);
 
 		GraphicsDevice::getInstance()->setFramebuffer(deferredFramebuffer);
-		GraphicsDevice::getInstance()->clear(/*ClearRenderTarget |*/ ClearDepth);
+
+		GraphicsDevice::getInstance()->clearColor(0.0, 0.0, 0.0, 1.0);
+		GraphicsDevice::getInstance()->clear(ClearRenderTarget | ClearDepth);
 
 		World* world = Engine::ms_world;
 
@@ -187,7 +189,7 @@ namespace engine
 
 		GraphicsDevice::getInstance()->setFramebuffer(0);
 
-		PostProcessingRenderer::getInstance()->test();
+		PostProcessingRenderer::getInstance()->gammaCorrection();
 		//ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 

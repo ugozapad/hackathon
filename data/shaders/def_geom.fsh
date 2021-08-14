@@ -34,9 +34,9 @@ void main()
 	vec3 n = texture(u_normalTexture, TexCoord).rgb;
 	n = normalize(n * 2.0 - 1.0);
 	
-	gbuffer_normal = normalize(n);
+	//gbuffer_normal = normalize(n);
 	//gbuffer_normal = normalize(calcNormal( Normal, TexCoord ));
-	//gbuffer_normal = Normal;
+	gbuffer_normal = Normal;
 	
 	// little hack for skybox lighting
 	if (u_selfillum)
@@ -46,4 +46,8 @@ void main()
 	
 	// albedo texture
     gbuffer_albedo.rgb = texture(u_albedoTexture, TexCoord).rgb;
+	
+	//float gamma = 2.2;
+	//vec3 diffuseColor = pow(texture(u_albedoTexture, TexCoord).rgb, vec3(gamma));
+	//gbuffer_albedo.rgb = diffuseColor;
 }

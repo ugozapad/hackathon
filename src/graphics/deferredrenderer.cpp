@@ -38,7 +38,7 @@ namespace engine
 		TextureCreationDesc colorDesc = { 0 };
 		colorDesc.m_width = width;
 		colorDesc.m_height = height;
-		colorDesc.m_format = ImageFormat::RGBA16;
+		colorDesc.m_format = ImageFormat::RGB32;
 		m_textures[RT_COLOR] = GraphicsDevice::instance()->createTexture2D(positionDesc);
 
 		// create frame buffer
@@ -191,44 +191,12 @@ namespace engine
 		Camera* camera = CameraProxy::getInstance();
 		m_lightPassShader->setVec3("u_viewPos", camera->getPosition());
 
-		glm::vec3 lightPos = glm::vec3(4.3471446f, -5.8285933f, -3.8116999f);
-		m_lightPassShader->setVec3("u_lightPos", lightPos);
-
 		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);
 
 	}
 
 	void DeferredRenderer::lightPhase(std::vector<LightComponent*>& lights)
 	{
-		//typedef std::vector<LightComponent*>::iterator LT;
-		//LT I = lights.begin();
-		//LT E = lights.end();
-
-#if 0
-		for (int i = 0; i < lights.size(); i++)
-		{
-			LightRenderData lightData;
-			lights[i]->getRenderData(&lightData);
-
-			m_lightPassShader->setVec3("Light.pos", lightData.m_pos);
-			m_lightPassShader->setVec3("Light.dir", lightData.m_dir);
-			m_lightPassShader->setVec3("Light.color", lightData.m_color);
-			m_lightPassShader->setVec3("Light.ambient", lightData.m_ambientColor);
-			m_lightPassShader->setVec3("Light.specular", lightData.m_specularColor);
-			m_lightPassShader->setFloat("Light.shininess", lightData.m_shininess);
-
-			glm::mat4 model = glm::identity<glm::mat4>();
-			model = glm::translate(model, lightData.m_pos);
-
-			RenderContext& ctx = RenderContext::getContext();
-			ctx.model = model;
-
-			ShaderConstantManager::getInstance()->setGraphicsConstants(m_lightPassShader);
-
-			GraphicsDevice::instance()->setVertexBuffer(m_lightSphereBuffer);
-			GraphicsDevice::instance()->drawArray(PrimitiveMode::Triangles, 0, m_sphereVerticesCount);
-		}
-#endif
 		GraphicsDevice* graphicsDevice = GraphicsDevice::getInstance();
 
 		m_lightPassShader->bind();
@@ -244,9 +212,6 @@ namespace engine
 
 		Camera* camera = CameraProxy::getInstance();
 		m_lightPassShader->setVec3("u_viewPos", camera->getPosition());
-
-		glm::vec3 lightPos = glm::vec3(4.3471446f, -5.8285933f, -3.8116999f);
-		m_lightPassShader->setVec3("u_lightPos", lightPos);
 
 		m_lightPassShader->setInteger("u_lightsCount", lights.size());
 
@@ -282,7 +247,7 @@ namespace engine
 			m_lightPassShader->setFloat(uniformName, 0.09f);
 
 			snprintf(uniformName, 64, "u_lights[%i].quadratic", i);
-			m_lightPassShader->setFloat(uniformName, 0.032f);
+			m_lightPassShader->setFloat(uniformName, 0.092f);
 		}
 
 		ScreenQuad::renderWithoutTextureBinding(m_lightPassShader);

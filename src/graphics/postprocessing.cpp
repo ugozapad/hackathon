@@ -59,7 +59,7 @@ namespace engine
 		uv.type = VertexDeclaration::Float;
 		m_fadeInOutShader->addVertexDeclaration(uv);
 
-		m_testPp = ShaderManager::getInstance()->createShader("pp_test");
+		m_gammaCorrectionShader = ShaderManager::getInstance()->createShader("gamma_correction");
 	}
 
 	void PostProcessingRenderer::shutdown()
@@ -70,11 +70,11 @@ namespace engine
 		GraphicsDevice::getInstance()->deleteFramebuffer(m_framebuffer);
 	}
 
-	void PostProcessingRenderer::test()
+	void PostProcessingRenderer::gammaCorrection()
 	{
-		m_testPp->bind();
+		m_gammaCorrectionShader->bind();
 		GraphicsDevice::getInstance()->setTexture2D(0, m_colorTexture);
-		ScreenQuad::renderWithoutTextureBinding(m_testPp);
+		ScreenQuad::renderWithoutTextureBinding(m_gammaCorrectionShader);
 	}
 
 }
