@@ -34,9 +34,9 @@ void main()
 	vec3 n = texture(u_normalTexture, TexCoord).rgb;
 	n = normalize(n * 2.0 - 1.0);
 	
-	//gbuffer_normal = normalize(n);
+	gbuffer_normal = normalize(n);
 	//gbuffer_normal = normalize(calcNormal( Normal, TexCoord ));
-	gbuffer_normal = Normal;
+	//gbuffer_normal = Normal;
 	
 	// little hack for skybox lighting
 	if (u_selfillum)
