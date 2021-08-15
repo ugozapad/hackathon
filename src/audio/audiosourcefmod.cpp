@@ -3,6 +3,8 @@
 
 #include "file/filedevice.h"
 
+#include "file/filesystem.h"
+
 namespace engine
 {
 	AudioSourceFMOD::AudioSourceFMOD(const std::string& filename, FMOD::System* system)
@@ -12,8 +14,10 @@ namespace engine
 		assert(system);
 		m_system = system;
 
-		File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
-		assert(file->isValid());
+		/*File* file = FileDevice::instance()->openFile(filename, FileAccess::Read);
+		assert(file->isValid());*/
+
+		DataStreamPtr file = FileSystem::getInstance()->openReadFile(filename);
 
 		file->seek(FileSeek::End, 0);
 		size_t size = file->tell();
@@ -21,8 +25,6 @@ namespace engine
 
 		char* data = (char*)malloc(size * sizeof(char));
 		file->read(data, size);
-
-		FileDevice::instance()->closeFile(file);
 
 		//std::string realFilename = FileDevice::instance()->getDefaultPath();
 		//realFilename += filename;

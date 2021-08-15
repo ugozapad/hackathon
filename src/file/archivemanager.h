@@ -16,7 +16,7 @@ namespace engine
 
 		bool isAnyArchiveIsLoaded();
 
-		bool fileExist(const std::string& filename);
+		bool fileExistInArchive(const std::string& filename);
 
 		DataStreamPtr openFile(const std::string& filename);
 

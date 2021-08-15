@@ -15,3 +15,6 @@ sshot_*.*
 
 engine.ini
 engine_log.txt
+
+game.pak
+/data.pak

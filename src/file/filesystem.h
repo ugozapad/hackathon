@@ -10,6 +10,8 @@ namespace engine
 		static FileSystem ms_instance;
 	public:
 		DataStreamPtr openReadFile(const std::string& filename);
+
+		bool fileexist(const std::string& filename);
 	};
 }
 

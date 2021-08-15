@@ -18,6 +18,8 @@
 #include <assimp/IOStream.hpp>
 #include <assimp/IOSystem.hpp>
 
+#include "file/filesystem.h"
+
 #ifdef _MSC_VER
 #	ifdef _DEBUG
 #		pragma comment(lib, "assimp-vc142-mtd.lib")
@@ -118,20 +120,13 @@ namespace engine
 
 		bool Exists(const char* pFile) const override
 		{
-			File* file = FileDevice::instance()->openFile(pFile, FileAccess::Read);
-			bool exist = file->isValid();
-			FileDevice::instance()->closeFile(file);
-
-			//return exist;
 			return true;
 		}
-
 
 		char getOsSeparator() const override
 		{
 			return '/';
 		}
-
 
 		Assimp::IOStream* Open(const char* pFile, const char* pMode = "rb") override
 		{
@@ -154,15 +149,6 @@ namespace engine
 			(double)from.a3, (double)from.b3, (double)from.c3, (double)from.d3,
 			(double)from.a4, (double)from.b4, (double)from.c4, (double)from.d4
 		);
-	}
-
-	bool materialExists(const char* pFile)
-	{
-		File* file = FileDevice::instance()->openFile(pFile, FileAccess::Read);
-		bool exist = file->isValid();
-		FileDevice::instance()->closeFile(file);
-
-		return exist;
 	}
 
 
@@ -208,7 +194,7 @@ namespace engine
 		char buffer[256];
 		sprintf(buffer, "materials/%s.material", material->GetName().C_Str());
 
-		if (!materialExists(buffer))
+		if (!FileSystem::getInstance()->fileexist(buffer))
 		{
 			aiString diffusePath;
 			material->GetTexture(aiTextureType_DIFFUSE, 0, &diffusePath);

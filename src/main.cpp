@@ -71,7 +71,7 @@ namespace engine
 
 	void loadArchives()
 	{
-		ArchiveManager::getInstance()->loadArchive("game.pak");
+		ArchiveManager::getInstance()->loadArchive("data.pak");
 	}
 
 	void loadLevel()

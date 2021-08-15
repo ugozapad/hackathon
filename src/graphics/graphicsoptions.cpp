@@ -51,7 +51,7 @@ namespace engine
 		m_width = videoMode->width;
 		m_height = videoMode->height;
 		m_refreshRate = videoMode->refreshRate;
-		m_fullscreen = true;
+		m_fullscreen = false;
 
 		m_anisotropicQuality = 4;
 		m_shadowsQuality = 3;

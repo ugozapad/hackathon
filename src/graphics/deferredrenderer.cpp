@@ -77,7 +77,7 @@ namespace engine
 		std::vector<VertexDeclaration> decls;
 		decls.push_back(pos);
 
-		m_lightSphereBuffer = createVBFromModel(decls.data(), decls.size(), "models/sphere.dae", &m_sphereVerticesCount);
+		//m_lightSphereBuffer = createVBFromModel(decls.data(), decls.size(), "models/sphere.dae", &m_sphereVerticesCount);
 	}
 
 	void DeferredRenderer::shutdown()
@@ -86,7 +86,7 @@ namespace engine
 		//m_framebuffer->setColorTexture(1, 0);
 		//m_framebuffer->setColorTexture(2, 0);
 
-		GraphicsDevice::instance()->deleteVertexBuffer(m_lightSphereBuffer);
+		//GraphicsDevice::instance()->deleteVertexBuffer(m_lightSphereBuffer);
 
 		GraphicsDevice::instance()->deleteFramebuffer(m_framebuffer);
 		GraphicsDevice::instance()->deleteTexture2D(m_textures[2]);

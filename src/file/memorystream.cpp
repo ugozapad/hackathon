@@ -25,8 +25,8 @@ namespace engine
 
 	MemoryStream::~MemoryStream()
 	{
-		if (m_freeData)
-			m_freeData(m_data);
+	//	if (m_freeData)
+	//		m_freeData(m_data);
 
 		m_data = nullptr;
 		m_size = 0;

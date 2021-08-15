@@ -42,7 +42,7 @@ namespace engine
 		error_backend(buf);
 
 //#if defined(DEBUG) || defined(_DEBUG)
-//		std::terminate();
+		std::terminate();
 //#else
 //		exit(1);
 //#endif

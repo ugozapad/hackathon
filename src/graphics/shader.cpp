@@ -3,22 +3,42 @@
 #include "graphics/gl/glad/glad.h"
 
 #include "file/filedevice.h"
+#include "file/filesystem.h"
+#include "file/datastream.h"
 
 #include <fstream>
 
 namespace engine
 {
+
+	void readStringStream(DataStreamPtr& stream, std::string& buffer)
+	{
+		stream->seek(FileSeek::End, 0);
+		size_t length = stream->tell();
+		stream->seek(FileSeek::Begin, 0);
+
+		buffer.resize(length);
+
+		stream->read(&buffer[0], length);
+		buffer[length] = '\0';
+	}
+
 	GLuint createShader(GLenum shaderType, const std::string& filename)
 	{
-		File* file = FileDevice::instance()->openFile(filename.c_str(), FileAccess::Read);
+		//File* file = FileDevice::instance()->openFile(filename.c_str(), FileAccess::Read);
 
-		if (!file->isValid()) {
-			Core::error("createShader: failed to open file %s", filename.c_str());
-		}
+		//if (!file->isValid()) {
+		//	Core::error("createShader: failed to open file %s", filename.c_str());
+		//}
+
+		//std::string content;
+		//file->readString(content);
+
+		DataStreamPtr stream = FileSystem::getInstance()->openReadFile(filename);
 
 		std::string content;
-		file->readString(content);
-	
+		readStringStream(stream, content);
+
 		const char* contentCStr = content.c_str();
 
 		GLuint shader = glCreateShader(shaderType);
