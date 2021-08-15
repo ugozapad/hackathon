@@ -84,6 +84,14 @@ namespace engine
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
 
+		// menu background stuff
+		TextureMap* loadTex = contentManager->loadTexture("textures/load.bmp").get();
+
+		Renderer::getInstance()->beginFrame();
+		ScreenQuad::render(loadTex->getHWTexture());
+		Renderer::getInstance()->endFrame();
+
+
 		Engine::loadEmptyWorld();
 		//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
 

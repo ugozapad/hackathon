@@ -1,3 +1,5 @@
+add_subdirectory(tools)
+
 file(GLOB ROOTDIR_SRC
 	"${CMAKE_CURRENT_SOURCE_DIR}/*.h"
 	"${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"

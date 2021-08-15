@@ -29,6 +29,8 @@
 #include "graphics/lightmanager.h"
 #include "graphics/light.h"
 
+#include <future>
+
 extern bool Im3d_Init();
 extern void Im3d_Shutdown();
 extern void Im3d_NewFrame();
@@ -199,6 +201,11 @@ namespace engine
 		//ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 
+	void writeImageAsync(const std::string& filename, Image& image)
+	{
+		image.save(filename);
+	}
+
 	void Renderer::makeScreenshot()
 	{
 		int width = m_view->m_width;
@@ -225,7 +232,9 @@ namespace engine
 				break;
 		}
 
-		image.save(buffer);
+		auto h = std::async(std::launch::async, &writeImageAsync, buffer, image);
+		h.wait();
+
 		FileDevice::instance()->setDefaultPath(defpath);
 
 		delete[] screenBuffer;
