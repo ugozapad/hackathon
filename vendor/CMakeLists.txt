@@ -60,3 +60,10 @@ add_library(imgui STATIC
 
 target_include_directories(imgui PUBLIC "${IMGUI_SRC}")
 set_target_properties(imgui PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>")
+
+add_subdirectory(minizip-ng)
+set_target_properties(minizip PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>")
+set_target_properties(libzstd_static PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>")
+set_target_properties(liblzma PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>")
+set_target_properties(bzip2 PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>")
+set_target_properties(zlibstatic PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<OR:$<CONFIG:Debug>>:Debug>")

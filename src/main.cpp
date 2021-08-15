@@ -177,8 +177,8 @@ namespace engine
 		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
 
 		// little ugly but works
-		weaponNode->setPosition(glm::vec3(1, 1, 1));
-		weaponNode->setScale(glm::vec3(0.3));
+		weaponNode->setPosition(glm::vec3(0.4f, -0.2f, 0.4f));
+		weaponNode->setScale(glm::vec3(0.15));
 
 		//playerNode->createComponentByType<CameraLogicComponent>();
 

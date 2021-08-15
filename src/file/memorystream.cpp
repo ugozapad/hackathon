@@ -17,8 +17,20 @@ namespace engine
 		m_pos = 0;
 	}
 
+	MemoryStream::MemoryStream(void* data, size_t size, freeData_t freeData) :
+		MemoryStream(data, size)
+	{
+		m_freeData = freeData;
+	}
+
 	MemoryStream::~MemoryStream()
 	{
+		if (m_freeData)
+			m_freeData(m_data);
+
+		m_data = nullptr;
+		m_size = 0;
+		m_pos = 0;
 	}
 
 	void MemoryStream::read(void* buffer, size_t count)

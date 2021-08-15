@@ -2,6 +2,7 @@
 #define ARCHIVEMANAGER_H
 
 #include "file/archive.h"
+#include "file/datastream.h"
 
 namespace engine
 {
@@ -14,6 +15,10 @@ namespace engine
 		void loadArchive(const std::string& filename);
 
 		bool isAnyArchiveIsLoaded();
+
+		bool fileExist(const std::string& filename);
+
+		DataStreamPtr openFile(const std::string& filename);
 
 	private:
 		std::vector<std::unique_ptr<Archive>> m_archives;

@@ -15,6 +15,7 @@ namespace engine
 		MemoryStream();
 
 		MemoryStream(void* data, size_t size);
+		MemoryStream(void* data, size_t size, freeData_t freeData);
 		~MemoryStream();
 
 		virtual void read(void* buffer, size_t count);
@@ -33,6 +34,7 @@ namespace engine
 		void* get_pointer();
 
 	protected:
+		freeData_t m_freeData;
 		char* m_data;
 		size_t m_size;
 		size_t m_pos;

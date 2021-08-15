@@ -22,4 +22,9 @@ namespace engine
 		return !!m_archives.size();
 	}
 
+	bool ArchiveManager::fileExist(const std::string& filename)
+	{
+		return m_archives.back()->hasFile(filename);
+	}
+
 }
