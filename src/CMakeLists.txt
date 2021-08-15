@@ -152,3 +152,4 @@ set_target_properties(engine PROPERTIES
 )
 
 target_link_libraries(engine ozz_animation)
+target_link_libraries(engine imgui)

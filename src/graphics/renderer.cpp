@@ -64,13 +64,16 @@ namespace engine
 	{
 		m_view = view;
 
+		m_graphicsDevice = GraphicsDevice::getInstance();
+
 		ShaderManager::getInstance()->init();
 
 		ScreenQuad::init();
 
 		g_deferredRenderer.init(view);
 
-		PostProcessingRenderer::getInstance()->init(view);
+		m_postProcessingRenderer = PostProcessingRenderer::getInstance();
+		m_postProcessingRenderer->init(view);
 
 		//Im3d_Init();
 
@@ -83,13 +86,16 @@ namespace engine
 
 		//ShadowsRenderer::getInstance()->shutdown();
 
-		PostProcessingRenderer::getInstance()->shutdown();
+		m_postProcessingRenderer->shutdown();
+		m_postProcessingRenderer = nullptr;
 
 		g_deferredRenderer.shutdown();
 
 		ScreenQuad::shutdown();
 
 		ShaderManager::getInstance()->shutdown();
+
+		m_graphicsDevice = nullptr;
 	}
 
 	void Renderer::beginFrame()
@@ -103,11 +109,11 @@ namespace engine
 		glfwMakeContextCurrent(GraphicsDevice::getInstance()->getWindow());
 
 		// set viewport
-		Viewport vp = { 0 };
+		Viewport vp;
+		memset(&vp, 0, sizeof(vp));
 		vp.m_width = view->m_width;
 		vp.m_height = view->m_height;
-
-		GraphicsDevice::getInstance()->setViewport(&vp);
+		m_graphicsDevice->setViewport(&vp);
 
 		// initialize render context
 		RenderContext& renderContext = RenderContext::getContext();
@@ -122,10 +128,10 @@ namespace engine
 		GrFramebuffer* deferredFramebuffer = g_deferredRenderer.getFramebuffer();
 		assert(deferredFramebuffer);
 
-		GraphicsDevice::getInstance()->setFramebuffer(deferredFramebuffer);
+		m_graphicsDevice->setFramebuffer(deferredFramebuffer);
 
-		GraphicsDevice::getInstance()->clearColor(0.0, 0.0, 0.0, 1.0);
-		GraphicsDevice::getInstance()->clear(ClearRenderTarget | ClearDepth);
+		m_graphicsDevice->clearColor(0.0, 0.0, 0.0, 1.0);
+		m_graphicsDevice->clear(ClearRenderTarget | ClearDepth);
 
 		World* world = Engine::ms_world;
 
@@ -181,15 +187,15 @@ namespace engine
 		// reset device states
 		//resetDeviceState();
 
-		GraphicsDevice::getInstance()->setFramebuffer(PostProcessingRenderer::getInstance()->getFramebuffer());
+		m_graphicsDevice->setFramebuffer(m_postProcessingRenderer->getFramebuffer());
 
 		// let's sort the fucking lights
 		std::vector<LightComponent*> lights = LightManager::getInstance()->getLights();
 		g_deferredRenderer.lightPhase(lights);
 
-		GraphicsDevice::getInstance()->setFramebuffer(0);
+		m_graphicsDevice->setFramebuffer(0);
 
-		PostProcessingRenderer::getInstance()->gammaCorrection();
+		m_postProcessingRenderer->gammaCorrection();
 		//ScreenQuad::render(g_deferredRenderer.getTexture(DeferredRenderer::RT_COLOR));
 	}
 
@@ -230,7 +236,7 @@ namespace engine
 		resetDeviceState();
 
 		// swap buffers
-		GraphicsDevice::instance()->swapBuffers();
+		m_graphicsDevice->swapBuffers();
 	}
 
 	void Renderer::resetDeviceState()
@@ -243,23 +249,25 @@ namespace engine
 
 		// unbind all texture slots
 		for (int i = 0; i < 12; i++)
-			GraphicsDevice::getInstance()->setTexture2D(i, nullptr);
+			m_graphicsDevice->setTexture2D(i, nullptr);
+
+		resetTextureBindingsAfterModelRender();
 
 		// unbind vb and ib
-		GraphicsDevice::getInstance()->setVertexBuffer(nullptr);
-		GraphicsDevice::getInstance()->setIndexBuffer(nullptr);
+		m_graphicsDevice->setVertexBuffer(nullptr);
+		m_graphicsDevice->setIndexBuffer(nullptr);
 
 		// unbind shader : CRASH !! No active program.
 		//glUseProgram(0);
 
 		// unbind framebuffer
-		GraphicsDevice::getInstance()->setFramebuffer(nullptr);
+		m_graphicsDevice->setFramebuffer(nullptr);
 	}
 
 	void Renderer::resetTextureBindingsAfterModelRender()
 	{
 		for (int i = 0; i < 6; i++)
-			GraphicsDevice::getInstance()->setTexture2D(i, nullptr);
+			m_graphicsDevice->setTexture2D(i, nullptr);
 	}
 
 }

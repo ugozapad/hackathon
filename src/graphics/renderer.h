@@ -4,6 +4,8 @@
 namespace engine
 {
 	class View;
+	class GraphicsDevice;
+	class PostProcessingRenderer;
 
 	class Renderer : public Singleton<Renderer>
 	{
@@ -33,6 +35,8 @@ namespace engine
 
 	private:
 		View* m_view;
+		GraphicsDevice* m_graphicsDevice;
+		PostProcessingRenderer* m_postProcessingRenderer;
 	};
 }
 

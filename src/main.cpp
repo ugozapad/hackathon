@@ -23,6 +23,7 @@
 #include "graphics/shadermanager.h"
 #include "graphics/drawablecomponent.h"
 #include "graphics/staticmeshcomponent.h"
+#include "graphics/imgui_mgr.h"
 
 #include "audio/audiomanager.h"
 #include "audio/audiosource.h"
@@ -217,6 +218,8 @@ namespace engine
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
 
+		ImguiManager::getInstance()->init(g_engineWindow);
+
 		// initialize audio manager
 		AudioManager::getInstance()->init();
 
@@ -357,6 +360,8 @@ namespace engine
 			// update timer
 			Timer::getInstance()->reset();
 
+			ImguiManager::getInstance()->beginFrame();
+
 			// update camera
 			CameraProxy::getInstance()->update();
 
@@ -368,6 +373,8 @@ namespace engine
 
 			Renderer::getInstance()->beginFrame();
 			Renderer::getInstance()->renderView(g_engineView);
+
+			ImguiManager::getInstance()->endFrame();
 			Renderer::getInstance()->endFrame();
 
 			Timer::getInstance()->update();
