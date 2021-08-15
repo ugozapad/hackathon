@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "file/archivemanager.h"
+#include "file/filedevice.h"
 
 namespace engine
 {
@@ -7,7 +8,13 @@ namespace engine
 
 	void ArchiveManager::loadArchive(const std::string& filename)
 	{
-		m_archives.push_back(std::make_unique<Archive>(filename));
+		std::string origPath = FileDevice::instance()->getDefaultPath();
+		FileDevice::instance()->setDefaultPath("");
+
+		if (fileExist(filename))
+			m_archives.push_back(std::make_unique<Archive>(filename));
+
+		FileDevice::instance()->setDefaultPath(origPath);
 	}
 
 	bool ArchiveManager::isAnyArchiveIsLoaded()

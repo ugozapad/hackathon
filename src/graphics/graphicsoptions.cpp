@@ -18,7 +18,7 @@ namespace engine
 		m_width = settingsFile.GetValueI("DisplaySettings", "Width", 800);
 		m_height = settingsFile.GetValueI("DisplaySettings", "Height", 600);
 		m_fullscreen = settingsFile.GetValueB("DisplaySettings", "Fullscreen", false);
-		m_refreshRate = settingsFile.SetValueI("DisplaySettings", "RefreshRate", 60);
+		m_refreshRate = settingsFile.GetValueI("DisplaySettings", "RefreshRate", 60);
 
 		m_anisotropicQuality = settingsFile.GetValueI("GraphicsSettings", "AnisotropicQuality");
 		m_shadowsQuality = settingsFile.GetValueI("GraphicsSettings", "ShadowsQuality");

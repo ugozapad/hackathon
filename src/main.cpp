@@ -36,6 +36,7 @@
 #include "game/skyboxcomponent.h"
 #include "game/weaponcomponent.h"
 //#include "game/cameralogic.h"
+#include "game/mainmenu.h"
 
 #include "common/freelistallocator.h"
 
@@ -49,8 +50,8 @@
 
 namespace engine
 {
-	static GLFWwindow* g_engineWindow;
-	static View* g_engineView;
+	GLFWwindow* g_engineWindow;
+	View* g_engineView;
 
 	std::string createCommandLine(int argc, char* argv[])
 	{
@@ -68,9 +69,123 @@ namespace engine
 		return commandline;
 	}
 
-	void loadArcives()
+	void loadArchives()
 	{
 		ArchiveManager::getInstance()->loadArchive("game.pak");
+	}
+
+	void loadLevel()
+	{
+		if (MusicManager::getInstance()->isPlaying())
+			MusicManager::getInstance()->stop();
+
+		GameState::getInstance()->setGameState(GameState::GAME_STATE_RUNNING);
+
+		// Get content manager ptr.
+		ContentManager* contentManager = ContentManager::getInstance();
+
+		Engine::loadEmptyWorld();
+		//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
+
+			// static mesh to level
+		auto levelNode = Engine::ms_world->createNode();
+		auto levelMesh = levelNode->createComponentByType<StaticMeshComponent>();
+		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
+		{
+			glm::vec3 p = levelNode->getPosition();
+			p.y = -1.0f;
+			levelNode->setPosition(p);
+		}
+
+		//{
+		//	for (int y = 0; y < 20; y++)
+		//	{
+		//		static float offsety = 0.0f;
+		//		static float offset = 0.0f;
+		//		for (int x = 0; x < 20; x++)
+		//		{
+
+
+		//			auto node = Engine::ms_world->createNodePtr();
+		//			node->setPosition(glm::vec3(offset, 0.0f, offsety));
+		//			auto nodeVisual = node->createComponentByType<GraphicsComponent>();
+		//			nodeVisual->addModel(contentManager->loadModel("models/test1.dae"));
+
+		//			offset += 5.0f;
+
+		//		}
+
+		//		offset = 0.0f;
+		//		offsety += 5.0f;
+		//	}
+
+		//}
+
+		// add test light
+		auto testLevelLight = Engine::ms_world->createNode();
+		testLevelLight->setPosition(glm::vec3(3, 2, 0.0f));
+		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
+		//	testLevelLightComponent->m_color = glm::vec3(1.0f, 0.0f, 0.0f);
+		testLevelLightComponent->m_color = glm::vec3(0.3f);
+
+		//{
+		//	auto light = Engine::ms_world->createNode();
+		//	light->setPosition(glm::vec3(20.0f, 5.0f, 1.0f));
+		//	auto lightComponent = testLevelLight->createComponentByType<LightComponent>();
+		//	lightComponent->m_color = glm::vec3(0.0f, 1.0f, 0.0f);
+		//}
+
+		//{
+		//	auto light = Engine::ms_world->createNode();
+		//	light->setPosition(glm::vec3(10.0f, 5.0f, 10.0f));
+		//	auto lightComponent = testLevelLight->createComponentByType<LightComponent>();
+		//	lightComponent->m_color = glm::vec3(0.0f, 0.0f, 1.0f);
+		//}
+
+		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
+		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f, btVector3(30.f, 1.0f, 30.f));
+		levelCollision->setStatic(true);
+
+		// add skybox to world
+		auto skyboxNode = Engine::ms_world->createNode();
+		skyboxNode->createComponentByType<SkyboxComponent>();
+
+		auto skyboxmesh = skyboxNode->createComponentByType<StaticMeshComponent>();
+		skyboxmesh->addModel(contentManager->loadModel("models/skybox_1.dae"));
+
+		// Add player
+		auto playerNode = Engine::ms_world->createNode();
+		playerNode->createComponentByType<PlayerComponent>();
+
+
+		// weapon node (as child to player with little hack for weapon model)
+		auto weaponNode = playerNode->createChild();
+
+		// weapon component
+		auto weapon = weaponNode->createComponentByType<WeaponComponent>();
+
+		// add model
+		auto weaponMesh = weaponNode->createComponentByType<StaticMeshComponent>();
+		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
+
+		// little ugly but works
+		weaponNode->setPosition(glm::vec3(1, 1, 1));
+		weaponNode->setScale(glm::vec3(0.3));
+
+		//playerNode->createComponentByType<CameraLogicComponent>();
+
+		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
+		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
+
+		// add physics mesh
+		//auto physicsTestStuffNode = Engine::ms_world->createNode();
+		//physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
+
+		//auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<StaticMeshComponent>();
+		////physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
+
+		//auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
+		//physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);
 	}
 
 	void glfwKeyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -177,7 +292,7 @@ namespace engine
 			FileDevice::instance()->closeFile(file);
 		}
 
-		loadArcives();
+		loadArchives();
 
 		// init glfw
 		glfwInit();
@@ -217,13 +332,12 @@ namespace engine
 		// initialize renderer
 		Renderer::createInstance();
 		Renderer::getInstance()->init(g_engineView);
+		Renderer* renderer = Renderer::getInstance();
 
 		ImguiManager::getInstance()->init(g_engineWindow);
 
 		// initialize audio manager
 		AudioManager::getInstance()->init();
-
-		AudioSource* testSource = AudioManager::getInstance()->createSource("sounds/f1_explode.wav");
 
 		// Get content manager ptr.
 		ContentManager* contentManager = ContentManager::getInstance();
@@ -231,112 +345,13 @@ namespace engine
 		// game init
 		registerGameClasses();
 
-		Engine::loadEmptyWorld();
-		//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
-
-			// static mesh to level
-		auto levelNode = Engine::ms_world->createNode();
-		auto levelMesh = levelNode->createComponentByType<StaticMeshComponent>();
-		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
-		{
-			glm::vec3 p = levelNode->getPosition();
-			p.y = -1.0f;
-			levelNode->setPosition(p);
-		}
-
-		//{
-		//	for (int y = 0; y < 20; y++)
-		//	{
-		//		static float offsety = 0.0f;
-		//		static float offset = 0.0f;
-		//		for (int x = 0; x < 20; x++)
-		//		{
-
-
-		//			auto node = Engine::ms_world->createNodePtr();
-		//			node->setPosition(glm::vec3(offset, 0.0f, offsety));
-		//			auto nodeVisual = node->createComponentByType<GraphicsComponent>();
-		//			nodeVisual->addModel(contentManager->loadModel("models/test1.dae"));
-
-		//			offset += 5.0f;
-
-		//		}
-
-		//		offset = 0.0f;
-		//		offsety += 5.0f;
-		//	}
-
-		//}
-
-		// add test light
-		auto testLevelLight = Engine::ms_world->createNode();
-		testLevelLight->setPosition(glm::vec3(3, 2, 0.0f));
-		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
-		//	testLevelLightComponent->m_color = glm::vec3(1.0f, 0.0f, 0.0f);
-		testLevelLightComponent->m_color = glm::vec3(0.3f);
-
-		//{
-		//	auto light = Engine::ms_world->createNode();
-		//	light->setPosition(glm::vec3(20.0f, 5.0f, 1.0f));
-		//	auto lightComponent = testLevelLight->createComponentByType<LightComponent>();
-		//	lightComponent->m_color = glm::vec3(0.0f, 1.0f, 0.0f);
-		//}
-
-		//{
-		//	auto light = Engine::ms_world->createNode();
-		//	light->setPosition(glm::vec3(10.0f, 5.0f, 10.0f));
-		//	auto lightComponent = testLevelLight->createComponentByType<LightComponent>();
-		//	lightComponent->m_color = glm::vec3(0.0f, 0.0f, 1.0f);
-		//}
-
-		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
-		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f, btVector3(30.f, 1.0f, 30.f));
-		levelCollision->setStatic(true);
-
-		// add skybox to world
-		auto skyboxNode = Engine::ms_world->createNode();
-		skyboxNode->createComponentByType<SkyboxComponent>();
-
-		auto skyboxmesh = skyboxNode->createComponentByType<StaticMeshComponent>();
-		skyboxmesh->addModel(contentManager->loadModel("models/skybox_1.dae"));
-
-		// Add player
-		auto playerNode = Engine::ms_world->createNode();
-		playerNode->createComponentByType<PlayerComponent>();
-
-
-		// weapon node (as child to player with little hack for weapon model)
-		auto weaponNode = playerNode->createChild();
-
-		// weapon component
-		auto weapon = weaponNode->createComponentByType<WeaponComponent>();
-
-		// add model
-		auto weaponMesh = weaponNode->createComponentByType<StaticMeshComponent>();
-		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
-
-		// little ugly but works
-		weaponNode->setPosition(glm::vec3(1, 1, 1));
-		weaponNode->setScale(glm::vec3(0.3));
-
-		//playerNode->createComponentByType<CameraLogicComponent>();
-
-		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();
-		//playerModel->addModel(contentManager->loadModel("models/test1.dae"));
-
-		// add physics mesh
-		//auto physicsTestStuffNode = Engine::ms_world->createNode();
-		//physicsTestStuffNode->setPosition(glm::vec3(0.0f, 10.0f, 0.0f));
-
-		//auto physicsTestStuffModel = physicsTestStuffNode->createComponentByType<StaticMeshComponent>();
-		////physicsTestStuffModel->addModel(contentManager->loadModel("models/test1.dae"));
-
-		//auto physComponent = physicsTestStuffNode->createComponentByType<PhysicsComponent>();
-		//physComponent->createShape(PhysicsBody::ShapeType::Box, physicsTestStuffNode->getPosition(), 1.0f);
-
 		GameState* gameState = GameState::getInstance();
+		gameState->setGameState(GameState::GAME_STATE_MAIN_MENU);
 
 		//MusicManager::getInstance()->play("sounds/music/temp_01.mp3", true);
+
+		// menu background stuff
+		TextureMap* mainMenuTex = contentManager->loadTexture("textures/menu.bmp").get();
 
 		while (!glfwWindowShouldClose(g_engineWindow))
 		{
@@ -349,33 +364,55 @@ namespace engine
 			if (InputManager::getInstance()->getKey(GLFW_KEY_F10))
 				ShaderManager::getInstance()->reloadShaders();
 
-			if (InputManager::getInstance()->getKey(GLFW_KEY_O))
-				testSource->play();
-
 			if (strstr(commandLine.c_str(), "-quit"))
 				break;
 
 			glfwPollEvents();
+
+			if (gameState->getGameState() == GameState::GAME_STATE_RUNNING)
+			{
+				glfwSetInputMode(g_engineWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			}
+			else
+			{
+				glfwSetInputMode(g_engineWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
 
 			// update timer
 			Timer::getInstance()->reset();
 
 			ImguiManager::getInstance()->beginFrame();
 
-			// update camera
-			CameraProxy::getInstance()->update();
+			if (gameState->getGameState() == GameState::GAME_STATE_MAIN_MENU)
+			{
+				if (!MusicManager::getInstance()->isPlaying())
+					MusicManager::getInstance()->play("sounds/music/menu.mp3", true);
 
-			// run engine frame
-			Engine::update();
+				MainMenu::ms_instance.render();
+			}
+			else
+			{
+				// update camera
+				CameraProxy::getInstance()->update();
+
+				// run engine frame
+				Engine::update();
+			}
 
 			// sound
 			AudioManager::getInstance()->update();
+			
+			renderer->beginFrame();
 
-			Renderer::getInstance()->beginFrame();
-			Renderer::getInstance()->renderView(g_engineView);
+			if (gameState->getGameState() == GameState::GAME_STATE_RUNNING)
+				Renderer::getInstance()->renderView(g_engineView);
+
+			if (gameState->getGameState() == GameState::GAME_STATE_MAIN_MENU)
+				ScreenQuad::render(mainMenuTex->getHWTexture());
 
 			ImguiManager::getInstance()->endFrame();
-			Renderer::getInstance()->endFrame();
+
+			renderer->endFrame();
 
 			Timer::getInstance()->update();
 		}

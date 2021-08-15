@@ -1,5 +1,8 @@
 #include "pch.h"
 #include "game/languagemanager.h"
+#include "file/filesystem.h"
+#include <sstream>
+#include <strstream>
 
 namespace engine
 {
@@ -42,9 +45,22 @@ namespace engine
 		}
 	}
 
+	bool has_chars(char c)
+	{
+		if (c == '\"' || c == '.' || c == ',' || c == '\'')
+			return true;
+		else
+			return false;
+	}
+
+
 	void LanguageManager::init()
 	{
 		Languages lang = getPreferedLanguage();
+
+		// #TODO : HACK HACK HACK
+		lang = Languages::English;
+
 		setLocaleLang(lang);
 
 		std::string filename;
@@ -54,6 +70,69 @@ namespace engine
 		else if (lang == Languages::Russian)
 			filename = "lang_ru.txt";
 
+		DataStreamPtr langFile = FileSystem::getInstance()->openReadFile(filename);
+		std::string langFileData;
+
+		langFile->seek(FileSeek::End, 0);
+		size_t size = langFile->tell();
+		langFile->seek(FileSeek::Begin, 0);
+
+		langFileData.resize(size + 1);
+		langFile->read(&langFileData[0], size);
+
+		langFileData[size] = '\0';
+
+		std::stringstream langDataStream;
+		langDataStream << langFileData;
+
+		
+
+		char buffer[256];
+		while (langDataStream.getline(buffer, 256))
+		{
+			if (buffer[0] == '/' && buffer[1] == '/')
+				continue;
+
+			if (buffer[0] == '\r')
+				continue;
+
+
+
+			std::string str = buffer;
+
+			std::string key;
+			std::string text;
+
+			int endkey = 0;
+			for (int i = 0; i < str.size(); i++)
+			{
+				char c = str[i];
+				if (std::isspace(c))
+				{
+					endkey = i;
+					break;
+				}
+
+				key.push_back(c);
+			}
+
+			for (int i = endkey+1; i < str.size(); i++)
+			{
+				char c = str[i];
+				if (c == '"')
+					continue;
+
+				text.push_back(c);
+			}
+
+			m_strings.emplace(key, text);
+		}
+		
+		for (auto it : m_strings)
+		{
+			it.second.erase(std::remove(it.second.begin(), it.second.end(), '"'), it.second.end());
+			std::remove_if(it.second.begin(), it.second.end(), has_chars);
+		}
 
 	}
 
@@ -64,7 +143,11 @@ namespace engine
 
 	std::string LanguageManager::getAsciiStr(const std::string& langStrName)
 	{
-		throw std::logic_error("LanguageManager::getAsciiStr: not implemented");
+		auto text = m_strings.find(langStrName);
+		if (text == m_strings.end())
+			return langStrName;
+		
+		return text->second;
 	}
 
 	std::wstring LanguageManager::getWideStr(const std::string& langStrName)

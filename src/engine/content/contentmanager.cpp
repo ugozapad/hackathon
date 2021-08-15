@@ -78,8 +78,13 @@ namespace engine
 
 		typedef std::map<std::string, std::shared_ptr<Content>>::iterator ContentIt;
 		for (auto it : m_content)
+		{
 			if (it.second)
+			{
+				spdlog::info("[content]: releasing {}", it.first);
 				it.second.reset();
+			}
+		}
 
 		m_content.clear();
 	}

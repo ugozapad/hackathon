@@ -88,7 +88,7 @@ namespace engine
 		}
 	}
 
-	void AudioSourceFMOD::play(FMOD::ChannelGroup* channelGroup)
+	void AudioSourceFMOD::play(FMOD::ChannelGroup* channelGroup, bool looped /*= false*/)
 	{
 		assert(channelGroup);
 		assert(m_system);
@@ -103,6 +103,8 @@ namespace engine
 			{
 				Core::error("[audio]: failed to play sound! [audio]: FMOD ERROR: %s", getStringFromFMODResult(result));
 			}
+
+			m_soundChannel->setLoopCount(-1);
 		}
 
 		if (m_soundChannel)

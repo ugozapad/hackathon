@@ -5,11 +5,13 @@
 #include "game/skyboxcomponent.h"
 #include "game/weaponcomponent.h"
 //#include "game/cameralogic.h"
-
+#include "game/languagemanager.h"
 namespace engine
 {
 	void registerGameClasses()
 	{
+		LanguageManager::getInstance()->init();
+
 		PlayerComponent::registerObject();
 		SkyboxComponent::registerObject();
 		//CameraLogicComponent::registerObject();

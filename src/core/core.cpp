@@ -10,6 +10,13 @@ namespace engine
 #endif
 	}
 
+	void warning_backend(const char* txt)
+	{
+#ifdef WIN32
+		MessageBoxA(0, txt, "Warning!", MB_OK | MB_ICONWARNING);
+#endif
+	}
+
 	void Core::msg(const char* msg, ...)
 	{
 		static char buf[2048 * 2];
@@ -42,4 +49,18 @@ namespace engine
 
 		ExitProcess(1);
 	}
+
+	void Core::warning(const char* msg, ...)
+	{
+		static char buf[2048 * 2];
+		va_list args;
+
+		va_start(args, msg);
+		vsnprintf(buf, sizeof(buf), msg, args);
+		va_end(args);
+
+		spdlog::warn("{}", buf);
+		warning_backend(buf);
+	}
+
 }

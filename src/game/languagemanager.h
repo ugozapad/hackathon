@@ -14,7 +14,7 @@ namespace engine
 		std::wstring getWideStr(const std::string& langStrName);
 
 	private:
-		//std::unordered_map<>
+		std::unordered_map<std::string, std::string> m_strings;
 	};
 }
 

@@ -41,6 +41,16 @@ namespace engine
 
 	}
 
+	void MusicManager::stop()
+	{
+		if (m_musicSource)
+		{
+			m_musicSource->stop();
+			AudioManager::getInstance()->deleteSource(m_musicSource);
+			m_musicSource = nullptr;
+		}
+	}
+
 	bool MusicManager::isPlaying()
 	{
 		return (m_musicSource ? m_musicSource->isPlaying() : false);

@@ -209,7 +209,8 @@ namespace engine
 			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16);
 
 			// HACK HACK HACK
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, g_graphicsOptions.m_anisotropicQuality);
+			if (g_graphicsOptions.m_anisotropicQuality > 0)
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, g_graphicsOptions.m_anisotropicQuality);
 #endif // ENABLE_TEST_ANISOTROPIC_FILTERING
 
 		}

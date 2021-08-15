@@ -17,7 +17,10 @@ namespace engine
 
 	public:
 		Node();
+		Node(const std::string& name);
 		virtual ~Node();
+
+		std::string& const getName() { return m_name; }
 
 		glm::vec3 getPosition() { return m_position; }
 		glm::vec3 getRotation() { return m_rotation; }
@@ -55,6 +58,8 @@ namespace engine
 
 		typedef std::list<std::shared_ptr<Node>>::iterator NodeIt;
 		std::list<std::shared_ptr<Node>> m_children;
+
+		std::string m_name;
 
 		Node* m_rootNode;
 

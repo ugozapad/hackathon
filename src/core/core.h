@@ -8,6 +8,7 @@ namespace engine
 	public:
 		static void msg(const char* msg, ...);
 		static void error(const char* msg, ...);
+		static void warning(const char* msg, ...);
 	};
 }
 

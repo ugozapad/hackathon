@@ -15,7 +15,7 @@ namespace engine
 		bool isPlaying() override;
 
 		void play() override;
-		void play(FMOD::ChannelGroup* channelGroup);
+		void play(FMOD::ChannelGroup* channelGroup, bool looped = false);
 		void stop() override;
 
 		FMOD::Sound* getSound() { return m_sound; }

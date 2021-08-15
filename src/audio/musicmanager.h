@@ -15,6 +15,7 @@ namespace engine
 		void shutdown();
 
 		void play(const std::string& filename, bool looped = false);
+		void stop();
 
 		bool isPlaying();
 
