@@ -229,9 +229,9 @@ namespace engine
 		registerGameClasses();
 
 		Engine::loadEmptyWorld();
-	//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
+		//	Engine::ms_world->getPhysicsWorld()->getWorld()->setGravity(btVector3(0.0, -1.0, 0.0));
 
-		// static mesh to level
+			// static mesh to level
 		auto levelNode = Engine::ms_world->createNode();
 		auto levelMesh = levelNode->createComponentByType<StaticMeshComponent>();
 		levelMesh->addModel(contentManager->loadModel("models/levels/l01_street.dae"));
@@ -269,7 +269,7 @@ namespace engine
 		auto testLevelLight = Engine::ms_world->createNode();
 		testLevelLight->setPosition(glm::vec3(3, 2, 0.0f));
 		auto testLevelLightComponent = testLevelLight->createComponentByType<LightComponent>();
-	//	testLevelLightComponent->m_color = glm::vec3(1.0f, 0.0f, 0.0f);
+		//	testLevelLightComponent->m_color = glm::vec3(1.0f, 0.0f, 0.0f);
 		testLevelLightComponent->m_color = glm::vec3(0.3f);
 
 		//{
@@ -300,9 +300,22 @@ namespace engine
 		// Add player
 		auto playerNode = Engine::ms_world->createNode();
 		playerNode->createComponentByType<PlayerComponent>();
-		auto weapon = playerNode->createComponentByType<WeaponComponent>();
-		auto weaponMesh = playerNode->createComponentByType<StaticMeshComponent>();
+
+
+		// weapon node (as child to player with little hack for weapon model)
+		auto weaponNode = playerNode->createChild();
+
+		// weapon component
+		auto weapon = weaponNode->createComponentByType<WeaponComponent>();
+
+		// add model
+		auto weaponMesh = weaponNode->createComponentByType<StaticMeshComponent>();
 		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
+
+		// little ugly but works
+		weaponNode->setPosition(glm::vec3(1, 1, 1));
+		weaponNode->setScale(glm::vec3(0.3));
+
 		//playerNode->createComponentByType<CameraLogicComponent>();
 
 		//auto playerModel = playerNode->createComponentByType<GraphicsComponent>();

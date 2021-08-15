@@ -7,6 +7,9 @@ layout (location = 2) out vec4 gbuffer_albedo;
 in vec3 Pos;
 in vec3 Normal;
 in vec2 TexCoord;
+in vec3 Tangent;
+in vec3 Bitangent;
+in mat3 TBN;
 
 uniform sampler2D u_albedoTexture;
 uniform sampler2D u_normalTexture;
@@ -15,14 +18,13 @@ uniform bool u_selfillum;
 uniform mat4 u_model;
 uniform mat4 u_view;
 
-vec3 calcNormal(vec3 normal, vec2 text_coord)
+vec3 calcNormal(vec3 normal, vec2 tex_coord)
 {
-    vec3 newNormal = normal;
-    newNormal = texture(u_normalTexture, text_coord).rgb;
-	newNormal = 2.0 * newNormal;
-    newNormal = normalize(newNormal * 2 - 1);
-	//newNormal = normalize( u_view * u_model * vec4(newNormal, 0.0)).xyz;
-    return newNormal;
+	vec3 n = texture(u_normalTexture, tex_coord).xyz * 2.0 - 1.0;
+	n = TBN * n;
+	n = normalize(n);
+	n = n * 0.5 + 0.5;
+	return n;
 }
 
 void main()
@@ -31,11 +33,11 @@ void main()
 	gbuffer_pos.rgb = Pos;
 
 	// calculate normal
-	vec3 n = texture(u_normalTexture, TexCoord).rgb;
-	n = normalize(n * 2.0 - 1.0);
+	//vec3 n = texture(u_normalTexture, TexCoord).rgb;
+	//n = normalize(n * 2.0 - 1.0);
 	
-	gbuffer_normal = normalize(n);
-	//gbuffer_normal = normalize(calcNormal( Normal, TexCoord ));
+	//gbuffer_normal = normalize(n);
+	gbuffer_normal = calcNormal(Normal, TexCoord);
 	//gbuffer_normal = Normal;
 	
 	// little hack for skybox lighting

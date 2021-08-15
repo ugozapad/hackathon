@@ -35,6 +35,18 @@ namespace engine
 			texcoord.size = 2;
 			texcoord.type = VertexDeclaration::Float;
 			shader->addVertexDeclaration(texcoord);
+
+			VertexDeclaration tangent;
+			tangent.name = "tangent";
+			tangent.size = 3;
+			tangent.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(tangent);
+
+			VertexDeclaration bitangent;
+			bitangent.name = "bitangent";
+			bitangent.size = 3;
+			bitangent.type = VertexDeclaration::Float;
+			shader->addVertexDeclaration(bitangent);
 		}
 
 		{

@@ -187,11 +187,10 @@ namespace engine
 			//else
 			//	vertex.m_texcoord1 = glm::vec2(0.0f, 0.0f);
 
-			//if (mesh->mTangents)
-			//	vertex.m_tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
-
-			//if (mesh->mBitangents)
-			//	vertex.m_bitangent = glm::vec3(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
+			if (mesh->mTangents)
+				vertex.m_tangent = glm::vec3(mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z);
+			if (mesh->mBitangents)
+				vertex.m_bitangent = glm::vec3(mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z);
 
 			vertices.push_back(vertex);
 		}

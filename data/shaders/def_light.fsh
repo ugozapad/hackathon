@@ -1,3 +1,4 @@
+// Deferred shading - lighting pass
 #version 330 core
 #extension GL_ARB_texture_rectangle: enable
 
@@ -43,7 +44,10 @@ vec3 calcPointLight(Light light, vec3 color, vec3 pos, vec3 normal)
 	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 	
 	vec3 reflectDir = reflect(-lightDir, normal);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), light.shininess);
+	//float spec = pow(max(dot(viewDir, reflectDir), 0.0), light.shininess);
+	
+	vec3 halfVector = normalize(viewDir + lightDir);
+	float spec = pow(dot(normal, halfVector), light.shininess);
 	
 	//vec3 diffuse = max(dot(normal, lightDir), 0.0) * color * light.color; 
 	
@@ -55,16 +59,14 @@ vec3 calcPointLight(Light light, vec3 color, vec3 pos, vec3 normal)
 	diffuse  *= attenuation;
 	specular *= attenuation;
 	return (ambient + diffuse + specular);
-	
-	//return diffuse;
-	
 }
 
 void main()
 {
 	// Unpack data from g-buffer
 	vec3 pos = texture(u_gbuf_positionTexture, texCoord).rgb;
-	vec3 normal = texture(u_gbuf_normalTexture, texCoord).rgb;	
+	vec3 normal = texture(u_gbuf_normalTexture, texCoord).rgb * 2.0 - 1.0;	
+	//vec3 normal = texture(u_gbuf_normalTexture, texCoord).rgb;	
 	vec3 color = texture(u_gbuf_colorTexture, texCoord).rgb;
 	
 	// then calculate lighting as usual
