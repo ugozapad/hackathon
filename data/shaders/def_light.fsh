@@ -44,10 +44,10 @@ vec3 calcPointLight(Light light, vec3 color, vec3 pos, vec3 normal)
 	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
 	
 	vec3 reflectDir = reflect(-lightDir, normal);
-	//float spec = pow(max(dot(viewDir, reflectDir), 0.0), light.shininess);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), light.shininess);
 	
 	vec3 halfVector = normalize(viewDir + lightDir);
-	float spec = pow(dot(normal, halfVector), light.shininess);
+	//float spec = pow(dot(normal, halfVector), light.shininess);
 	
 	//vec3 diffuse = max(dot(normal, lightDir), 0.0) * color * light.color; 
 	

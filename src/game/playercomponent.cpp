@@ -108,8 +108,11 @@ namespace engine
 		front.z = sin(glm::radians(yaw)) * cos(glm::radians(-pitch));
 		cam->m_direction = glm::normalize(front);
 
-		
 		m_node->setPosition(pos);
+
+		glm::vec3 rot = m_node->getRotation();
+		rot.y = -yaw;
+		m_node->setRotation(rot);
 	}
 
 	void PlayerComponent::updatePhysics(float dt)
