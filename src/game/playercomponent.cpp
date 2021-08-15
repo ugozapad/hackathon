@@ -131,7 +131,7 @@ namespace engine
 		if (input->getKey(GLFW_KEY_D))
 			dir += glm::normalize(glm::cross(cam->m_direction, glm::vec3(0.0f, 1.0f, 0.0f)));
 
-		if (input->getKey(GLFW_KEY_SPACE))
+		if (input->getKey(GLFW_KEY_SPACE) && charcontroller->onGround())
 			charcontroller->jump(btVector3(0.0f, 6.0f, 0.0f));
 
 		if (dir != glm::vec3(0, 0, 0) && (input->getKey(GLFW_KEY_W) || input->getKey(GLFW_KEY_S) || input->getKey(GLFW_KEY_A) || input->getKey(GLFW_KEY_D)))
