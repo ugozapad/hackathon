@@ -16,6 +16,15 @@ namespace engine
 		startTransform.setIdentity();
 		startTransform.setOrigin(btVector3(0, 10, 4));
 
+		// #TODO: !!!
+	/*	Node* nd = m_node;
+		if (!nd)
+			nd = GameState::getInstance()->getPlayerNode();
+
+		glm::vec3 p = nd->getPosition();
+		btVector3 bp = btVector3(p.x, p.y, p.x);
+		startTransform.setOrigin(bp);*/
+
 		btConvexShape* capsule = new btCapsuleShape(0.5, 1);
 		
 		m_ghostObject = new btPairCachingGhostObject();
@@ -29,7 +38,6 @@ namespace engine
 		world->addCollisionObject(m_ghostObject, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::AllFilter);
 		world->addAction(charcontroller);
 		charcontroller->setMaxJumpHeight(1.5);
-
 	}
 
 	PlayerComponent::~PlayerComponent()
