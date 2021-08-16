@@ -10,7 +10,7 @@ namespace engine
 {
 	extern View* g_engineView;
 	extern GLFWwindow* g_engineWindow;
-	
+
 	extern void loadLevel();
 
 	class VidMode
@@ -54,14 +54,14 @@ namespace engine
 			mode.width = vidMode.width;
 			mode.height = vidMode.height;
 			mode.refreshRate = vidMode.refreshRate;
-		
+
 			char buffer[256];
 			sprintf(buffer, "%ix%i %i", mode.width, mode.height, mode.refreshRate);
 			mode.name = buffer;
 
 			ms_vidModes.push_back(mode);
 		}
-			
+
 
 		for (int i = 0; i < ms_vidModes.size(); i++)
 		{
@@ -146,34 +146,26 @@ namespace engine
 
 		ImGui::Text(langman->getAsciiStr("#STR_MENU_SETTINGS_SCREEN_RESOLUTION").c_str());
 		ImGui::SameLine();
+		static int item_current_idx = VidMode::ms_currentVidMode; // Here we store our selection data as an index.
 
+		const char* combo_preview_value = VidMode::ms_vidModes[item_current_idx].name.c_str();
+		if (ImGui::BeginCombo("", combo_preview_value))
 		{
-			static int item_current_idx = VidMode::ms_currentVidMode; // Here we store our selection data as an index.
-			
-			const char* combo_preview_value = VidMode::ms_vidModes[item_current_idx].name.c_str();
-			if (ImGui::BeginCombo("", combo_preview_value))
+			for (int i = 0; i < VidMode::ms_vidModes.size(); i++)
 			{
-				for (int i = 0; i < VidMode::ms_vidModes.size(); i++)
-				{
 
-					const bool is_selected = (item_current_idx == i);
-					if (ImGui::Selectable(VidMode::ms_vidModes[i].name.c_str(), is_selected))
-						item_current_idx = i;
+				const bool is_selected = (item_current_idx == i);
+				if (ImGui::Selectable(VidMode::ms_vidModes[i].name.c_str(), is_selected))
+					item_current_idx = i;
 
-					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-
-				ImGui::EndCombo();
+				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
 			}
+
+			ImGui::EndCombo();
 		}
 
-		ImGui::Text(langman->getAsciiStr("#STR_MENU_SETTINGS_REFRESH_RATE_RESOLUTION").c_str());
-		//ImGui::SameLine();
-		{
-			
-		}
 
 		ImGui::Text(langman->getAsciiStr("#STR_MENU_SETTINGS_FULLSCREEN").c_str());
 
@@ -188,6 +180,11 @@ namespace engine
 		if (ImGui::Button("Apply"))
 		{
 			ms_isShowedApplyMenu = true;
+
+			auto modee = VidMode::ms_vidModes[item_current_idx];
+			g_graphicsOptions.m_width = modee.width;
+			g_graphicsOptions.m_height = modee.height;
+			g_graphicsOptions.saveSettings("engine.ini");
 		}
 
 		ImGui::SameLine();
