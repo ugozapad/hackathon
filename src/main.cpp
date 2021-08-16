@@ -151,8 +151,14 @@ namespace engine
 		//}
 
 		auto levelCollision = levelNode->createComponentByType<PhysicsComponent>();
-		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f, btVector3(30.f, 1.0f, 30.f));
+		levelCollision->setSimulated(false);
+		levelCollision->createShape(PhysicsBody::ShapeType::Box, levelNode->getPosition(), 0.0f, btVector3(30.f, 1.0f, 7.f));
 		levelCollision->setStatic(true);
+		auto homeCollision = levelNode->createComponentByType<PhysicsComponent>();
+		homeCollision->setSimulated(false);
+		homeCollision->createShape(PhysicsBody::ShapeType::Box, glm::vec3(-6.22, 0.0f, 0.0f), 0.0f, btVector3(5.58f, 6.0f, 7.f));
+		homeCollision->setStatic(true);
+		
 
 		// add skybox to world
 		auto skyboxNode = Engine::ms_world->createNode();
@@ -163,8 +169,14 @@ namespace engine
 
 		// Add player
 		auto playerNode = Engine::ms_world->createNode();
-		playerNode->createComponentByType<PlayerComponent>();
-
+		auto playerComp = playerNode->createComponentByType<PlayerComponent>();
+		
+		{
+			glm::vec3 p = playerNode->getPosition();
+			p.y = 0.5f;
+			playerNode->setPosition(p);
+		}
+		playerComp->createController();
 
 		// weapon node (as child to player with little hack for weapon model)
 		auto weaponNode = playerNode->createChild();
