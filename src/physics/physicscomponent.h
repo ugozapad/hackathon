@@ -26,12 +26,14 @@ namespace engine
 
 		bool getStatic() { return m_isStatic; }
 
+		void setSimulated(bool value);
 
 		void update(float delta) override;
 
 	private:
 		PhysicsBody* m_physicsBody;
 		bool m_isStatic;
+		bool m_isSimulated;
 	};
 }
 

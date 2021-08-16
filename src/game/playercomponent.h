@@ -18,6 +18,7 @@ namespace engine
 
 		static void registerObject();
 
+		void createController();
 		virtual void onNodeSet(Node* node);
 		virtual void update(float dt);
 		virtual void updateCamera(float dt);

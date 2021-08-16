@@ -48,10 +48,18 @@ namespace engine
 		m_physicsBody->setStatic(true);
 	}
 
+	void PhysicsComponent::setSimulated(bool value)
+	{
+		m_isSimulated = value;
+	}
+
 	void PhysicsComponent::update(float delta)
 	{
 		// hack 
-		m_node->setPosition(getPhysicsBody()->getPosition());
+		if (m_isSimulated) 
+		{
+			m_node->setPosition(getPhysicsBody()->getPosition());
+		}
 	}
 
 }

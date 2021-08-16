@@ -11,10 +11,21 @@ namespace engine
 {
 	PlayerComponent::PlayerComponent()
 	{
+		
+	}
+
+	PlayerComponent::~PlayerComponent()
+	{
+
+	}
+
+	void PlayerComponent::createController()
+	{
 		auto world = Engine::ms_world->getPhysicsWorld()->getWorld();
 		btTransform startTransform;
 		startTransform.setIdentity();
-		startTransform.setOrigin(btVector3(0, 10, 4));
+		glm::vec3 pos = this->m_node->getPosition();
+		startTransform.setOrigin(btVector3(pos.x, pos.y, pos.z));
 
 		// #TODO: !!!
 	/*	Node* nd = m_node;
@@ -26,7 +37,7 @@ namespace engine
 		startTransform.setOrigin(bp);*/
 
 		btConvexShape* capsule = new btCapsuleShape(0.5, 1);
-		
+
 		m_ghostObject = new btPairCachingGhostObject();
 		m_ghostObject->setWorldTransform(startTransform);
 		world->getPairCache()->setInternalGhostPairCallback(new btGhostPairCallback());
@@ -38,11 +49,6 @@ namespace engine
 		world->addCollisionObject(m_ghostObject, btBroadphaseProxy::CharacterFilter, btBroadphaseProxy::AllFilter);
 		world->addAction(charcontroller);
 		charcontroller->setMaxJumpHeight(1.5);
-	}
-
-	PlayerComponent::~PlayerComponent()
-	{
-
 	}
 
 	void PlayerComponent::registerObject()
@@ -155,6 +161,7 @@ namespace engine
 
 		else
 			charcontroller->setWalkDirection(btVector3(0, 0, 0));
+		spdlog::info("player pos: {0}, {1}, {2}", pos.x(), pos.y(), pos.z());
 	}
 
 }
