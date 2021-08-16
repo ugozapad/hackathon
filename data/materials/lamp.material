@@ -1,0 +1,5 @@
+material "lamp"
+{
+	shader diffuse
+	albedo "lamp.png"
+}

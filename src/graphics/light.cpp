@@ -36,8 +36,6 @@ namespace engine
 		data->m_ambientColor = m_ambientColor;
 		data->m_specularColor = m_specularColor;
 		data->m_shininess = m_shininess;
-
-		ImGui::DragFloat("SHINNES", &m_shininess, 1.0f, 1.0f, 1024.0f);
 	}
 
 }

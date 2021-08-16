@@ -168,16 +168,17 @@ namespace engine
 
 		// weapon node (as child to player with little hack for weapon model)
 		auto weaponNode = playerNode->createChild();
+		weaponNode->createComponentByType<LightComponent>();
 
 		// weapon component
 		auto weapon = weaponNode->createComponentByType<WeaponComponent>();
 
 		// add model
 		auto weaponMesh = weaponNode->createComponentByType<StaticMeshComponent>();
-		weaponMesh->addModel(contentManager->loadModel("models/test1.dae"));
+		weaponMesh->addModel(contentManager->loadModel("models/lamp.dae"));
 
 		// little ugly but works
-		weaponNode->setPosition(glm::vec3(0.4f, -0.2f, 0.4f));
+		weaponNode->setPosition(glm::vec3(0.4f, -0.6f, 0.4f));
 		weaponNode->setScale(glm::vec3(0.15));
 
 		//playerNode->createComponentByType<CameraLogicComponent>();

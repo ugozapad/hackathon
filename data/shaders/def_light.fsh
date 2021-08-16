@@ -64,7 +64,7 @@ vec3 calcPointLight(Light light, vec3 color, vec3 pos, vec3 normal)
 void main()
 {
 	// Unpack data from g-buffer
-	vec3 pos = texture(u_gbuf_positionTexture, texCoord).rgb;
+	vec3 pos = texture(u_gbuf_positionTexture, texCoord).xyz;
 	vec3 normal = texture(u_gbuf_normalTexture, texCoord).rgb * 2.0 - 1.0;	
 	//vec3 normal = texture(u_gbuf_normalTexture, texCoord).rgb;	
 	vec3 color = texture(u_gbuf_colorTexture, texCoord).rgb;

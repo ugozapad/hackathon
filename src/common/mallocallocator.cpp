@@ -14,8 +14,8 @@ namespace engine
 
 	void* MallocAllocator::allocate(size_t size, size_t align)
 	{
-		m_usedMemory += size;
-		m_numAllocations++;
+		//m_usedMemory += size;
+		//m_numAllocations++;
 		return _aligned_malloc(size, align);
 	}
 
