@@ -7,14 +7,13 @@
 * Integrated Bullet rigid-body physics
 
 ### Библиотеки
-Использованные библиотеки:
-spdlog
-GLFW
-GLM
-GLAD
-AssImp
-Im3D
-ImGui
-Bullet
-Ozz Animation
-FMOD
+* spdlog
+* GLFW
+* GLM
+* GLAD
+* AssImp
+* Im3D
+* ImGui
+* Bullet
+* Ozz Animation
+* FMOD
