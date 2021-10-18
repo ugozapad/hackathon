@@ -1,14 +1,21 @@
 # Failure game
 ![Screnshot](https://ugozapad.github.io/images/small.png)
+
+## Ссылка на проект
 https://itch.io/jam/gaijin-jam/rate/1161714
 
-## Engine features
-* Deferred Shading
-* Data-driven materials
-* Node-based world and component-based game logic
-* Integrated Bullet rigid-body physics
+### История
+Очень простая технодемка, из которой мы пытались сделать что-то стоящее. 
+Движок игры был создан за три недели, в итоге архитектура скатилась в что-то ужасное и некоторые фичи просто сломаны.
 
-### Библиотеки
+#### Технологии:
+* OpenGL 3.3
+* рендер использует Deferred Shading (две фазы, одна на геометрию, вторая свет как пост-процессинг)
+* физика основана на bullet physics
+* простенькая звуковая система на FMOD
+* ентити-компонент игровая логика(точнее попытки в неё)
+
+##### Библиотеки
 * spdlog
 * GLFW
 * GLM
