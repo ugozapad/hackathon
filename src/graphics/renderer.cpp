@@ -150,7 +150,7 @@ namespace engine
 				StaticMeshComponent* graphicsComponent = node->getComponentByType<StaticMeshComponent>();
 				if (graphicsComponent)
 				{
-					// let's render our piece of shit.
+					// render
 					RenderContext& renderCtx = RenderContext::getContext();
 					renderCtx.model = node->getTranslation();
 					RenderContext::setContext(renderCtx);
@@ -172,8 +172,7 @@ namespace engine
 					StaticMeshComponent* graphicsComponent = node->getComponentByType<StaticMeshComponent>();
 					if (graphicsComponent && !node->getComponentByType<SkyboxComponent>())
 					{
-						// let's render our piece of shit.
-
+						// render
 						RenderContext& renderCtx = RenderContext::getContext();
 						renderCtx.model = node->getTranslation();
 						RenderContext::setContext(renderCtx);
@@ -189,7 +188,7 @@ namespace engine
 
 		m_graphicsDevice->setFramebuffer(m_postProcessingRenderer->getFramebuffer());
 
-		// let's sort the fucking lights
+		// sort the lights
 		std::vector<LightComponent*> lights = LightManager::getInstance()->getLights();
 		g_deferredRenderer.lightPhase(lights);
 
