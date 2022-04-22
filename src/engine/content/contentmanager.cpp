@@ -109,7 +109,6 @@ namespace engine
 			// wait for finish ...
 			while (g_needToLoadContent.load() == 1);
 
-			// because gl is shit we need to this magic
 			std::static_pointer_cast<TextureMap>(content)->createHWTexture();
 
 			// little magic
@@ -139,8 +138,7 @@ namespace engine
 
 			// wait for finish ...
 			while (g_needToLoadContent.load() == 1);
-
-			// because our content manager is shit we need to this magic
+c
 			std::static_pointer_cast<ModelBase>(content)->createHwShit();
 
 			// little magic
@@ -171,7 +169,6 @@ namespace engine
 			// wait for finish ...
 			while (g_needToLoadContent.load() == 1);
 
-			// because gl is shit we need to this magic
 			std::static_pointer_cast<Material>(content)->createHwTextures();
 
 			// little magic
