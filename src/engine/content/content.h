@@ -5,7 +5,7 @@
 
 namespace engine
 {
-	// Base class for all engine manager resources (i.e. textures, models and other shit)
+	// Base class for all engine manager resources (i.e. textures, models and other)
 	class Content //: std::enable_shared_from_this<Content>
 	{
 	public:
